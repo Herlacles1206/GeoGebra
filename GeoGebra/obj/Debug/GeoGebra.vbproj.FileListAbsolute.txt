@@ -1,0 +1,12 @@
+E:\project\geogebra\geogebra\GeoGebra\GeoGebra\bin\Debug\GeoGebra.exe.config
+E:\project\geogebra\geogebra\GeoGebra\GeoGebra\bin\Debug\GeoGebra.exe
+E:\project\geogebra\geogebra\GeoGebra\GeoGebra\bin\Debug\GeoGebra.pdb
+E:\project\geogebra\geogebra\GeoGebra\GeoGebra\bin\Debug\GeoGebra.xml
+E:\project\geogebra\geogebra\GeoGebra\GeoGebra\obj\Debug\GeoGebra.vbproj.AssemblyReference.cache
+E:\project\geogebra\geogebra\GeoGebra\GeoGebra\obj\Debug\GeoGebra.MainForm.resources
+E:\project\geogebra\geogebra\GeoGebra\GeoGebra\obj\Debug\GeoGebra.Resources.resources
+E:\project\geogebra\geogebra\GeoGebra\GeoGebra\obj\Debug\GeoGebra.vbproj.GenerateResource.cache
+E:\project\geogebra\geogebra\GeoGebra\GeoGebra\obj\Debug\GeoGebra.vbproj.CoreCompileInputs.cache
+E:\project\geogebra\geogebra\GeoGebra\GeoGebra\obj\Debug\GeoGebra.exe
+E:\project\geogebra\geogebra\GeoGebra\GeoGebra\obj\Debug\GeoGebra.xml
+E:\project\geogebra\geogebra\GeoGebra\GeoGebra\obj\Debug\GeoGebra.pdb
