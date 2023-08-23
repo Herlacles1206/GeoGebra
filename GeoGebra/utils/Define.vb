@@ -41,7 +41,7 @@ Public Enum MeasureType
     'Lines
 
     'Circles
-
+    circleCenterRadius = 61
     'Polygens
 
     'Conics

@@ -54,4 +54,14 @@ Public Module MathCalc
 
         Return offset
     End Function
+
+    Public Function CalcPositionInCircle(ByVal centerpt As Point, ByVal radius As Integer, ByVal angle As Integer) As Point
+        Dim target_point As Point = New Point()
+        Dim ang_radian = angle / 360 * Math.PI * 2
+        Dim offset_x = Convert.ToInt32(radius * Math.Cos(ang_radian))
+        Dim offset_y = Convert.ToInt32(radius * Math.Sin(ang_radian))
+        target_point.X = centerpt.X + offset_x
+        target_point.Y = centerpt.Y + offset_y
+        Return target_point
+    End Function
 End Module

@@ -133,9 +133,29 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property mode_anglefixed() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("mode_anglefixed", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property mode_circlepointradius() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("mode_circlepointradius", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property mode_circlepointradius1() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("mode_circlepointradius1", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
