@@ -1,5 +1,6 @@
 ﻿Imports AForge.Video
 Imports AForge.Video.DirectShow
+Imports Emgu.CV
 
 
 Public Class MainForm
@@ -145,8 +146,6 @@ Public Class MainForm
         DrawObjList(pic_main, objList)
         DrawObj(g, pic_main, curObj, curMeasureType, mPtF)
         g.Dispose()
-        txt_counter.Text = curObj.ptCnt.ToString()
-        LoadPosDataToGridView(curObj)
     End Sub
 
     Private Sub pic_main_MouseMove(sender As Object, e As MouseEventArgs) Handles pic_main.MouseMove
@@ -248,15 +247,23 @@ Public Class MainForm
         If curObj.ptCnt > 0 Then
             curObj.ptCnt -= 1
             DrawToPic()
+            txt_counter.Text = curObj.ptCnt.ToString()
+            LoadPosDataToGridView(curObj)
         End If
     End Sub
 
     Private Sub btn_cancel_all_Click(sender As Object, e As EventArgs) Handles btn_cancel_all.Click
         curObj.ptCnt = 0
         DrawToPic()
+        txt_counter.Text = curObj.ptCnt.ToString()
+        LoadPosDataToGridView(curObj)
     End Sub
 
     Private Sub btn_finish_Click(sender As Object, e As EventArgs) Handles btn_finish.Click
+        If curObj.ptCnt < 2 Then
+            MsgBox("Please select more than 2 points")
+            Return
+        End If
         If curMeasureType = MeasureType.lineFit Then
             curObj.fitLineObj.completed = True
             CompleteFitLineObj(curObj)
@@ -266,5 +273,24 @@ Public Class MainForm
         End If
         AppendObjToList()
         DrawObjList(pic_main, objList)
+    End Sub
+
+    Private Sub btn_tool_clearall_Click(sender As Object, e As EventArgs) Handles btn_tool_clearall.Click
+        curObj.Refresh()
+        curMeasureType = -1
+        objList.Clear()
+        pic_main.Refresh()
+        dgv_pos.Rows.Clear()
+        txt_x.Text = ""
+        txt_y.Text = ""
+        txt_counter.Text = ""
+    End Sub
+
+    Private Sub btn_tool_open_Click(sender As Object, e As EventArgs) Handles btn_tool_open.Click
+        Dim filter = "All Files|*.*|JPEG Files|*.jpg|PNG Files|*.png|BMP Files|*.bmp"
+        Dim title = "Open"
+
+        Dim img = LoadImageFromFile(pic_main, filter, title)
+        pic_main.Invoke(New Action(Sub() pic_main.Image = img.ToBitmap()))
     End Sub
 End Class

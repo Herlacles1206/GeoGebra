@@ -313,10 +313,8 @@ Public Module CtrlMethods
         End If
         If curObj.ptCnt >= 2 Then
             DrawAngle(g, pic, curObj)
-            Dim unitVec1 = GetUnitVector(X2, Y2, X1, Y1)
-            Dim unitVec2 = GetUnitVector(X2, Y2, X3, Y3)
-            DrawLine(g, pic, X2, Y2, X2 + unitVec1.Width * 25, Y2 + unitVec1.Height * 25)
-            DrawLine(g, pic, X2, Y2, X2 + unitVec2.Width * 25, Y2 + unitVec2.Height * 25)
+            DrawLine(g, pic, X2, Y2, X1, Y1)
+            DrawLine(g, pic, X2, Y2, X3, Y3)
             DrawPoint(g, pic, curObj.angleObj.midPt.pt)
             DrawString(g, pic, curObj.angleObj.midPt.pt, curObj.angleObj.angle.ToString())
         End If
@@ -331,10 +329,8 @@ Public Module CtrlMethods
         Dim X3 As Integer = curObj.angleObj.edPt.pt.X * pic.Width : Dim Y3 As Integer = curObj.angleObj.edPt.pt.Y * pic.Height
         If curObj.ptCnt = 2 Then
             DrawAngleFixed(g, pic, curObj)
-            Dim unitVec1 = GetUnitVector(X2, Y2, X1, Y1)
-            Dim unitVec2 = GetUnitVector(X2, Y2, X3, Y3)
-            DrawLine(g, pic, X2, Y2, X2 + unitVec1.Width * 25, Y2 + unitVec1.Height * 25)
-            DrawLine(g, pic, X2, Y2, X2 + unitVec2.Width * 25, Y2 + unitVec2.Height * 25)
+            DrawLine(g, pic, X2, Y2, X1, Y1)
+            DrawLine(g, pic, X2, Y2, X3, Y3)
             DrawPoint(g, pic, curObj.angleObj.midPt.pt)
             DrawPoint(g, pic, curObj.angleObj.edPt.pt)
             DrawString(g, pic, curObj.angleObj.midPt.pt, curObj.angleObj.angle.ToString())

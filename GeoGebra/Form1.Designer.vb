@@ -25,21 +25,41 @@ Partial Class MainForm
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.btn_finish = New System.Windows.Forms.Button()
+        Me.btn_cancel_all = New System.Windows.Forms.Button()
+        Me.btn_cancel_last = New System.Windows.Forms.Button()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
+        Me.Button6 = New System.Windows.Forms.Button()
+        Me.Button5 = New System.Windows.Forms.Button()
+        Me.Button4 = New System.Windows.Forms.Button()
+        Me.Button3 = New System.Windows.Forms.Button()
+        Me.btn_tool_open = New System.Windows.Forms.Button()
+        Me.btn_tool_clearall = New System.Windows.Forms.Button()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.FILEToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.OPENCAMERAToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CLOSECAMERAToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.EXPORTREPORTToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.btn_fit_arc = New System.Windows.Forms.Button()
+        Me.btn_fit_circle = New System.Windows.Forms.Button()
+        Me.btn_fit_line = New System.Windows.Forms.Button()
         Me.CameraResolutionsCB = New System.Windows.Forms.ComboBox()
         Me.Label12 = New System.Windows.Forms.Label()
         Me.Label11 = New System.Windows.Forms.Label()
+        Me.btn_circle_fixed = New System.Windows.Forms.Button()
+        Me.btn_angle_fixed = New System.Windows.Forms.Button()
+        Me.btn_circle_center = New System.Windows.Forms.Button()
+        Me.btn_angle = New System.Windows.Forms.Button()
+        Me.btn_line = New System.Windows.Forms.Button()
+        Me.btn_point = New System.Windows.Forms.Button()
+        Me.btn_move = New System.Windows.Forms.Button()
         Me.lab_circle_center = New System.Windows.Forms.Label()
         Me.lab_angle = New System.Windows.Forms.Label()
         Me.lab_line = New System.Windows.Forms.Label()
@@ -50,49 +70,29 @@ Partial Class MainForm
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Panel3 = New System.Windows.Forms.Panel()
-        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.pic_main = New System.Windows.Forms.PictureBox()
-        Me.btn_fit_arc = New System.Windows.Forms.Button()
-        Me.btn_fit_circle = New System.Windows.Forms.Button()
-        Me.btn_fit_line = New System.Windows.Forms.Button()
-        Me.btn_circle_fixed = New System.Windows.Forms.Button()
-        Me.btn_angle_fixed = New System.Windows.Forms.Button()
-        Me.btn_circle_center = New System.Windows.Forms.Button()
-        Me.btn_angle = New System.Windows.Forms.Button()
-        Me.btn_line = New System.Windows.Forms.Button()
-        Me.btn_point = New System.Windows.Forms.Button()
-        Me.btn_move = New System.Windows.Forms.Button()
-        Me.Button6 = New System.Windows.Forms.Button()
-        Me.Button5 = New System.Windows.Forms.Button()
-        Me.Button4 = New System.Windows.Forms.Button()
-        Me.Button3 = New System.Windows.Forms.Button()
-        Me.Button2 = New System.Windows.Forms.Button()
-        Me.Button1 = New System.Windows.Forms.Button()
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.Panel4 = New System.Windows.Forms.Panel()
-        Me.dgv_pos = New System.Windows.Forms.DataGridView()
-        Me.txt_x = New System.Windows.Forms.TextBox()
-        Me.txt_y = New System.Windows.Forms.TextBox()
-        Me.Label13 = New System.Windows.Forms.Label()
-        Me.Label14 = New System.Windows.Forms.Label()
-        Me.txt_counter = New System.Windows.Forms.TextBox()
+        Me.Label17 = New System.Windows.Forms.Label()
+        Me.Label16 = New System.Windows.Forms.Label()
         Me.Label15 = New System.Windows.Forms.Label()
+        Me.txt_counter = New System.Windows.Forms.TextBox()
+        Me.Label14 = New System.Windows.Forms.Label()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.txt_y = New System.Windows.Forms.TextBox()
+        Me.txt_x = New System.Windows.Forms.TextBox()
+        Me.dgv_pos = New System.Windows.Forms.DataGridView()
         Me.No = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.X = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Y = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.btn_cancel_last = New System.Windows.Forms.Button()
-        Me.btn_cancel_all = New System.Windows.Forms.Button()
-        Me.btn_finish = New System.Windows.Forms.Button()
-        Me.Label16 = New System.Windows.Forms.Label()
-        Me.Label17 = New System.Windows.Forms.Label()
         Me.Panel1.SuspendLayout()
+        Me.GroupBox1.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
         Me.Panel2.SuspendLayout()
         Me.Panel3.SuspendLayout()
         CType(Me.pic_main, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel4.SuspendLayout()
         CType(Me.dgv_pos, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
         'Panel1
@@ -109,14 +109,52 @@ Partial Class MainForm
         Me.Panel1.Controls.Add(Me.Button5)
         Me.Panel1.Controls.Add(Me.Button4)
         Me.Panel1.Controls.Add(Me.Button3)
-        Me.Panel1.Controls.Add(Me.Button2)
-        Me.Panel1.Controls.Add(Me.Button1)
+        Me.Panel1.Controls.Add(Me.btn_tool_open)
+        Me.Panel1.Controls.Add(Me.btn_tool_clearall)
         Me.Panel1.Controls.Add(Me.MenuStrip1)
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
         Me.Panel1.Location = New System.Drawing.Point(0, 0)
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(1446, 83)
         Me.Panel1.TabIndex = 0
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.btn_finish)
+        Me.GroupBox1.Controls.Add(Me.btn_cancel_all)
+        Me.GroupBox1.Controls.Add(Me.btn_cancel_last)
+        Me.GroupBox1.Location = New System.Drawing.Point(1010, 27)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(270, 50)
+        Me.GroupBox1.TabIndex = 11
+        Me.GroupBox1.TabStop = False
+        '
+        'btn_finish
+        '
+        Me.btn_finish.Location = New System.Drawing.Point(185, 19)
+        Me.btn_finish.Name = "btn_finish"
+        Me.btn_finish.Size = New System.Drawing.Size(75, 23)
+        Me.btn_finish.TabIndex = 2
+        Me.btn_finish.Text = "Finish"
+        Me.btn_finish.UseVisualStyleBackColor = True
+        '
+        'btn_cancel_all
+        '
+        Me.btn_cancel_all.Location = New System.Drawing.Point(95, 19)
+        Me.btn_cancel_all.Name = "btn_cancel_all"
+        Me.btn_cancel_all.Size = New System.Drawing.Size(75, 23)
+        Me.btn_cancel_all.TabIndex = 1
+        Me.btn_cancel_all.Text = "Cancel All"
+        Me.btn_cancel_all.UseVisualStyleBackColor = True
+        '
+        'btn_cancel_last
+        '
+        Me.btn_cancel_last.Location = New System.Drawing.Point(6, 19)
+        Me.btn_cancel_last.Name = "btn_cancel_last"
+        Me.btn_cancel_last.Size = New System.Drawing.Size(75, 23)
+        Me.btn_cancel_last.TabIndex = 0
+        Me.btn_cancel_last.Text = "Cancel Last"
+        Me.btn_cancel_last.UseVisualStyleBackColor = True
         '
         'Label10
         '
@@ -184,6 +222,72 @@ Partial Class MainForm
         Me.Label5.TabIndex = 6
         Me.Label5.Text = "Clear All"
         '
+        'Button6
+        '
+        Me.Button6.BackColor = System.Drawing.Color.White
+        Me.Button6.BackgroundImage = CType(resources.GetObject("Button6.BackgroundImage"), System.Drawing.Image)
+        Me.Button6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Button6.Location = New System.Drawing.Point(587, 26)
+        Me.Button6.Name = "Button6"
+        Me.Button6.Size = New System.Drawing.Size(30, 30)
+        Me.Button6.TabIndex = 5
+        Me.Button6.UseVisualStyleBackColor = False
+        '
+        'Button5
+        '
+        Me.Button5.BackColor = System.Drawing.Color.White
+        Me.Button5.BackgroundImage = CType(resources.GetObject("Button5.BackgroundImage"), System.Drawing.Image)
+        Me.Button5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Button5.Location = New System.Drawing.Point(741, 26)
+        Me.Button5.Name = "Button5"
+        Me.Button5.Size = New System.Drawing.Size(30, 30)
+        Me.Button5.TabIndex = 4
+        Me.Button5.UseVisualStyleBackColor = False
+        '
+        'Button4
+        '
+        Me.Button4.BackColor = System.Drawing.Color.White
+        Me.Button4.BackgroundImage = CType(resources.GetObject("Button4.BackgroundImage"), System.Drawing.Image)
+        Me.Button4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Button4.Location = New System.Drawing.Point(440, 26)
+        Me.Button4.Name = "Button4"
+        Me.Button4.Size = New System.Drawing.Size(30, 30)
+        Me.Button4.TabIndex = 3
+        Me.Button4.UseVisualStyleBackColor = False
+        '
+        'Button3
+        '
+        Me.Button3.BackColor = System.Drawing.Color.White
+        Me.Button3.BackgroundImage = CType(resources.GetObject("Button3.BackgroundImage"), System.Drawing.Image)
+        Me.Button3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.Button3.Location = New System.Drawing.Point(290, 26)
+        Me.Button3.Name = "Button3"
+        Me.Button3.Size = New System.Drawing.Size(30, 30)
+        Me.Button3.TabIndex = 2
+        Me.Button3.UseVisualStyleBackColor = False
+        '
+        'btn_tool_open
+        '
+        Me.btn_tool_open.BackColor = System.Drawing.Color.White
+        Me.btn_tool_open.BackgroundImage = CType(resources.GetObject("btn_tool_open.BackgroundImage"), System.Drawing.Image)
+        Me.btn_tool_open.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btn_tool_open.Location = New System.Drawing.Point(148, 26)
+        Me.btn_tool_open.Name = "btn_tool_open"
+        Me.btn_tool_open.Size = New System.Drawing.Size(30, 30)
+        Me.btn_tool_open.TabIndex = 1
+        Me.btn_tool_open.UseVisualStyleBackColor = False
+        '
+        'btn_tool_clearall
+        '
+        Me.btn_tool_clearall.BackColor = System.Drawing.Color.White
+        Me.btn_tool_clearall.BackgroundImage = CType(resources.GetObject("btn_tool_clearall.BackgroundImage"), System.Drawing.Image)
+        Me.btn_tool_clearall.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btn_tool_clearall.Location = New System.Drawing.Point(28, 26)
+        Me.btn_tool_clearall.Name = "btn_tool_clearall"
+        Me.btn_tool_clearall.Size = New System.Drawing.Size(30, 30)
+        Me.btn_tool_clearall.TabIndex = 0
+        Me.btn_tool_clearall.UseVisualStyleBackColor = False
+        '
         'MenuStrip1
         '
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FILEToolStripMenuItem})
@@ -250,6 +354,36 @@ Partial Class MainForm
         Me.Panel2.Size = New System.Drawing.Size(291, 694)
         Me.Panel2.TabIndex = 1
         '
+        'btn_fit_arc
+        '
+        Me.btn_fit_arc.BackgroundImage = Global.GeoGebra.My.Resources.Resources.mode_circumcirclearc3
+        Me.btn_fit_arc.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btn_fit_arc.Location = New System.Drawing.Point(224, 345)
+        Me.btn_fit_arc.Name = "btn_fit_arc"
+        Me.btn_fit_arc.Size = New System.Drawing.Size(30, 30)
+        Me.btn_fit_arc.TabIndex = 27
+        Me.btn_fit_arc.UseVisualStyleBackColor = True
+        '
+        'btn_fit_circle
+        '
+        Me.btn_fit_circle.BackgroundImage = Global.GeoGebra.My.Resources.Resources.mode_conic5
+        Me.btn_fit_circle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btn_fit_circle.Location = New System.Drawing.Point(128, 345)
+        Me.btn_fit_circle.Name = "btn_fit_circle"
+        Me.btn_fit_circle.Size = New System.Drawing.Size(30, 30)
+        Me.btn_fit_circle.TabIndex = 26
+        Me.btn_fit_circle.UseVisualStyleBackColor = True
+        '
+        'btn_fit_line
+        '
+        Me.btn_fit_line.BackgroundImage = Global.GeoGebra.My.Resources.Resources.mode_fitline
+        Me.btn_fit_line.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btn_fit_line.Location = New System.Drawing.Point(36, 345)
+        Me.btn_fit_line.Name = "btn_fit_line"
+        Me.btn_fit_line.Size = New System.Drawing.Size(30, 30)
+        Me.btn_fit_line.TabIndex = 25
+        Me.btn_fit_line.UseVisualStyleBackColor = True
+        '
         'CameraResolutionsCB
         '
         Me.CameraResolutionsCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
@@ -277,6 +411,81 @@ Partial Class MainForm
         Me.Label11.Size = New System.Drawing.Size(56, 31)
         Me.Label11.TabIndex = 22
         Me.Label11.Text = "Angle with Given size"
+        '
+        'btn_circle_fixed
+        '
+        Me.btn_circle_fixed.BackgroundImage = Global.GeoGebra.My.Resources.Resources.mode_circlepointradius1
+        Me.btn_circle_fixed.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btn_circle_fixed.Location = New System.Drawing.Point(128, 489)
+        Me.btn_circle_fixed.Name = "btn_circle_fixed"
+        Me.btn_circle_fixed.Size = New System.Drawing.Size(30, 30)
+        Me.btn_circle_fixed.TabIndex = 21
+        Me.btn_circle_fixed.UseVisualStyleBackColor = True
+        '
+        'btn_angle_fixed
+        '
+        Me.btn_angle_fixed.BackgroundImage = Global.GeoGebra.My.Resources.Resources.mode_anglefixed
+        Me.btn_angle_fixed.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btn_angle_fixed.Location = New System.Drawing.Point(36, 489)
+        Me.btn_angle_fixed.Name = "btn_angle_fixed"
+        Me.btn_angle_fixed.Size = New System.Drawing.Size(30, 30)
+        Me.btn_angle_fixed.TabIndex = 20
+        Me.btn_angle_fixed.UseVisualStyleBackColor = True
+        '
+        'btn_circle_center
+        '
+        Me.btn_circle_center.BackgroundImage = CType(resources.GetObject("btn_circle_center.BackgroundImage"), System.Drawing.Image)
+        Me.btn_circle_center.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btn_circle_center.Location = New System.Drawing.Point(130, 116)
+        Me.btn_circle_center.Name = "btn_circle_center"
+        Me.btn_circle_center.Size = New System.Drawing.Size(30, 30)
+        Me.btn_circle_center.TabIndex = 19
+        Me.ToolTip1.SetToolTip(Me.btn_circle_center, "Select center point, then point on circle")
+        Me.btn_circle_center.UseVisualStyleBackColor = True
+        '
+        'btn_angle
+        '
+        Me.btn_angle.BackgroundImage = CType(resources.GetObject("btn_angle.BackgroundImage"), System.Drawing.Image)
+        Me.btn_angle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btn_angle.Location = New System.Drawing.Point(36, 116)
+        Me.btn_angle.Name = "btn_angle"
+        Me.btn_angle.Size = New System.Drawing.Size(30, 30)
+        Me.btn_angle.TabIndex = 18
+        Me.ToolTip1.SetToolTip(Me.btn_angle, "Select three points or two lines")
+        Me.btn_angle.UseVisualStyleBackColor = True
+        '
+        'btn_line
+        '
+        Me.btn_line.BackgroundImage = CType(resources.GetObject("btn_line.BackgroundImage"), System.Drawing.Image)
+        Me.btn_line.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btn_line.Location = New System.Drawing.Point(224, 52)
+        Me.btn_line.Name = "btn_line"
+        Me.btn_line.Size = New System.Drawing.Size(30, 30)
+        Me.btn_line.TabIndex = 17
+        Me.ToolTip1.SetToolTip(Me.btn_line, "Select two points or positions")
+        Me.btn_line.UseVisualStyleBackColor = True
+        '
+        'btn_point
+        '
+        Me.btn_point.BackgroundImage = CType(resources.GetObject("btn_point.BackgroundImage"), System.Drawing.Image)
+        Me.btn_point.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btn_point.Location = New System.Drawing.Point(130, 52)
+        Me.btn_point.Name = "btn_point"
+        Me.btn_point.Size = New System.Drawing.Size(30, 30)
+        Me.btn_point.TabIndex = 16
+        Me.ToolTip1.SetToolTip(Me.btn_point, "Select position or line, function or curve")
+        Me.btn_point.UseVisualStyleBackColor = True
+        '
+        'btn_move
+        '
+        Me.btn_move.BackgroundImage = CType(resources.GetObject("btn_move.BackgroundImage"), System.Drawing.Image)
+        Me.btn_move.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btn_move.Location = New System.Drawing.Point(36, 52)
+        Me.btn_move.Name = "btn_move"
+        Me.btn_move.Size = New System.Drawing.Size(30, 30)
+        Me.btn_move.TabIndex = 15
+        Me.ToolTip1.SetToolTip(Me.btn_move, "Drag or select object")
+        Me.btn_move.UseVisualStyleBackColor = True
         '
         'lab_circle_center
         '
@@ -395,177 +604,6 @@ Partial Class MainForm
         Me.pic_main.TabIndex = 0
         Me.pic_main.TabStop = False
         '
-        'btn_fit_arc
-        '
-        Me.btn_fit_arc.BackgroundImage = Global.GeoGebra.My.Resources.Resources.mode_circumcirclearc3
-        Me.btn_fit_arc.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.btn_fit_arc.Location = New System.Drawing.Point(224, 345)
-        Me.btn_fit_arc.Name = "btn_fit_arc"
-        Me.btn_fit_arc.Size = New System.Drawing.Size(30, 30)
-        Me.btn_fit_arc.TabIndex = 27
-        Me.btn_fit_arc.UseVisualStyleBackColor = True
-        '
-        'btn_fit_circle
-        '
-        Me.btn_fit_circle.BackgroundImage = Global.GeoGebra.My.Resources.Resources.mode_conic5
-        Me.btn_fit_circle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.btn_fit_circle.Location = New System.Drawing.Point(128, 345)
-        Me.btn_fit_circle.Name = "btn_fit_circle"
-        Me.btn_fit_circle.Size = New System.Drawing.Size(30, 30)
-        Me.btn_fit_circle.TabIndex = 26
-        Me.btn_fit_circle.UseVisualStyleBackColor = True
-        '
-        'btn_fit_line
-        '
-        Me.btn_fit_line.BackgroundImage = Global.GeoGebra.My.Resources.Resources.mode_fitline
-        Me.btn_fit_line.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.btn_fit_line.Location = New System.Drawing.Point(36, 345)
-        Me.btn_fit_line.Name = "btn_fit_line"
-        Me.btn_fit_line.Size = New System.Drawing.Size(30, 30)
-        Me.btn_fit_line.TabIndex = 25
-        Me.btn_fit_line.UseVisualStyleBackColor = True
-        '
-        'btn_circle_fixed
-        '
-        Me.btn_circle_fixed.BackgroundImage = Global.GeoGebra.My.Resources.Resources.mode_circlepointradius1
-        Me.btn_circle_fixed.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.btn_circle_fixed.Location = New System.Drawing.Point(128, 489)
-        Me.btn_circle_fixed.Name = "btn_circle_fixed"
-        Me.btn_circle_fixed.Size = New System.Drawing.Size(30, 30)
-        Me.btn_circle_fixed.TabIndex = 21
-        Me.btn_circle_fixed.UseVisualStyleBackColor = True
-        '
-        'btn_angle_fixed
-        '
-        Me.btn_angle_fixed.BackgroundImage = Global.GeoGebra.My.Resources.Resources.mode_anglefixed
-        Me.btn_angle_fixed.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.btn_angle_fixed.Location = New System.Drawing.Point(36, 489)
-        Me.btn_angle_fixed.Name = "btn_angle_fixed"
-        Me.btn_angle_fixed.Size = New System.Drawing.Size(30, 30)
-        Me.btn_angle_fixed.TabIndex = 20
-        Me.btn_angle_fixed.UseVisualStyleBackColor = True
-        '
-        'btn_circle_center
-        '
-        Me.btn_circle_center.BackgroundImage = CType(resources.GetObject("btn_circle_center.BackgroundImage"), System.Drawing.Image)
-        Me.btn_circle_center.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.btn_circle_center.Location = New System.Drawing.Point(130, 116)
-        Me.btn_circle_center.Name = "btn_circle_center"
-        Me.btn_circle_center.Size = New System.Drawing.Size(30, 30)
-        Me.btn_circle_center.TabIndex = 19
-        Me.ToolTip1.SetToolTip(Me.btn_circle_center, "Select center point, then point on circle")
-        Me.btn_circle_center.UseVisualStyleBackColor = True
-        '
-        'btn_angle
-        '
-        Me.btn_angle.BackgroundImage = CType(resources.GetObject("btn_angle.BackgroundImage"), System.Drawing.Image)
-        Me.btn_angle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.btn_angle.Location = New System.Drawing.Point(36, 116)
-        Me.btn_angle.Name = "btn_angle"
-        Me.btn_angle.Size = New System.Drawing.Size(30, 30)
-        Me.btn_angle.TabIndex = 18
-        Me.ToolTip1.SetToolTip(Me.btn_angle, "Select three points or two lines")
-        Me.btn_angle.UseVisualStyleBackColor = True
-        '
-        'btn_line
-        '
-        Me.btn_line.BackgroundImage = CType(resources.GetObject("btn_line.BackgroundImage"), System.Drawing.Image)
-        Me.btn_line.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.btn_line.Location = New System.Drawing.Point(224, 52)
-        Me.btn_line.Name = "btn_line"
-        Me.btn_line.Size = New System.Drawing.Size(30, 30)
-        Me.btn_line.TabIndex = 17
-        Me.ToolTip1.SetToolTip(Me.btn_line, "Select two points or positions")
-        Me.btn_line.UseVisualStyleBackColor = True
-        '
-        'btn_point
-        '
-        Me.btn_point.BackgroundImage = CType(resources.GetObject("btn_point.BackgroundImage"), System.Drawing.Image)
-        Me.btn_point.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.btn_point.Location = New System.Drawing.Point(130, 52)
-        Me.btn_point.Name = "btn_point"
-        Me.btn_point.Size = New System.Drawing.Size(30, 30)
-        Me.btn_point.TabIndex = 16
-        Me.ToolTip1.SetToolTip(Me.btn_point, "Select position or line, function or curve")
-        Me.btn_point.UseVisualStyleBackColor = True
-        '
-        'btn_move
-        '
-        Me.btn_move.BackgroundImage = CType(resources.GetObject("btn_move.BackgroundImage"), System.Drawing.Image)
-        Me.btn_move.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.btn_move.Location = New System.Drawing.Point(36, 52)
-        Me.btn_move.Name = "btn_move"
-        Me.btn_move.Size = New System.Drawing.Size(30, 30)
-        Me.btn_move.TabIndex = 15
-        Me.ToolTip1.SetToolTip(Me.btn_move, "Drag or select object")
-        Me.btn_move.UseVisualStyleBackColor = True
-        '
-        'Button6
-        '
-        Me.Button6.BackColor = System.Drawing.Color.White
-        Me.Button6.BackgroundImage = CType(resources.GetObject("Button6.BackgroundImage"), System.Drawing.Image)
-        Me.Button6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.Button6.Location = New System.Drawing.Point(587, 26)
-        Me.Button6.Name = "Button6"
-        Me.Button6.Size = New System.Drawing.Size(30, 30)
-        Me.Button6.TabIndex = 5
-        Me.Button6.UseVisualStyleBackColor = False
-        '
-        'Button5
-        '
-        Me.Button5.BackColor = System.Drawing.Color.White
-        Me.Button5.BackgroundImage = CType(resources.GetObject("Button5.BackgroundImage"), System.Drawing.Image)
-        Me.Button5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.Button5.Location = New System.Drawing.Point(741, 26)
-        Me.Button5.Name = "Button5"
-        Me.Button5.Size = New System.Drawing.Size(30, 30)
-        Me.Button5.TabIndex = 4
-        Me.Button5.UseVisualStyleBackColor = False
-        '
-        'Button4
-        '
-        Me.Button4.BackColor = System.Drawing.Color.White
-        Me.Button4.BackgroundImage = CType(resources.GetObject("Button4.BackgroundImage"), System.Drawing.Image)
-        Me.Button4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.Button4.Location = New System.Drawing.Point(440, 26)
-        Me.Button4.Name = "Button4"
-        Me.Button4.Size = New System.Drawing.Size(30, 30)
-        Me.Button4.TabIndex = 3
-        Me.Button4.UseVisualStyleBackColor = False
-        '
-        'Button3
-        '
-        Me.Button3.BackColor = System.Drawing.Color.White
-        Me.Button3.BackgroundImage = CType(resources.GetObject("Button3.BackgroundImage"), System.Drawing.Image)
-        Me.Button3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.Button3.Location = New System.Drawing.Point(290, 26)
-        Me.Button3.Name = "Button3"
-        Me.Button3.Size = New System.Drawing.Size(30, 30)
-        Me.Button3.TabIndex = 2
-        Me.Button3.UseVisualStyleBackColor = False
-        '
-        'Button2
-        '
-        Me.Button2.BackColor = System.Drawing.Color.White
-        Me.Button2.BackgroundImage = CType(resources.GetObject("Button2.BackgroundImage"), System.Drawing.Image)
-        Me.Button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.Button2.Location = New System.Drawing.Point(148, 26)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(30, 30)
-        Me.Button2.TabIndex = 1
-        Me.Button2.UseVisualStyleBackColor = False
-        '
-        'Button1
-        '
-        Me.Button1.BackColor = System.Drawing.Color.White
-        Me.Button1.BackgroundImage = CType(resources.GetObject("Button1.BackgroundImage"), System.Drawing.Image)
-        Me.Button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
-        Me.Button1.Location = New System.Drawing.Point(28, 26)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(30, 30)
-        Me.Button1.TabIndex = 0
-        Me.Button1.UseVisualStyleBackColor = False
-        '
         'Panel4
         '
         Me.Panel4.BackColor = System.Drawing.Color.White
@@ -583,38 +621,42 @@ Partial Class MainForm
         Me.Panel4.Size = New System.Drawing.Size(260, 691)
         Me.Panel4.TabIndex = 3
         '
-        'dgv_pos
+        'Label17
         '
-        Me.dgv_pos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.dgv_pos.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.No, Me.X, Me.Y})
-        Me.dgv_pos.Location = New System.Drawing.Point(6, 25)
-        Me.dgv_pos.Name = "dgv_pos"
-        Me.dgv_pos.Size = New System.Drawing.Size(249, 214)
-        Me.dgv_pos.TabIndex = 0
+        Me.Label17.AutoSize = True
+        Me.Label17.ForeColor = System.Drawing.Color.DimGray
+        Me.Label17.Location = New System.Drawing.Point(218, 282)
+        Me.Label17.Name = "Label17"
+        Me.Label17.Size = New System.Drawing.Size(21, 13)
+        Me.Label17.TabIndex = 19
+        Me.Label17.Text = "um"
         '
-        'txt_x
+        'Label16
         '
-        Me.txt_x.Location = New System.Drawing.Point(51, 278)
-        Me.txt_x.Name = "txt_x"
-        Me.txt_x.Size = New System.Drawing.Size(53, 20)
-        Me.txt_x.TabIndex = 1
+        Me.Label16.AutoSize = True
+        Me.Label16.ForeColor = System.Drawing.Color.DimGray
+        Me.Label16.Location = New System.Drawing.Point(107, 282)
+        Me.Label16.Name = "Label16"
+        Me.Label16.Size = New System.Drawing.Size(21, 13)
+        Me.Label16.TabIndex = 18
+        Me.Label16.Text = "um"
         '
-        'txt_y
+        'Label15
         '
-        Me.txt_y.Location = New System.Drawing.Point(162, 278)
-        Me.txt_y.Name = "txt_y"
-        Me.txt_y.Size = New System.Drawing.Size(53, 20)
-        Me.txt_y.TabIndex = 2
+        Me.Label15.AutoSize = True
+        Me.Label15.ForeColor = System.Drawing.Color.DimGray
+        Me.Label15.Location = New System.Drawing.Point(6, 315)
+        Me.Label15.Name = "Label15"
+        Me.Label15.Size = New System.Drawing.Size(44, 13)
+        Me.Label15.TabIndex = 17
+        Me.Label15.Text = "Counter"
         '
-        'Label13
+        'txt_counter
         '
-        Me.Label13.AutoSize = True
-        Me.Label13.ForeColor = System.Drawing.Color.DimGray
-        Me.Label13.Location = New System.Drawing.Point(28, 282)
-        Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(17, 13)
-        Me.Label13.TabIndex = 14
-        Me.Label13.Text = "X:"
+        Me.txt_counter.Location = New System.Drawing.Point(51, 312)
+        Me.txt_counter.Name = "txt_counter"
+        Me.txt_counter.Size = New System.Drawing.Size(69, 20)
+        Me.txt_counter.TabIndex = 16
         '
         'Label14
         '
@@ -626,22 +668,38 @@ Partial Class MainForm
         Me.Label14.TabIndex = 15
         Me.Label14.Text = "Y:"
         '
-        'txt_counter
+        'Label13
         '
-        Me.txt_counter.Location = New System.Drawing.Point(51, 312)
-        Me.txt_counter.Name = "txt_counter"
-        Me.txt_counter.Size = New System.Drawing.Size(69, 20)
-        Me.txt_counter.TabIndex = 16
+        Me.Label13.AutoSize = True
+        Me.Label13.ForeColor = System.Drawing.Color.DimGray
+        Me.Label13.Location = New System.Drawing.Point(28, 282)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(17, 13)
+        Me.Label13.TabIndex = 14
+        Me.Label13.Text = "X:"
         '
-        'Label15
+        'txt_y
         '
-        Me.Label15.AutoSize = True
-        Me.Label15.ForeColor = System.Drawing.Color.DimGray
-        Me.Label15.Location = New System.Drawing.Point(6, 315)
-        Me.Label15.Name = "Label15"
-        Me.Label15.Size = New System.Drawing.Size(44, 13)
-        Me.Label15.TabIndex = 17
-        Me.Label15.Text = "Counter"
+        Me.txt_y.Location = New System.Drawing.Point(162, 278)
+        Me.txt_y.Name = "txt_y"
+        Me.txt_y.Size = New System.Drawing.Size(53, 20)
+        Me.txt_y.TabIndex = 2
+        '
+        'txt_x
+        '
+        Me.txt_x.Location = New System.Drawing.Point(51, 278)
+        Me.txt_x.Name = "txt_x"
+        Me.txt_x.Size = New System.Drawing.Size(53, 20)
+        Me.txt_x.TabIndex = 1
+        '
+        'dgv_pos
+        '
+        Me.dgv_pos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgv_pos.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.No, Me.X, Me.Y})
+        Me.dgv_pos.Location = New System.Drawing.Point(6, 25)
+        Me.dgv_pos.Name = "dgv_pos"
+        Me.dgv_pos.Size = New System.Drawing.Size(249, 214)
+        Me.dgv_pos.TabIndex = 0
         '
         'No
         '
@@ -658,64 +716,6 @@ Partial Class MainForm
         Me.Y.HeaderText = "Y"
         Me.Y.Name = "Y"
         '
-        'GroupBox1
-        '
-        Me.GroupBox1.Controls.Add(Me.btn_finish)
-        Me.GroupBox1.Controls.Add(Me.btn_cancel_all)
-        Me.GroupBox1.Controls.Add(Me.btn_cancel_last)
-        Me.GroupBox1.Location = New System.Drawing.Point(1010, 27)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(270, 50)
-        Me.GroupBox1.TabIndex = 11
-        Me.GroupBox1.TabStop = False
-        '
-        'btn_cancel_last
-        '
-        Me.btn_cancel_last.Location = New System.Drawing.Point(6, 19)
-        Me.btn_cancel_last.Name = "btn_cancel_last"
-        Me.btn_cancel_last.Size = New System.Drawing.Size(75, 23)
-        Me.btn_cancel_last.TabIndex = 0
-        Me.btn_cancel_last.Text = "Cancel Last"
-        Me.btn_cancel_last.UseVisualStyleBackColor = True
-        '
-        'btn_cancel_all
-        '
-        Me.btn_cancel_all.Location = New System.Drawing.Point(95, 19)
-        Me.btn_cancel_all.Name = "btn_cancel_all"
-        Me.btn_cancel_all.Size = New System.Drawing.Size(75, 23)
-        Me.btn_cancel_all.TabIndex = 1
-        Me.btn_cancel_all.Text = "Cancel All"
-        Me.btn_cancel_all.UseVisualStyleBackColor = True
-        '
-        'btn_finish
-        '
-        Me.btn_finish.Location = New System.Drawing.Point(185, 19)
-        Me.btn_finish.Name = "btn_finish"
-        Me.btn_finish.Size = New System.Drawing.Size(75, 23)
-        Me.btn_finish.TabIndex = 2
-        Me.btn_finish.Text = "Finish"
-        Me.btn_finish.UseVisualStyleBackColor = True
-        '
-        'Label16
-        '
-        Me.Label16.AutoSize = True
-        Me.Label16.ForeColor = System.Drawing.Color.DimGray
-        Me.Label16.Location = New System.Drawing.Point(107, 282)
-        Me.Label16.Name = "Label16"
-        Me.Label16.Size = New System.Drawing.Size(21, 13)
-        Me.Label16.TabIndex = 18
-        Me.Label16.Text = "um"
-        '
-        'Label17
-        '
-        Me.Label17.AutoSize = True
-        Me.Label17.ForeColor = System.Drawing.Color.DimGray
-        Me.Label17.Location = New System.Drawing.Point(218, 282)
-        Me.Label17.Name = "Label17"
-        Me.Label17.Size = New System.Drawing.Size(21, 13)
-        Me.Label17.TabIndex = 19
-        Me.Label17.Text = "um"
-        '
         'MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -731,6 +731,7 @@ Partial Class MainForm
         Me.Text = "GeoGebra"
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
+        Me.GroupBox1.ResumeLayout(False)
         Me.MenuStrip1.ResumeLayout(False)
         Me.MenuStrip1.PerformLayout()
         Me.Panel2.ResumeLayout(False)
@@ -740,7 +741,6 @@ Partial Class MainForm
         Me.Panel4.ResumeLayout(False)
         Me.Panel4.PerformLayout()
         CType(Me.dgv_pos, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.GroupBox1.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -764,8 +764,8 @@ Partial Class MainForm
     Friend WithEvents btn_line As Button
     Friend WithEvents btn_point As Button
     Friend WithEvents ToolTip1 As ToolTip
-    Friend WithEvents Button1 As Button
-    Friend WithEvents Button2 As Button
+    Friend WithEvents btn_tool_clearall As Button
+    Friend WithEvents btn_tool_open As Button
     Friend WithEvents Button3 As Button
     Friend WithEvents Button4 As Button
     Friend WithEvents Button5 As Button

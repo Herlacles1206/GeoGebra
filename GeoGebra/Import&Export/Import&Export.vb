@@ -1,8 +1,26 @@
 ﻿Imports ClosedXML.Excel
 Imports System.IO
+Imports Emgu.CV
 Imports System.Runtime.CompilerServices
-Public Module Import_Export
+Imports Emgu.CV.CvEnum
 
+Public Module Import_Export
+    Public Function LoadImageFromFile(ByVal pictureBox As PictureBox, ByVal filter As String, ByVal fileDialogTitle As String) As Mat
+        Dim openFileDialog As OpenFileDialog = New OpenFileDialog()
+        openFileDialog.Filter = filter
+        openFileDialog.Title = fileDialogTitle
+        Dim img_name As String
+
+        If openFileDialog.ShowDialog() = DialogResult.OK Then
+            img_name = openFileDialog.FileName
+        Else
+            Return Nothing
+        End If
+
+        Dim img = CvInvoke.Imread(img_name, ImreadModes.AnyColor)
+
+        Return img
+    End Function
     Public Sub SaveReportToExcel(ByVal picturebox As PictureBox, ByVal filter As String, ByVal saveDialogTitle As String, ByVal obj_list As List(Of measureObj))
         Dim SaveFileDialog As SaveFileDialog = New SaveFileDialog()
         SaveFileDialog.Filter = filter
