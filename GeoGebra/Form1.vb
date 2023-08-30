@@ -21,6 +21,7 @@ Public Class MainForm
                                            "DA", "DB", "DC", "DD", "DE", "DF", "DG", "DH", "DI", "DJ", "DK", "DL", "DM", "DN", "DO", "DP", "DQ", "DR", "DS", "DT", "DU", "DV", "DW", "DX", "DY", "DZ"}
 
     Public curObj As measureObj
+    Public curObjBackup As measureObj
     Public objList As List(Of measureObj) = New List(Of measureObj)
     'member variable for webcam
     Public videoDevices As FilterInfoCollection                        'usable video devices
@@ -35,14 +36,21 @@ Public Class MainForm
     Public camera_state As Boolean = False                             'the state of camera is opened or not
     Public imagepath As String = ""                                     'path of folder storing captured images
     Public flag As Boolean = False                                     'flag for live image
+    Public realWidth As Integer = 200000
+    Public realHeight As Integer = 150000
 
 
+    Private Sub InitializeVariables()
+        curObj.fitLineObj = New fitLineObj()
+        curObj.fitCirObj = New fitCircleObj()
+    End Sub
     Private Sub InitializeComponents()
         pic_main.Invoke(New Action(Sub() pic_main.Image = New Bitmap(pic_main.Width, pic_main.Height)))
     End Sub
 
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         InitializeComponents()
+        InitializeVariables()
     End Sub
 
     Private Sub InitializeCurObj(mType As Integer)
@@ -78,13 +86,40 @@ Public Class MainForm
         curMeasureType = MeasureType.circleCenterRadius
         InitializeCurObj(curMeasureType)
     End Sub
+
+    Private Sub btn_fit_line_Click(sender As Object, e As EventArgs) Handles btn_fit_line.Click
+        curMeasureType = MeasureType.lineFit
+        InitializeCurObj(curMeasureType)
+    End Sub
+
+    Private Sub btn_fit_circle_Click(sender As Object, e As EventArgs) Handles btn_fit_circle.Click
+        curMeasureType = MeasureType.circleFit
+        InitializeCurObj(curMeasureType)
+    End Sub
+
+    Private Sub btn_fit_arc_Click(sender As Object, e As EventArgs) Handles btn_fit_arc.Click
+        curMeasureType = MeasureType.arcFit
+        InitializeCurObj(curMeasureType)
+    End Sub
     Private Sub GetMousePositions(X As Integer, Y As Integer)
         mPt.X = X : mPt.Y = Y
         mPtF.X = CDbl(X) / pic_main.Width
         mPtF.Y = CDbl(Y) / pic_main.Height
     End Sub
+
+    Private Sub DisplayMousePositions()
+        txt_x.Text = (mPtF.X * realWidth).ToString()
+        txt_y.Text = (mPtF.Y * realHeight).ToString()
+    End Sub
     Private Sub AppendObjToList()
         objList.Add(curObj)
+        If curMeasureType = MeasureType.lineFit Then
+            Dim backup = CloneFitLineObj(curObj.fitLineObj)
+            CloneFitLineObj(backup, objList(objList.Count - 1))
+        ElseIf curMeasureType = MeasureType.circleFit Or curMeasureType = MeasureType.arcFit Then
+            Dim backup = CloneFitCircleObj(curObj.fitCirObj)
+            CloneFitCircleObj(backup, objList(objList.Count - 1))
+        End If
         curObj.Refresh()
         curMeasureType = -1
     End Sub
@@ -95,6 +130,7 @@ Public Class MainForm
 
             If curMeasureType >= 0 Then
                 Dim completed = UpdateObj(curObj, curMeasureType, mPtF)
+                txt_counter.Text = curObj.ptCnt.ToString()
                 If completed Then
                     AppendObjToList()
                 End If
@@ -104,13 +140,20 @@ Public Class MainForm
         End If
     End Sub
 
+    Private Sub DrawToPic()
+        Dim g As Graphics = pic_main.CreateGraphics()
+        DrawObjList(pic_main, objList)
+        DrawObj(g, pic_main, curObj, curMeasureType, mPtF)
+        g.Dispose()
+        txt_counter.Text = curObj.ptCnt.ToString()
+        LoadPosDataToGridView(curObj)
+    End Sub
+
     Private Sub pic_main_MouseMove(sender As Object, e As MouseEventArgs) Handles pic_main.MouseMove
         GetMousePositions(e.X, e.Y)
+        DisplayMousePositions()
         If curMeasureType >= 0 And curObj.ptCnt > 0 Then
-            Dim g As Graphics = pic_main.CreateGraphics()
-            DrawObjList(pic_main, objList)
-            DrawObj(g, pic_main, curObj, curMeasureType, mPtF)
-            g.Dispose()
+            DrawToPic()
         End If
     End Sub
 
@@ -201,5 +244,27 @@ Public Class MainForm
         SaveReportToExcel(pic_main, filter, title, objList)
     End Sub
 
+    Private Sub btn_cancel_last_Click(sender As Object, e As EventArgs) Handles btn_cancel_last.Click
+        If curObj.ptCnt > 0 Then
+            curObj.ptCnt -= 1
+            DrawToPic()
+        End If
+    End Sub
 
+    Private Sub btn_cancel_all_Click(sender As Object, e As EventArgs) Handles btn_cancel_all.Click
+        curObj.ptCnt = 0
+        DrawToPic()
+    End Sub
+
+    Private Sub btn_finish_Click(sender As Object, e As EventArgs) Handles btn_finish.Click
+        If curMeasureType = MeasureType.lineFit Then
+            curObj.fitLineObj.completed = True
+            CompleteFitLineObj(curObj)
+        ElseIf curMeasureType = MeasureType.circleFit Or curMeasureType = MeasureType.arcFit Then
+            curObj.fitCirObj.completed = True
+            CompleteFitCircleObj(curObj)
+        End If
+        AppendObjToList()
+        DrawObjList(pic_main, objList)
+    End Sub
 End Class

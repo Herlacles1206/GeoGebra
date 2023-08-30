@@ -31,7 +31,15 @@ Partial Class MainForm
         Me.Label7 = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
+        Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
+        Me.FILEToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.OPENCAMERAToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.CLOSECAMERAToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.EXPORTREPORTToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.CameraResolutionsCB = New System.Windows.Forms.ComboBox()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.Label11 = New System.Windows.Forms.Label()
         Me.lab_circle_center = New System.Windows.Forms.Label()
         Me.lab_angle = New System.Windows.Forms.Label()
         Me.lab_line = New System.Windows.Forms.Label()
@@ -43,10 +51,10 @@ Partial Class MainForm
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Panel3 = New System.Windows.Forms.Panel()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
-        Me.Label11 = New System.Windows.Forms.Label()
-        Me.Label12 = New System.Windows.Forms.Label()
-        Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.pic_main = New System.Windows.Forms.PictureBox()
+        Me.btn_fit_arc = New System.Windows.Forms.Button()
+        Me.btn_fit_circle = New System.Windows.Forms.Button()
+        Me.btn_fit_line = New System.Windows.Forms.Button()
         Me.btn_circle_fixed = New System.Windows.Forms.Button()
         Me.btn_angle_fixed = New System.Windows.Forms.Button()
         Me.btn_circle_center = New System.Windows.Forms.Button()
@@ -60,21 +68,37 @@ Partial Class MainForm
         Me.Button3 = New System.Windows.Forms.Button()
         Me.Button2 = New System.Windows.Forms.Button()
         Me.Button1 = New System.Windows.Forms.Button()
-        Me.FILEToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.OPENCAMERAToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.CLOSECAMERAToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.EXPORTREPORTToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.CameraResolutionsCB = New System.Windows.Forms.ComboBox()
+        Me.Panel4 = New System.Windows.Forms.Panel()
+        Me.dgv_pos = New System.Windows.Forms.DataGridView()
+        Me.txt_x = New System.Windows.Forms.TextBox()
+        Me.txt_y = New System.Windows.Forms.TextBox()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.Label14 = New System.Windows.Forms.Label()
+        Me.txt_counter = New System.Windows.Forms.TextBox()
+        Me.Label15 = New System.Windows.Forms.Label()
+        Me.No = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.X = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Y = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.btn_cancel_last = New System.Windows.Forms.Button()
+        Me.btn_cancel_all = New System.Windows.Forms.Button()
+        Me.btn_finish = New System.Windows.Forms.Button()
+        Me.Label16 = New System.Windows.Forms.Label()
+        Me.Label17 = New System.Windows.Forms.Label()
         Me.Panel1.SuspendLayout()
+        Me.MenuStrip1.SuspendLayout()
         Me.Panel2.SuspendLayout()
         Me.Panel3.SuspendLayout()
-        Me.MenuStrip1.SuspendLayout()
         CType(Me.pic_main, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Panel4.SuspendLayout()
+        CType(Me.dgv_pos, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
         '
         'Panel1
         '
         Me.Panel1.BackColor = System.Drawing.Color.White
+        Me.Panel1.Controls.Add(Me.GroupBox1)
         Me.Panel1.Controls.Add(Me.Label10)
         Me.Panel1.Controls.Add(Me.Label9)
         Me.Panel1.Controls.Add(Me.Label8)
@@ -91,7 +115,7 @@ Partial Class MainForm
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
         Me.Panel1.Location = New System.Drawing.Point(0, 0)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(1184, 83)
+        Me.Panel1.Size = New System.Drawing.Size(1446, 83)
         Me.Panel1.TabIndex = 0
         '
         'Label10
@@ -160,11 +184,48 @@ Partial Class MainForm
         Me.Label5.TabIndex = 6
         Me.Label5.Text = "Clear All"
         '
+        'MenuStrip1
+        '
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FILEToolStripMenuItem})
+        Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
+        Me.MenuStrip1.Name = "MenuStrip1"
+        Me.MenuStrip1.Size = New System.Drawing.Size(1446, 24)
+        Me.MenuStrip1.TabIndex = 10
+        Me.MenuStrip1.Text = "MenuStrip1"
+        '
+        'FILEToolStripMenuItem
+        '
+        Me.FILEToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OPENCAMERAToolStripMenuItem, Me.CLOSECAMERAToolStripMenuItem, Me.EXPORTREPORTToolStripMenuItem})
+        Me.FILEToolStripMenuItem.Name = "FILEToolStripMenuItem"
+        Me.FILEToolStripMenuItem.Size = New System.Drawing.Size(40, 20)
+        Me.FILEToolStripMenuItem.Text = "FILE"
+        '
+        'OPENCAMERAToolStripMenuItem
+        '
+        Me.OPENCAMERAToolStripMenuItem.Name = "OPENCAMERAToolStripMenuItem"
+        Me.OPENCAMERAToolStripMenuItem.Size = New System.Drawing.Size(160, 22)
+        Me.OPENCAMERAToolStripMenuItem.Text = "OPEN CAMERA"
+        '
+        'CLOSECAMERAToolStripMenuItem
+        '
+        Me.CLOSECAMERAToolStripMenuItem.Name = "CLOSECAMERAToolStripMenuItem"
+        Me.CLOSECAMERAToolStripMenuItem.Size = New System.Drawing.Size(160, 22)
+        Me.CLOSECAMERAToolStripMenuItem.Text = "CLOSE CAMERA"
+        '
+        'EXPORTREPORTToolStripMenuItem
+        '
+        Me.EXPORTREPORTToolStripMenuItem.Name = "EXPORTREPORTToolStripMenuItem"
+        Me.EXPORTREPORTToolStripMenuItem.Size = New System.Drawing.Size(160, 22)
+        Me.EXPORTREPORTToolStripMenuItem.Text = "EXPORT REPORT"
+        '
         'Panel2
         '
         Me.Panel2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.Panel2.BackColor = System.Drawing.Color.White
+        Me.Panel2.Controls.Add(Me.btn_fit_arc)
+        Me.Panel2.Controls.Add(Me.btn_fit_circle)
+        Me.Panel2.Controls.Add(Me.btn_fit_line)
         Me.Panel2.Controls.Add(Me.CameraResolutionsCB)
         Me.Panel2.Controls.Add(Me.Label12)
         Me.Panel2.Controls.Add(Me.Label11)
@@ -186,8 +247,36 @@ Partial Class MainForm
         Me.Panel2.Controls.Add(Me.Label1)
         Me.Panel2.Location = New System.Drawing.Point(1, 86)
         Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(291, 642)
+        Me.Panel2.Size = New System.Drawing.Size(291, 694)
         Me.Panel2.TabIndex = 1
+        '
+        'CameraResolutionsCB
+        '
+        Me.CameraResolutionsCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CameraResolutionsCB.FormattingEnabled = True
+        Me.CameraResolutionsCB.Location = New System.Drawing.Point(36, 202)
+        Me.CameraResolutionsCB.Name = "CameraResolutionsCB"
+        Me.CameraResolutionsCB.Size = New System.Drawing.Size(121, 21)
+        Me.CameraResolutionsCB.TabIndex = 24
+        '
+        'Label12
+        '
+        Me.Label12.ForeColor = System.Drawing.Color.DimGray
+        Me.Label12.Location = New System.Drawing.Point(102, 522)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(75, 31)
+        Me.Label12.TabIndex = 23
+        Me.Label12.Text = "Circle: Center & Radius"
+        Me.Label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'Label11
+        '
+        Me.Label11.ForeColor = System.Drawing.Color.DimGray
+        Me.Label11.Location = New System.Drawing.Point(24, 522)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(56, 31)
+        Me.Label11.TabIndex = 22
+        Me.Label11.Text = "Angle with Given size"
         '
         'lab_circle_center
         '
@@ -257,9 +346,9 @@ Partial Class MainForm
         Me.Label3.ForeColor = System.Drawing.Color.DimGray
         Me.Label3.Location = New System.Drawing.Point(12, 313)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(78, 20)
+        Me.Label3.Size = New System.Drawing.Size(63, 20)
         Me.Label3.TabIndex = 3
-        Me.Label3.Text = "Construct"
+        Me.Label3.Text = "Phase2"
         '
         'Label2
         '
@@ -294,49 +383,47 @@ Partial Class MainForm
         Me.Panel3.Controls.Add(Me.pic_main)
         Me.Panel3.Location = New System.Drawing.Point(290, 83)
         Me.Panel3.Name = "Panel3"
-        Me.Panel3.Size = New System.Drawing.Size(895, 645)
+        Me.Panel3.Size = New System.Drawing.Size(890, 697)
         Me.Panel3.TabIndex = 2
-        '
-        'Label11
-        '
-        Me.Label11.ForeColor = System.Drawing.Color.DimGray
-        Me.Label11.Location = New System.Drawing.Point(24, 522)
-        Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(56, 31)
-        Me.Label11.TabIndex = 22
-        Me.Label11.Text = "Angle with Given size"
-        '
-        'Label12
-        '
-        Me.Label12.ForeColor = System.Drawing.Color.DimGray
-        Me.Label12.Location = New System.Drawing.Point(102, 522)
-        Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(75, 31)
-        Me.Label12.TabIndex = 23
-        Me.Label12.Text = "Circle: Center & Radius"
-        Me.Label12.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'MenuStrip1
-        '
-        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FILEToolStripMenuItem})
-        Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
-        Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(1184, 24)
-        Me.MenuStrip1.TabIndex = 10
-        Me.MenuStrip1.Text = "MenuStrip1"
         '
         'pic_main
         '
-        Me.pic_main.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.pic_main.BackColor = System.Drawing.Color.White
         Me.pic_main.Location = New System.Drawing.Point(3, 3)
         Me.pic_main.Name = "pic_main"
-        Me.pic_main.Size = New System.Drawing.Size(893, 645)
-        Me.pic_main.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
+        Me.pic_main.Size = New System.Drawing.Size(1024, 768)
         Me.pic_main.TabIndex = 0
         Me.pic_main.TabStop = False
+        '
+        'btn_fit_arc
+        '
+        Me.btn_fit_arc.BackgroundImage = Global.GeoGebra.My.Resources.Resources.mode_circumcirclearc3
+        Me.btn_fit_arc.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btn_fit_arc.Location = New System.Drawing.Point(224, 345)
+        Me.btn_fit_arc.Name = "btn_fit_arc"
+        Me.btn_fit_arc.Size = New System.Drawing.Size(30, 30)
+        Me.btn_fit_arc.TabIndex = 27
+        Me.btn_fit_arc.UseVisualStyleBackColor = True
+        '
+        'btn_fit_circle
+        '
+        Me.btn_fit_circle.BackgroundImage = Global.GeoGebra.My.Resources.Resources.mode_conic5
+        Me.btn_fit_circle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btn_fit_circle.Location = New System.Drawing.Point(128, 345)
+        Me.btn_fit_circle.Name = "btn_fit_circle"
+        Me.btn_fit_circle.Size = New System.Drawing.Size(30, 30)
+        Me.btn_fit_circle.TabIndex = 26
+        Me.btn_fit_circle.UseVisualStyleBackColor = True
+        '
+        'btn_fit_line
+        '
+        Me.btn_fit_line.BackgroundImage = Global.GeoGebra.My.Resources.Resources.mode_fitline
+        Me.btn_fit_line.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btn_fit_line.Location = New System.Drawing.Point(36, 345)
+        Me.btn_fit_line.Name = "btn_fit_line"
+        Me.btn_fit_line.Size = New System.Drawing.Size(30, 30)
+        Me.btn_fit_line.TabIndex = 25
+        Me.btn_fit_line.UseVisualStyleBackColor = True
         '
         'btn_circle_fixed
         '
@@ -479,46 +566,163 @@ Partial Class MainForm
         Me.Button1.TabIndex = 0
         Me.Button1.UseVisualStyleBackColor = False
         '
-        'FILEToolStripMenuItem
+        'Panel4
         '
-        Me.FILEToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OPENCAMERAToolStripMenuItem, Me.CLOSECAMERAToolStripMenuItem, Me.EXPORTREPORTToolStripMenuItem})
-        Me.FILEToolStripMenuItem.Name = "FILEToolStripMenuItem"
-        Me.FILEToolStripMenuItem.Size = New System.Drawing.Size(40, 20)
-        Me.FILEToolStripMenuItem.Text = "FILE"
+        Me.Panel4.BackColor = System.Drawing.Color.White
+        Me.Panel4.Controls.Add(Me.Label17)
+        Me.Panel4.Controls.Add(Me.Label16)
+        Me.Panel4.Controls.Add(Me.Label15)
+        Me.Panel4.Controls.Add(Me.txt_counter)
+        Me.Panel4.Controls.Add(Me.Label14)
+        Me.Panel4.Controls.Add(Me.Label13)
+        Me.Panel4.Controls.Add(Me.txt_y)
+        Me.Panel4.Controls.Add(Me.txt_x)
+        Me.Panel4.Controls.Add(Me.dgv_pos)
+        Me.Panel4.Location = New System.Drawing.Point(1186, 89)
+        Me.Panel4.Name = "Panel4"
+        Me.Panel4.Size = New System.Drawing.Size(260, 691)
+        Me.Panel4.TabIndex = 3
         '
-        'OPENCAMERAToolStripMenuItem
+        'dgv_pos
         '
-        Me.OPENCAMERAToolStripMenuItem.Name = "OPENCAMERAToolStripMenuItem"
-        Me.OPENCAMERAToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
-        Me.OPENCAMERAToolStripMenuItem.Text = "OPEN CAMERA"
+        Me.dgv_pos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgv_pos.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.No, Me.X, Me.Y})
+        Me.dgv_pos.Location = New System.Drawing.Point(6, 25)
+        Me.dgv_pos.Name = "dgv_pos"
+        Me.dgv_pos.Size = New System.Drawing.Size(249, 214)
+        Me.dgv_pos.TabIndex = 0
         '
-        'CLOSECAMERAToolStripMenuItem
+        'txt_x
         '
-        Me.CLOSECAMERAToolStripMenuItem.Name = "CLOSECAMERAToolStripMenuItem"
-        Me.CLOSECAMERAToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
-        Me.CLOSECAMERAToolStripMenuItem.Text = "CLOSE CAMERA"
+        Me.txt_x.Location = New System.Drawing.Point(51, 278)
+        Me.txt_x.Name = "txt_x"
+        Me.txt_x.Size = New System.Drawing.Size(53, 20)
+        Me.txt_x.TabIndex = 1
         '
-        'EXPORTREPORTToolStripMenuItem
+        'txt_y
         '
-        Me.EXPORTREPORTToolStripMenuItem.Name = "EXPORTREPORTToolStripMenuItem"
-        Me.EXPORTREPORTToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
-        Me.EXPORTREPORTToolStripMenuItem.Text = "EXPORT REPORT"
+        Me.txt_y.Location = New System.Drawing.Point(162, 278)
+        Me.txt_y.Name = "txt_y"
+        Me.txt_y.Size = New System.Drawing.Size(53, 20)
+        Me.txt_y.TabIndex = 2
         '
-        'CameraResolutionsCB
+        'Label13
         '
-        Me.CameraResolutionsCB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.CameraResolutionsCB.FormattingEnabled = True
-        Me.CameraResolutionsCB.Location = New System.Drawing.Point(36, 202)
-        Me.CameraResolutionsCB.Name = "CameraResolutionsCB"
-        Me.CameraResolutionsCB.Size = New System.Drawing.Size(121, 21)
-        Me.CameraResolutionsCB.TabIndex = 24
+        Me.Label13.AutoSize = True
+        Me.Label13.ForeColor = System.Drawing.Color.DimGray
+        Me.Label13.Location = New System.Drawing.Point(28, 282)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(17, 13)
+        Me.Label13.TabIndex = 14
+        Me.Label13.Text = "X:"
+        '
+        'Label14
+        '
+        Me.Label14.AutoSize = True
+        Me.Label14.ForeColor = System.Drawing.Color.DimGray
+        Me.Label14.Location = New System.Drawing.Point(139, 282)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(17, 13)
+        Me.Label14.TabIndex = 15
+        Me.Label14.Text = "Y:"
+        '
+        'txt_counter
+        '
+        Me.txt_counter.Location = New System.Drawing.Point(51, 312)
+        Me.txt_counter.Name = "txt_counter"
+        Me.txt_counter.Size = New System.Drawing.Size(69, 20)
+        Me.txt_counter.TabIndex = 16
+        '
+        'Label15
+        '
+        Me.Label15.AutoSize = True
+        Me.Label15.ForeColor = System.Drawing.Color.DimGray
+        Me.Label15.Location = New System.Drawing.Point(6, 315)
+        Me.Label15.Name = "Label15"
+        Me.Label15.Size = New System.Drawing.Size(44, 13)
+        Me.Label15.TabIndex = 17
+        Me.Label15.Text = "Counter"
+        '
+        'No
+        '
+        Me.No.HeaderText = "No"
+        Me.No.Name = "No"
+        '
+        'X
+        '
+        Me.X.HeaderText = "X"
+        Me.X.Name = "X"
+        '
+        'Y
+        '
+        Me.Y.HeaderText = "Y"
+        Me.Y.Name = "Y"
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.btn_finish)
+        Me.GroupBox1.Controls.Add(Me.btn_cancel_all)
+        Me.GroupBox1.Controls.Add(Me.btn_cancel_last)
+        Me.GroupBox1.Location = New System.Drawing.Point(1010, 27)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(270, 50)
+        Me.GroupBox1.TabIndex = 11
+        Me.GroupBox1.TabStop = False
+        '
+        'btn_cancel_last
+        '
+        Me.btn_cancel_last.Location = New System.Drawing.Point(6, 19)
+        Me.btn_cancel_last.Name = "btn_cancel_last"
+        Me.btn_cancel_last.Size = New System.Drawing.Size(75, 23)
+        Me.btn_cancel_last.TabIndex = 0
+        Me.btn_cancel_last.Text = "Cancel Last"
+        Me.btn_cancel_last.UseVisualStyleBackColor = True
+        '
+        'btn_cancel_all
+        '
+        Me.btn_cancel_all.Location = New System.Drawing.Point(95, 19)
+        Me.btn_cancel_all.Name = "btn_cancel_all"
+        Me.btn_cancel_all.Size = New System.Drawing.Size(75, 23)
+        Me.btn_cancel_all.TabIndex = 1
+        Me.btn_cancel_all.Text = "Cancel All"
+        Me.btn_cancel_all.UseVisualStyleBackColor = True
+        '
+        'btn_finish
+        '
+        Me.btn_finish.Location = New System.Drawing.Point(185, 19)
+        Me.btn_finish.Name = "btn_finish"
+        Me.btn_finish.Size = New System.Drawing.Size(75, 23)
+        Me.btn_finish.TabIndex = 2
+        Me.btn_finish.Text = "Finish"
+        Me.btn_finish.UseVisualStyleBackColor = True
+        '
+        'Label16
+        '
+        Me.Label16.AutoSize = True
+        Me.Label16.ForeColor = System.Drawing.Color.DimGray
+        Me.Label16.Location = New System.Drawing.Point(107, 282)
+        Me.Label16.Name = "Label16"
+        Me.Label16.Size = New System.Drawing.Size(21, 13)
+        Me.Label16.TabIndex = 18
+        Me.Label16.Text = "um"
+        '
+        'Label17
+        '
+        Me.Label17.AutoSize = True
+        Me.Label17.ForeColor = System.Drawing.Color.DimGray
+        Me.Label17.Location = New System.Drawing.Point(218, 282)
+        Me.Label17.Name = "Label17"
+        Me.Label17.Size = New System.Drawing.Size(21, 13)
+        Me.Label17.TabIndex = 19
+        Me.Label17.Text = "um"
         '
         'MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.ClientSize = New System.Drawing.Size(1184, 731)
+        Me.ClientSize = New System.Drawing.Size(1446, 783)
+        Me.Controls.Add(Me.Panel4)
         Me.Controls.Add(Me.Panel3)
         Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.Panel1)
@@ -527,13 +731,16 @@ Partial Class MainForm
         Me.Text = "GeoGebra"
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
+        Me.MenuStrip1.ResumeLayout(False)
+        Me.MenuStrip1.PerformLayout()
         Me.Panel2.ResumeLayout(False)
         Me.Panel2.PerformLayout()
         Me.Panel3.ResumeLayout(False)
-        Me.Panel3.PerformLayout()
-        Me.MenuStrip1.ResumeLayout(False)
-        Me.MenuStrip1.PerformLayout()
         CType(Me.pic_main, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Panel4.ResumeLayout(False)
+        Me.Panel4.PerformLayout()
+        CType(Me.dgv_pos, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox1.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -579,4 +786,24 @@ Partial Class MainForm
     Friend WithEvents CLOSECAMERAToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents EXPORTREPORTToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents CameraResolutionsCB As ComboBox
+    Friend WithEvents btn_fit_line As Button
+    Friend WithEvents btn_fit_arc As Button
+    Friend WithEvents btn_fit_circle As Button
+    Friend WithEvents Panel4 As Panel
+    Friend WithEvents Label15 As Label
+    Friend WithEvents txt_counter As TextBox
+    Friend WithEvents Label14 As Label
+    Friend WithEvents Label13 As Label
+    Friend WithEvents txt_y As TextBox
+    Friend WithEvents txt_x As TextBox
+    Friend WithEvents dgv_pos As DataGridView
+    Friend WithEvents No As DataGridViewTextBoxColumn
+    Friend WithEvents X As DataGridViewTextBoxColumn
+    Friend WithEvents Y As DataGridViewTextBoxColumn
+    Friend WithEvents GroupBox1 As GroupBox
+    Friend WithEvents btn_finish As Button
+    Friend WithEvents btn_cancel_all As Button
+    Friend WithEvents btn_cancel_last As Button
+    Friend WithEvents Label17 As Label
+    Friend WithEvents Label16 As Label
 End Class

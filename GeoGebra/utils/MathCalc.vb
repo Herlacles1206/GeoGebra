@@ -64,4 +64,55 @@ Public Module MathCalc
         target_point.Y = centerpt.Y + offset_y
         Return target_point
     End Function
+
+    Public Function ErrorSquared(ByVal points As List(Of PointF), ByVal m As Double, ByVal b As Double) As Double
+        Dim total As Double = 0
+        For Each pt As PointF In points
+            Dim dy As Double = pt.Y - (m * pt.X + b)
+            total += dy * dy
+        Next pt
+        Return total
+    End Function
+    Public Function FindLinearLeastSquaresFit(ByVal points As List(Of PointF), ByRef m As Double, ByRef b As Double) _
+    As Double
+        ' Perform the calculation.
+        ' Find the values S1, Sx, Sy, Sxx, and Sxy.
+        Dim S1 As Double = points.Count
+        Dim Sx As Double = 0
+        Dim Sy As Double = 0
+        Dim Sxx As Double = 0
+        Dim Sxy As Double = 0
+        For Each pt As PointF In points
+            Sx += pt.X
+            Sy += pt.Y
+            Sxx += pt.X * pt.X
+            Sxy += pt.X * pt.Y
+        Next pt
+
+        ' Solve for m and b.
+        m = (Sxy * S1 - Sx * Sy) / (Sxx * S1 - Sx * Sx)
+        b = (Sxy * Sx - Sy * Sxx) / (Sx * Sx - S1 * Sxx)
+
+        Return Math.Sqrt(ErrorSquared(points, m, b))
+    End Function
+
+    Public Function GetCenterPoint(points As List(Of PointF)) As PointF
+        Dim X As Double = 0 : Dim Y As Double = 0
+        For Each pt In points
+            X += pt.X : Y += pt.Y
+        Next
+        X /= points.Count : Y /= points.Count
+        Return New PointF(X, Y)
+    End Function
+
+    Public Function GetRadiusFromMultiPt(center As PointF, pts As List(Of PointF)) As Double
+        Dim distSum As Double = 0
+        Dim radius As Double = 0
+        For Each pt In pts
+            distSum += CalcDistBetweenPoints(center.X, center.Y, pt.X, pt.Y)
+        Next
+        If pts.Count > 0 Then radius = distSum / pts.Count
+
+        Return radius
+    End Function
 End Module

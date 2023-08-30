@@ -196,6 +196,7 @@
     <Compile Include="utils\CtrlMethods.vb" />
     <Compile Include="utils\Define.vb" />
     <Compile Include="utils\MathCalc.vb" />
+    <Compile Include="utils\Utils.vb" />
     <Compile Include="utils\WebCam.vb" />
   </ItemGroup>
   <ItemGroup>
@@ -243,7 +244,9 @@
   <ItemGroup>
     <None Include="resource\mode_circlepointradius.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="resource\mode_fitline.png" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="resource\menu-view-close.png" />
   </ItemGroup>
@@ -264,6 +267,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="resource\mode_anglefixed.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resource\mode_conic5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resource\mode_circumcirclearc3.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
