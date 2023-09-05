@@ -1,6 +1,11 @@
 ﻿
 'define variables 
 
+Public Enum DistanceType
+    min = 0
+    max = 1
+    center = 2
+End Enum
 Public Enum MeasureType
     initState = -1
     'Basic Tools
@@ -51,11 +56,17 @@ Public Enum MeasureType
 
     'Transform
 
-    'Media
 
     'Others
-
-
+    eraseObj = 100
+    expandObj = 101
+    zoomIn = 102
+    zoomOut = 103
+    calcdist = 104
+    selectObj = 105
+    annotation = 106
+    detectLine = 107
+    detectCircle = 108
 End Enum
 
 
@@ -70,32 +81,43 @@ Public Structure pointObj
     End Sub
 End Structure
 Public Structure lineObj
-    Public stPt As pointObj
-    Public edPt As pointObj
-    Public midPt As pointObj
-    Public angle As Integer
-    Public hasEnd As Boolean
-
+    Public midPts() As pointObj
+    Public drawFlag() As Boolean
+    Public ptCnt As Integer
+    Public m As Double
+    Public b As Double
+    Dim dist As Double
     Public Sub Refresh()
-        stPt.Refresh() : midPt.Refresh() : edPt.Refresh()
-        angle = 0
-        hasEnd = False
+        For i = 0 To 10
+            midPts(i).Refresh()
+        Next
+        For i = 0 To 11
+            drawFlag(i) = False
+        Next
+        m = 0 : b = 0 : ptCnt = 0 : dist = 0
+    End Sub
+
+    Public Sub GetLength()
+        Dim X1 = midPts(0).pt.X * MainForm.realWidth : Dim Y1 = midPts(0).pt.Y * MainForm.realHeight
+        Dim X2 = midPts(ptCnt - 1).pt.X * MainForm.realWidth : Dim Y2 = midPts(ptCnt - 1).pt.Y * MainForm.realHeight
+        dist = Find_TwoPointDistance(X1, Y1, X2, Y2)
     End Sub
 End Structure
 
 Public Structure angleObj
-    Public stPt As pointObj
-    Public edPt As pointObj
+    Public lineObj_1 As lineObj
+    Public lineObj_2 As lineObj
     Public midPt As pointObj
     Public angle As Integer
     Public clockwise As Boolean
     Public fixed As Boolean
     Public startAngle As Double
     Public sweepAngle As Double
+    Public ptCnt As Integer
 
     Public Sub Refresh()
-        stPt.Refresh() : midPt.Refresh() : edPt.Refresh()
-        angle = 0
+        lineObj_1.Refresh() : midPt.Refresh() : lineObj_2.Refresh()
+        angle = 0 : ptCnt = 0
         clockwise = False : fixed = False
         startAngle = 0 : sweepAngle = 0
     End Sub
@@ -103,49 +125,66 @@ End Structure
 
 Public Structure circleObj
     Public centerPt As pointObj
-    Public circlePt1 As pointObj
-    Public circlePt2 As pointObj
-    Public circlePt3 As pointObj
-    Public extraPt As pointObj
+    Public midPts() As pointObj
+    Public drawFlag() As Boolean
+    Public ptCnt As Integer
     Public radius As Single
-    Public startAngle As Integer
-    Public sweepAngle As Integer
-    Public filled As Boolean
+    Public reversed As Boolean
 
     Public Sub Refresh()
-        centerPt.Refresh() : circlePt1.Refresh() : circlePt2.Refresh() : circlePt3.Refresh() : extraPt.Refresh()
-        radius = 0 : startAngle = 0 : sweepAngle = 0
-        filled = False
+        centerPt.Refresh()
+        For i = 0 To 10
+            midPts(i).Refresh()
+        Next
+        For i = 0 To 11
+            drawFlag(i) = False
+        Next
+        radius = 0 : ptCnt = 0 : reversed = False
     End Sub
 End Structure
 
-Public Class fitLineObj
-    Public ptPos(20) As pointObj
-    Public m As Double
-    Public b As Double
+Public Structure fitLineObj
+    Public ptCnt As Integer
+    Public refPts() As pointObj
+    Public lineObj As lineObj
     Public completed As Boolean
     Public Sub Refresh()
-        completed = False
+        completed = False : ptCnt = 0
         For i = 0 To 20
-            ptPos(i).Refresh()
+            refPts(i).Refresh()
         Next
-        m = 0.0 : b = 0.0
+        lineObj.Refresh()
     End Sub
-End Class
+End Structure
 
-Public Class fitCircleObj
-    Public ptPos(20) As pointObj
-    Public circle As circleObj
+Public Structure fitCircleObj
+    Public ptCnt As Integer
+    Public refPts() As pointObj
+    Public circleObj As circleObj
     Public completed As Boolean
     Public Sub Refresh()
-        completed = False
+        completed = False : ptCnt = 0
         For i = 0 To 20
-            ptPos(i).Refresh()
+            refPts(i).Refresh()
         Next
-        circle.Refresh()
+        circleObj.Refresh()
     End Sub
-End Class
+End Structure
 
+Public Structure AnnoObject
+    Public Stpt As pointObj       'point used for drawing line
+    Public EndPt As pointObj
+    Public size As SizeF             'size of anno object
+    Public annotation As String         'optional, used for annotation
+    Public ptCnt As Integer
+
+    Public Sub Refresh()
+        Stpt.Refresh()
+        EndPt.Refresh()
+        size.Width = 0 : size.Height = 0 : ptCnt = 0
+        annotation = "annotation"
+    End Sub
+End Structure
 Public Structure measureObj
     Public mType As Integer
     Public objID As Integer
@@ -158,6 +197,7 @@ Public Structure measureObj
     Public circleObj As circleObj
     Public fitLineObj As fitLineObj
     Public fitCirObj As fitCircleObj
+    Public annoObj As AnnoObject
 
     Public Sub Refresh()
         mType = MeasureType.initState
@@ -171,5 +211,22 @@ Public Structure measureObj
         circleObj.Refresh()
         fitLineObj.Refresh()
         fitCirObj.Refresh()
+        annoObj.Refresh()
     End Sub
 End Structure
+
+Public Class CurveObj
+    Public CurvePoint(1000) As PointF
+    Public CDrawPos As PointF
+    Public CPointIndx As Integer
+
+    Public Sub Refresh()
+        CDrawPos.X = 0
+        CDrawPos.Y = 0
+        CPointIndx = 0
+        For i = 0 To 1000
+            CurvePoint(i).X = 0
+            CurvePoint(i).Y = 0
+        Next
+    End Sub
+End Class

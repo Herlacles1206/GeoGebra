@@ -25,15 +25,19 @@ Partial Class MainForm
         Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(MainForm))
         Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
-        Me.btn_finish = New System.Windows.Forms.Button()
-        Me.btn_cancel_all = New System.Windows.Forms.Button()
-        Me.btn_cancel_last = New System.Windows.Forms.Button()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.rad_center = New System.Windows.Forms.RadioButton()
+        Me.rad_max = New System.Windows.Forms.RadioButton()
+        Me.rad_min = New System.Windows.Forms.RadioButton()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.btn_finish = New System.Windows.Forms.Button()
+        Me.btn_cancel_all = New System.Windows.Forms.Button()
+        Me.btn_cancel_last = New System.Windows.Forms.Button()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.Button6 = New System.Windows.Forms.Button()
         Me.Button5 = New System.Windows.Forms.Button()
@@ -47,6 +51,25 @@ Partial Class MainForm
         Me.CLOSECAMERAToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.EXPORTREPORTToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.Label27 = New System.Windows.Forms.Label()
+        Me.btn_detect_circle = New System.Windows.Forms.Button()
+        Me.Label26 = New System.Windows.Forms.Label()
+        Me.btn_annotation = New System.Windows.Forms.Button()
+        Me.Label25 = New System.Windows.Forms.Label()
+        Me.btn_detect_line = New System.Windows.Forms.Button()
+        Me.Label24 = New System.Windows.Forms.Label()
+        Me.Label23 = New System.Windows.Forms.Label()
+        Me.btn_select = New System.Windows.Forms.Button()
+        Me.btn_calc_dist = New System.Windows.Forms.Button()
+        Me.Label22 = New System.Windows.Forms.Label()
+        Me.Label21 = New System.Windows.Forms.Label()
+        Me.Label20 = New System.Windows.Forms.Label()
+        Me.Label19 = New System.Windows.Forms.Label()
+        Me.btn_zoom_out = New System.Windows.Forms.Button()
+        Me.btn_zoom_in = New System.Windows.Forms.Button()
+        Me.btn_extand = New System.Windows.Forms.Button()
+        Me.btn_erase = New System.Windows.Forms.Button()
+        Me.Label18 = New System.Windows.Forms.Label()
         Me.btn_fit_arc = New System.Windows.Forms.Button()
         Me.btn_fit_circle = New System.Windows.Forms.Button()
         Me.btn_fit_line = New System.Windows.Forms.Button()
@@ -85,7 +108,9 @@ Partial Class MainForm
         Me.No = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.X = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Y = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.Panel1.SuspendLayout()
+        Me.GroupBox2.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
         Me.Panel2.SuspendLayout()
@@ -98,12 +123,13 @@ Partial Class MainForm
         'Panel1
         '
         Me.Panel1.BackColor = System.Drawing.Color.White
-        Me.Panel1.Controls.Add(Me.GroupBox1)
+        Me.Panel1.Controls.Add(Me.GroupBox2)
         Me.Panel1.Controls.Add(Me.Label10)
         Me.Panel1.Controls.Add(Me.Label9)
         Me.Panel1.Controls.Add(Me.Label8)
         Me.Panel1.Controls.Add(Me.Label7)
         Me.Panel1.Controls.Add(Me.Label6)
+        Me.Panel1.Controls.Add(Me.GroupBox1)
         Me.Panel1.Controls.Add(Me.Label5)
         Me.Panel1.Controls.Add(Me.Button6)
         Me.Panel1.Controls.Add(Me.Button5)
@@ -118,43 +144,49 @@ Partial Class MainForm
         Me.Panel1.Size = New System.Drawing.Size(1446, 83)
         Me.Panel1.TabIndex = 0
         '
-        'GroupBox1
+        'GroupBox2
         '
-        Me.GroupBox1.Controls.Add(Me.btn_finish)
-        Me.GroupBox1.Controls.Add(Me.btn_cancel_all)
-        Me.GroupBox1.Controls.Add(Me.btn_cancel_last)
-        Me.GroupBox1.Location = New System.Drawing.Point(1010, 27)
-        Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(270, 50)
-        Me.GroupBox1.TabIndex = 11
-        Me.GroupBox1.TabStop = False
+        Me.GroupBox2.Controls.Add(Me.rad_center)
+        Me.GroupBox2.Controls.Add(Me.rad_max)
+        Me.GroupBox2.Controls.Add(Me.rad_min)
+        Me.GroupBox2.Location = New System.Drawing.Point(1138, 19)
+        Me.GroupBox2.Name = "GroupBox2"
+        Me.GroupBox2.Size = New System.Drawing.Size(204, 50)
+        Me.GroupBox2.TabIndex = 12
+        Me.GroupBox2.TabStop = False
         '
-        'btn_finish
+        'rad_center
         '
-        Me.btn_finish.Location = New System.Drawing.Point(185, 19)
-        Me.btn_finish.Name = "btn_finish"
-        Me.btn_finish.Size = New System.Drawing.Size(75, 23)
-        Me.btn_finish.TabIndex = 2
-        Me.btn_finish.Text = "Finish"
-        Me.btn_finish.UseVisualStyleBackColor = True
+        Me.rad_center.AutoSize = True
+        Me.rad_center.Location = New System.Drawing.Point(136, 22)
+        Me.rad_center.Name = "rad_center"
+        Me.rad_center.Size = New System.Drawing.Size(56, 17)
+        Me.rad_center.TabIndex = 13
+        Me.rad_center.TabStop = True
+        Me.rad_center.Text = "Center"
+        Me.rad_center.UseVisualStyleBackColor = True
         '
-        'btn_cancel_all
+        'rad_max
         '
-        Me.btn_cancel_all.Location = New System.Drawing.Point(95, 19)
-        Me.btn_cancel_all.Name = "btn_cancel_all"
-        Me.btn_cancel_all.Size = New System.Drawing.Size(75, 23)
-        Me.btn_cancel_all.TabIndex = 1
-        Me.btn_cancel_all.Text = "Cancel All"
-        Me.btn_cancel_all.UseVisualStyleBackColor = True
+        Me.rad_max.AutoSize = True
+        Me.rad_max.Location = New System.Drawing.Point(76, 22)
+        Me.rad_max.Name = "rad_max"
+        Me.rad_max.Size = New System.Drawing.Size(45, 17)
+        Me.rad_max.TabIndex = 1
+        Me.rad_max.TabStop = True
+        Me.rad_max.Text = "Max"
+        Me.rad_max.UseVisualStyleBackColor = True
         '
-        'btn_cancel_last
+        'rad_min
         '
-        Me.btn_cancel_last.Location = New System.Drawing.Point(6, 19)
-        Me.btn_cancel_last.Name = "btn_cancel_last"
-        Me.btn_cancel_last.Size = New System.Drawing.Size(75, 23)
-        Me.btn_cancel_last.TabIndex = 0
-        Me.btn_cancel_last.Text = "Cancel Last"
-        Me.btn_cancel_last.UseVisualStyleBackColor = True
+        Me.rad_min.AutoSize = True
+        Me.rad_min.Location = New System.Drawing.Point(18, 22)
+        Me.rad_min.Name = "rad_min"
+        Me.rad_min.Size = New System.Drawing.Size(42, 17)
+        Me.rad_min.TabIndex = 0
+        Me.rad_min.TabStop = True
+        Me.rad_min.Text = "Min"
+        Me.rad_min.UseVisualStyleBackColor = True
         '
         'Label10
         '
@@ -210,6 +242,44 @@ Partial Class MainForm
         Me.Label6.Size = New System.Drawing.Size(40, 16)
         Me.Label6.TabIndex = 7
         Me.Label6.Text = "Open"
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.btn_finish)
+        Me.GroupBox1.Controls.Add(Me.btn_cancel_all)
+        Me.GroupBox1.Controls.Add(Me.btn_cancel_last)
+        Me.GroupBox1.Location = New System.Drawing.Point(881, 19)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(251, 50)
+        Me.GroupBox1.TabIndex = 11
+        Me.GroupBox1.TabStop = False
+        '
+        'btn_finish
+        '
+        Me.btn_finish.Location = New System.Drawing.Point(166, 19)
+        Me.btn_finish.Name = "btn_finish"
+        Me.btn_finish.Size = New System.Drawing.Size(75, 23)
+        Me.btn_finish.TabIndex = 2
+        Me.btn_finish.Text = "Finish"
+        Me.btn_finish.UseVisualStyleBackColor = True
+        '
+        'btn_cancel_all
+        '
+        Me.btn_cancel_all.Location = New System.Drawing.Point(87, 19)
+        Me.btn_cancel_all.Name = "btn_cancel_all"
+        Me.btn_cancel_all.Size = New System.Drawing.Size(75, 23)
+        Me.btn_cancel_all.TabIndex = 1
+        Me.btn_cancel_all.Text = "Cancel All"
+        Me.btn_cancel_all.UseVisualStyleBackColor = True
+        '
+        'btn_cancel_last
+        '
+        Me.btn_cancel_last.Location = New System.Drawing.Point(8, 19)
+        Me.btn_cancel_last.Name = "btn_cancel_last"
+        Me.btn_cancel_last.Size = New System.Drawing.Size(75, 23)
+        Me.btn_cancel_last.TabIndex = 0
+        Me.btn_cancel_last.Text = "Cancel Last"
+        Me.btn_cancel_last.UseVisualStyleBackColor = True
         '
         'Label5
         '
@@ -326,7 +396,27 @@ Partial Class MainForm
         '
         Me.Panel2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.Panel2.AutoScroll = True
         Me.Panel2.BackColor = System.Drawing.Color.White
+        Me.Panel2.Controls.Add(Me.Label27)
+        Me.Panel2.Controls.Add(Me.btn_detect_circle)
+        Me.Panel2.Controls.Add(Me.Label26)
+        Me.Panel2.Controls.Add(Me.btn_annotation)
+        Me.Panel2.Controls.Add(Me.Label25)
+        Me.Panel2.Controls.Add(Me.btn_detect_line)
+        Me.Panel2.Controls.Add(Me.Label24)
+        Me.Panel2.Controls.Add(Me.Label23)
+        Me.Panel2.Controls.Add(Me.btn_select)
+        Me.Panel2.Controls.Add(Me.btn_calc_dist)
+        Me.Panel2.Controls.Add(Me.Label22)
+        Me.Panel2.Controls.Add(Me.Label21)
+        Me.Panel2.Controls.Add(Me.Label20)
+        Me.Panel2.Controls.Add(Me.Label19)
+        Me.Panel2.Controls.Add(Me.btn_zoom_out)
+        Me.Panel2.Controls.Add(Me.btn_zoom_in)
+        Me.Panel2.Controls.Add(Me.btn_extand)
+        Me.Panel2.Controls.Add(Me.btn_erase)
+        Me.Panel2.Controls.Add(Me.Label18)
         Me.Panel2.Controls.Add(Me.btn_fit_arc)
         Me.Panel2.Controls.Add(Me.btn_fit_circle)
         Me.Panel2.Controls.Add(Me.btn_fit_line)
@@ -351,8 +441,204 @@ Partial Class MainForm
         Me.Panel2.Controls.Add(Me.Label1)
         Me.Panel2.Location = New System.Drawing.Point(1, 86)
         Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(291, 694)
+        Me.Panel2.Size = New System.Drawing.Size(291, 972)
         Me.Panel2.TabIndex = 1
+        '
+        'Label27
+        '
+        Me.Label27.AutoSize = True
+        Me.Label27.ForeColor = System.Drawing.Color.DimGray
+        Me.Label27.Location = New System.Drawing.Point(207, 830)
+        Me.Label27.Name = "Label27"
+        Me.Label27.Size = New System.Drawing.Size(68, 13)
+        Me.Label27.TabIndex = 46
+        Me.Label27.Text = "Detect Circle"
+        '
+        'btn_detect_circle
+        '
+        Me.btn_detect_circle.BackColor = System.Drawing.Color.White
+        Me.btn_detect_circle.BackgroundImage = Global.GeoGebra.My.Resources.Resources.mode_conic5
+        Me.btn_detect_circle.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btn_detect_circle.Location = New System.Drawing.Point(222, 797)
+        Me.btn_detect_circle.Name = "btn_detect_circle"
+        Me.btn_detect_circle.Size = New System.Drawing.Size(30, 30)
+        Me.btn_detect_circle.TabIndex = 45
+        Me.btn_detect_circle.UseVisualStyleBackColor = False
+        '
+        'Label26
+        '
+        Me.Label26.AutoSize = True
+        Me.Label26.ForeColor = System.Drawing.Color.DimGray
+        Me.Label26.Location = New System.Drawing.Point(21, 830)
+        Me.Label26.Name = "Label26"
+        Me.Label26.Size = New System.Drawing.Size(58, 13)
+        Me.Label26.TabIndex = 44
+        Me.Label26.Text = "Annotation"
+        '
+        'btn_annotation
+        '
+        Me.btn_annotation.BackColor = System.Drawing.Color.White
+        Me.btn_annotation.BackgroundImage = Global.GeoGebra.My.Resources.Resources.mode_text
+        Me.btn_annotation.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btn_annotation.Location = New System.Drawing.Point(35, 797)
+        Me.btn_annotation.Name = "btn_annotation"
+        Me.btn_annotation.Size = New System.Drawing.Size(30, 30)
+        Me.btn_annotation.TabIndex = 43
+        Me.btn_annotation.UseVisualStyleBackColor = False
+        '
+        'Label25
+        '
+        Me.Label25.AutoSize = True
+        Me.Label25.ForeColor = System.Drawing.Color.DimGray
+        Me.Label25.Location = New System.Drawing.Point(119, 830)
+        Me.Label25.Name = "Label25"
+        Me.Label25.Size = New System.Drawing.Size(62, 13)
+        Me.Label25.TabIndex = 42
+        Me.Label25.Text = "Detect Line"
+        '
+        'btn_detect_line
+        '
+        Me.btn_detect_line.BackColor = System.Drawing.Color.White
+        Me.btn_detect_line.BackgroundImage = Global.GeoGebra.My.Resources.Resources.mode_fitline
+        Me.btn_detect_line.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btn_detect_line.Location = New System.Drawing.Point(130, 797)
+        Me.btn_detect_line.Name = "btn_detect_line"
+        Me.btn_detect_line.Size = New System.Drawing.Size(30, 30)
+        Me.btn_detect_line.TabIndex = 41
+        Me.btn_detect_line.UseVisualStyleBackColor = False
+        '
+        'Label24
+        '
+        Me.Label24.ForeColor = System.Drawing.Color.DimGray
+        Me.Label24.Location = New System.Drawing.Point(207, 763)
+        Me.Label24.Name = "Label24"
+        Me.Label24.Size = New System.Drawing.Size(54, 29)
+        Me.Label24.TabIndex = 40
+        Me.Label24.Text = "Calculate Distance"
+        Me.Label24.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'Label23
+        '
+        Me.Label23.AutoSize = True
+        Me.Label23.ForeColor = System.Drawing.Color.DimGray
+        Me.Label23.Location = New System.Drawing.Point(124, 763)
+        Me.Label23.Name = "Label23"
+        Me.Label23.Size = New System.Drawing.Size(37, 13)
+        Me.Label23.TabIndex = 39
+        Me.Label23.Text = "Select"
+        '
+        'btn_select
+        '
+        Me.btn_select.BackColor = System.Drawing.Color.White
+        Me.btn_select.BackgroundImage = Global.GeoGebra.My.Resources.Resources.arrow_cursor_grabbing
+        Me.btn_select.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btn_select.Location = New System.Drawing.Point(130, 730)
+        Me.btn_select.Name = "btn_select"
+        Me.btn_select.Size = New System.Drawing.Size(30, 30)
+        Me.btn_select.TabIndex = 38
+        Me.btn_select.UseVisualStyleBackColor = False
+        '
+        'btn_calc_dist
+        '
+        Me.btn_calc_dist.BackgroundImage = Global.GeoGebra.My.Resources.Resources.mode_distance
+        Me.btn_calc_dist.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btn_calc_dist.Location = New System.Drawing.Point(222, 730)
+        Me.btn_calc_dist.Name = "btn_calc_dist"
+        Me.btn_calc_dist.Size = New System.Drawing.Size(30, 30)
+        Me.btn_calc_dist.TabIndex = 37
+        Me.btn_calc_dist.UseVisualStyleBackColor = True
+        '
+        'Label22
+        '
+        Me.Label22.AutoSize = True
+        Me.Label22.ForeColor = System.Drawing.Color.DimGray
+        Me.Label22.Location = New System.Drawing.Point(28, 763)
+        Me.Label22.Name = "Label22"
+        Me.Label22.Size = New System.Drawing.Size(54, 13)
+        Me.Label22.TabIndex = 36
+        Me.Label22.Text = "Zoom Out"
+        '
+        'Label21
+        '
+        Me.Label21.AutoSize = True
+        Me.Label21.ForeColor = System.Drawing.Color.DimGray
+        Me.Label21.Location = New System.Drawing.Point(215, 697)
+        Me.Label21.Name = "Label21"
+        Me.Label21.Size = New System.Drawing.Size(46, 13)
+        Me.Label21.TabIndex = 35
+        Me.Label21.Text = "Zoom In"
+        '
+        'Label20
+        '
+        Me.Label20.AutoSize = True
+        Me.Label20.ForeColor = System.Drawing.Color.DimGray
+        Me.Label20.Location = New System.Drawing.Point(124, 697)
+        Me.Label20.Name = "Label20"
+        Me.Label20.Size = New System.Drawing.Size(43, 13)
+        Me.Label20.TabIndex = 34
+        Me.Label20.Text = "Expand"
+        '
+        'Label19
+        '
+        Me.Label19.AutoSize = True
+        Me.Label19.ForeColor = System.Drawing.Color.DimGray
+        Me.Label19.Location = New System.Drawing.Point(32, 697)
+        Me.Label19.Name = "Label19"
+        Me.Label19.Size = New System.Drawing.Size(34, 13)
+        Me.Label19.TabIndex = 33
+        Me.Label19.Text = "Erase"
+        '
+        'btn_zoom_out
+        '
+        Me.btn_zoom_out.BackgroundImage = Global.GeoGebra.My.Resources.Resources.mode_zoomout
+        Me.btn_zoom_out.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btn_zoom_out.Location = New System.Drawing.Point(36, 730)
+        Me.btn_zoom_out.Name = "btn_zoom_out"
+        Me.btn_zoom_out.Size = New System.Drawing.Size(30, 30)
+        Me.btn_zoom_out.TabIndex = 32
+        Me.btn_zoom_out.UseVisualStyleBackColor = True
+        '
+        'btn_zoom_in
+        '
+        Me.btn_zoom_in.BackgroundImage = Global.GeoGebra.My.Resources.Resources.mode_zoomin
+        Me.btn_zoom_in.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btn_zoom_in.Location = New System.Drawing.Point(222, 664)
+        Me.btn_zoom_in.Name = "btn_zoom_in"
+        Me.btn_zoom_in.Size = New System.Drawing.Size(30, 30)
+        Me.btn_zoom_in.TabIndex = 31
+        Me.btn_zoom_in.UseVisualStyleBackColor = True
+        '
+        'btn_extand
+        '
+        Me.btn_extand.BackgroundImage = Global.GeoGebra.My.Resources.Resources.mode_expand
+        Me.btn_extand.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btn_extand.Location = New System.Drawing.Point(130, 664)
+        Me.btn_extand.Name = "btn_extand"
+        Me.btn_extand.Size = New System.Drawing.Size(30, 30)
+        Me.btn_extand.TabIndex = 30
+        Me.btn_extand.UseVisualStyleBackColor = True
+        '
+        'btn_erase
+        '
+        Me.btn_erase.BackColor = System.Drawing.Color.White
+        Me.btn_erase.BackgroundImage = Global.GeoGebra.My.Resources.Resources.mode_delete
+        Me.btn_erase.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+        Me.btn_erase.Location = New System.Drawing.Point(36, 664)
+        Me.btn_erase.Name = "btn_erase"
+        Me.btn_erase.Size = New System.Drawing.Size(30, 30)
+        Me.btn_erase.TabIndex = 29
+        Me.btn_erase.UseVisualStyleBackColor = False
+        '
+        'Label18
+        '
+        Me.Label18.AutoSize = True
+        Me.Label18.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label18.ForeColor = System.Drawing.Color.DimGray
+        Me.Label18.Location = New System.Drawing.Point(12, 632)
+        Me.Label18.Name = "Label18"
+        Me.Label18.Size = New System.Drawing.Size(67, 20)
+        Me.Label18.TabIndex = 28
+        Me.Label18.Text = "Phase 3"
         '
         'btn_fit_arc
         '
@@ -542,7 +828,7 @@ Partial Class MainForm
         Me.Label4.AutoSize = True
         Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label4.ForeColor = System.Drawing.Color.DimGray
-        Me.Label4.Location = New System.Drawing.Point(12, 466)
+        Me.Label4.Location = New System.Drawing.Point(12, 462)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(71, 20)
         Me.Label4.TabIndex = 4
@@ -592,7 +878,7 @@ Partial Class MainForm
         Me.Panel3.Controls.Add(Me.pic_main)
         Me.Panel3.Location = New System.Drawing.Point(290, 83)
         Me.Panel3.Name = "Panel3"
-        Me.Panel3.Size = New System.Drawing.Size(890, 697)
+        Me.Panel3.Size = New System.Drawing.Size(890, 975)
         Me.Panel3.TabIndex = 2
         '
         'pic_main
@@ -601,11 +887,13 @@ Partial Class MainForm
         Me.pic_main.Location = New System.Drawing.Point(3, 3)
         Me.pic_main.Name = "pic_main"
         Me.pic_main.Size = New System.Drawing.Size(1024, 768)
+        Me.pic_main.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
         Me.pic_main.TabIndex = 0
         Me.pic_main.TabStop = False
         '
         'Panel4
         '
+        Me.Panel4.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Panel4.BackColor = System.Drawing.Color.White
         Me.Panel4.Controls.Add(Me.Label17)
         Me.Panel4.Controls.Add(Me.Label16)
@@ -716,12 +1004,15 @@ Partial Class MainForm
         Me.Y.HeaderText = "Y"
         Me.Y.Name = "Y"
         '
+        'Timer1
+        '
+        '
         'MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.ClientSize = New System.Drawing.Size(1446, 783)
+        Me.ClientSize = New System.Drawing.Size(1446, 1061)
         Me.Controls.Add(Me.Panel4)
         Me.Controls.Add(Me.Panel3)
         Me.Controls.Add(Me.Panel2)
@@ -731,12 +1022,15 @@ Partial Class MainForm
         Me.Text = "GeoGebra"
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
+        Me.GroupBox2.ResumeLayout(False)
+        Me.GroupBox2.PerformLayout()
         Me.GroupBox1.ResumeLayout(False)
         Me.MenuStrip1.ResumeLayout(False)
         Me.MenuStrip1.PerformLayout()
         Me.Panel2.ResumeLayout(False)
         Me.Panel2.PerformLayout()
         Me.Panel3.ResumeLayout(False)
+        Me.Panel3.PerformLayout()
         CType(Me.pic_main, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel4.ResumeLayout(False)
         Me.Panel4.PerformLayout()
@@ -806,4 +1100,28 @@ Partial Class MainForm
     Friend WithEvents btn_cancel_last As Button
     Friend WithEvents Label17 As Label
     Friend WithEvents Label16 As Label
+    Friend WithEvents btn_erase As Button
+    Friend WithEvents Label18 As Label
+    Friend WithEvents btn_extand As Button
+    Friend WithEvents btn_zoom_out As Button
+    Friend WithEvents btn_zoom_in As Button
+    Friend WithEvents Timer1 As Timer
+    Friend WithEvents Label22 As Label
+    Friend WithEvents Label21 As Label
+    Friend WithEvents Label20 As Label
+    Friend WithEvents Label19 As Label
+    Friend WithEvents btn_calc_dist As Button
+    Friend WithEvents GroupBox2 As GroupBox
+    Friend WithEvents btn_select As Button
+    Friend WithEvents Label24 As Label
+    Friend WithEvents Label23 As Label
+    Friend WithEvents rad_center As RadioButton
+    Friend WithEvents rad_max As RadioButton
+    Friend WithEvents rad_min As RadioButton
+    Friend WithEvents btn_detect_line As Button
+    Friend WithEvents Label25 As Label
+    Friend WithEvents btn_annotation As Button
+    Friend WithEvents Label26 As Label
+    Friend WithEvents btn_detect_circle As Button
+    Friend WithEvents Label27 As Label
 End Class

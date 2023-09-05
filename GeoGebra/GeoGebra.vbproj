@@ -212,8 +212,15 @@
     <Compile Include="UI\CircleCenterRadius.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="UI\ConfirmDetection.Designer.vb">
+      <DependentUpon>ConfirmDetection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ConfirmDetection.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="utils\CtrlMethods.vb" />
     <Compile Include="utils\Define.vb" />
+    <Compile Include="utils\ImageProcess.vb" />
     <Compile Include="utils\MathCalc.vb" />
     <Compile Include="utils\Utils.vb" />
     <Compile Include="utils\WebCam.vb" />
@@ -233,6 +240,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\CircleCenterRadius.resx">
       <DependentUpon>CircleCenterRadius.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ConfirmDetection.resx">
+      <DependentUpon>ConfirmDetection.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -292,6 +302,27 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="resource\mode_circumcirclearc3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resource\mode_delete.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resource\mode_expand.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resource\mode_zoomout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resource\mode_zoomin.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resource\mode_distance.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resource\arrow_cursor_grabbing.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resource\mode_text.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

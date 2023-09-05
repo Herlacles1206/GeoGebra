@@ -121,11 +121,23 @@
   <data name="mode_anglefixed" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resource\mode_anglefixed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="arrow_cursor_grabbing" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resource\arrow_cursor_grabbing.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="mode_angle" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resource\mode_angle.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="mode_zoomin" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resource\mode_zoomin.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mode_zoomout" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resource\mode_zoomout.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="menu-file-save" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resource\menu-file-save.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mode_delete" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resource\mode_delete.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="menu-options" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resource\menu-options.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -136,14 +148,17 @@
   <data name="mode_conic5" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resource\mode_conic5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="mode_expand" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resource\mode_expand.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="mode_join" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resource\mode_join.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="menu-file-share" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resource\menu-file-share.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="mode_circlepointradius" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resource\mode_circlepointradius.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mode_circumcirclearc3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resource\mode_circumcirclearc3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="mode_move" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resource\mode_move.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -157,13 +172,19 @@
   <data name="menu-file-print-preview" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resource\menu-file-print-preview.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="menu-view-close" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resource\menu-view-close.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="mode_circlepointradius1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resource\mode_circlepointradius.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="mode_circumcirclearc3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resource\mode_circumcirclearc3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="mode_distance" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resource\mode_distance.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="menu-file-share" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resource\menu-file-share.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="menu-view-close" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resource\menu-view-close.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="mode_text" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resource\mode_text.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
