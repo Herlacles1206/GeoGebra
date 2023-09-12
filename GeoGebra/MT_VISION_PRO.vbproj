@@ -72,6 +72,9 @@
     <Reference Include="ExcelNumberFormat, Version=1.1.0.0, Culture=neutral, PublicKeyToken=23c6f5d73be07eca, processorArchitecture=MSIL">
       <HintPath>..\packages\ExcelNumberFormat.1.1.0\lib\net20\ExcelNumberFormat.dll</HintPath>
     </Reference>
+    <Reference Include="GeometRi, Version=1.4.0.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\GeometRi.1.4.0.5\lib\net20\GeometRi.dll</HintPath>
+    </Reference>
     <Reference Include="Irony, Version=1.0.11.0, Culture=neutral, PublicKeyToken=ca48ace7223ead47, processorArchitecture=MSIL">
       <HintPath>..\packages\Irony.NetCore.1.0.11\lib\net461\Irony.dll</HintPath>
     </Reference>
@@ -323,6 +326,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="resource\mode_text.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resource\mode_circle3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resource\view_move.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

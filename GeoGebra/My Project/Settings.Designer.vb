@@ -77,6 +77,18 @@ Namespace My
                 Me("cameraname") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property imagefilepath() As String
+            Get
+                Return CType(Me("imagefilepath"),String)
+            End Get
+            Set
+                Me("imagefilepath") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

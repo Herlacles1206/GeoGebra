@@ -50,6 +50,8 @@ Public Enum MeasureType
     circleCenterRadius = 61
     circleFit = 62
     arcFit = 63
+    circle_3 = 64
+    arc_3 = 65
     'Polygens
 
     'Conics
@@ -67,6 +69,7 @@ Public Enum MeasureType
     annotation = 106
     detectLine = 107
     detectCircle = 108
+    viewMove = 109
 End Enum
 
 
@@ -190,6 +193,11 @@ Public Structure measureObj
     Public objID As Integer
     Public ptLimit As Integer
     Public ptCnt As Integer
+    Public name As String
+    Public parameter As String
+    Public spec As String
+    Public judgement As String
+    Public description As String
 
     Public ptObj As pointObj
     Public lineObj As lineObj
@@ -204,6 +212,11 @@ Public Structure measureObj
         objID = 0
         ptCnt = 0
         ptLimit = 0
+        name = ""
+        parameter = ""
+        spec = ""
+        judgement = ""
+        description = ""
 
         ptObj.Refresh()
         lineObj.Refresh()

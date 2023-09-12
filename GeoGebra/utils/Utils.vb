@@ -1,8 +1,14 @@
 ﻿Imports Emgu.CV.OCR
+Imports GeometRi
 
 Public Module Utils
 
     Sub InitializeLineObj(ByRef curObj As lineObj)
+        ReDim curObj.midPts(10)
+        ReDim curObj.drawFlag(11)
+    End Sub
+
+    Sub InitializeCircleObj(ByRef curObj As circleObj)
         ReDim curObj.midPts(10)
         ReDim curObj.drawFlag(11)
     End Sub
@@ -86,7 +92,8 @@ Public Module Utils
         dst.ptCnt = src.ptCnt
     End Sub
     Sub CloneMeasureObj(src As measureObj, ByRef dst As measureObj)
-        dst.mType = src.mType : dst.objID = src.objID : dst.ptCnt = src.ptCnt : dst.ptLimit = src.ptLimit
+        dst.mType = src.mType : dst.objID = src.objID : dst.ptCnt = src.ptCnt : dst.ptLimit = src.ptLimit : dst.name = src.name
+        dst.parameter = src.parameter : dst.spec = src.spec : dst.judgement = src.judgement : dst.description = src.description
         ClonePointObj(src.ptObj, dst.ptObj)
         CloneLineObj(src.lineObj, dst.lineObj)
         CloneAngleObj(src.angleObj, dst.angleObj)
@@ -174,7 +181,12 @@ Public Module Utils
             'If Not Obj.reversed Then
             For i = 0 To Obj.ptCnt - 1
                 If theta3 > angleList(i) And theta3 < angleList(i + 1) Then
-                    Dim temp = Obj.drawFlag(Obj.ptCnt - 1)
+                    Dim temp As Boolean
+                    If i = 0 Then
+                        temp = Obj.drawFlag(Obj.ptCnt - 1)
+                    Else
+                        temp = Obj.drawFlag(i)
+                    End If
                     For j = 9 To i Step -1
                         ClonePointObj(Obj.midPts(j), Obj.midPts(j + 1))
                         If j - 1 >= 0 Then
@@ -220,6 +232,118 @@ Public Module Utils
         Return 0
     End Function
 
+    Function ReSetCircle_3Obj(ByRef Obj As circleObj, pt As PointF, mType As MeasureType) As Integer
+        If Obj.ptCnt >= 10 Then Return 0
+        Dim angleList As New List(Of Double)
+        Dim X = Obj.centerPt.pt.X * MainForm.pic_main.Width : Dim Y = Obj.centerPt.pt.Y * MainForm.pic_main.Height
+
+        angleList.Add(0)
+        For i = 0 To Obj.ptCnt - 1
+            Dim X2 = Obj.midPts(i).pt.X * MainForm.pic_main.Width : Dim Y2 = Obj.midPts(i).pt.Y * MainForm.pic_main.Height
+            Dim theta = CalcAngleFromYaxis(X2, Y2, X, Y)
+            angleList.Add(theta)
+        Next
+        Dim X3 = pt.X * MainForm.pic_main.Width : Dim Y3 = pt.Y * MainForm.pic_main.Height
+        Dim theta3 = CalcAngleFromYaxis(X3, Y3, X, Y)
+        If Obj.ptCnt >= 2 Then
+            'If Not Obj.reversed Then
+            For i = 0 To Obj.ptCnt - 1
+                If theta3 > angleList(i) And theta3 < angleList(i + 1) Then
+                    Dim temp As Boolean
+                    If i = 0 Then
+                        temp = Obj.drawFlag(Obj.ptCnt - 1)
+                    Else
+                        temp = Obj.drawFlag(i)
+                    End If
+                    For j = 9 To i Step -1
+                        ClonePointObj(Obj.midPts(j), Obj.midPts(j + 1))
+                        If j - 1 >= 0 Then
+                            Obj.drawFlag(j) = Obj.drawFlag(j - 1)
+                        Else
+                            Obj.drawFlag(j) = temp
+                        End If
+
+                    Next
+                    Obj.midPts(i).pt.X = pt.X : Obj.midPts(i).pt.Y = pt.Y : Obj.ptCnt += 1 : Obj.drawFlag(i) = True
+                    If mType = MeasureType.circle_3 Then
+                        For j = 0 To Obj.ptCnt - 1
+                            Obj.drawFlag(j) = True
+                        Next
+                    End If
+                    Return 1
+                End If
+            Next
+            If theta3 > angleList(Obj.ptCnt) Then
+                Obj.midPts(Obj.ptCnt).pt.X = pt.X : Obj.midPts(Obj.ptCnt).pt.Y = pt.Y : Obj.drawFlag(Obj.ptCnt) = True : Obj.ptCnt += 1
+                If mType = MeasureType.circle_3 Then
+                    For i = 0 To Obj.ptCnt - 1
+                        Obj.drawFlag(i) = True
+                    Next
+                End If
+                Return 1
+            End If
+        End If
+
+        Return 0
+    End Function
+
+    Function GetRadiusAndCenter(ByRef curObj As circleObj, mPt As PointF) As Boolean
+        Dim A = New Point(curObj.midPts(0).pt.X * MainForm.pic_main.Width, curObj.midPts(0).pt.Y * MainForm.pic_main.Height)
+        Dim B = New Point(curObj.midPts(1).pt.X * MainForm.pic_main.Width, curObj.midPts(1).pt.Y * MainForm.pic_main.Height)
+        Dim C = New Point(mPt.X * MainForm.pic_main.Width, mPt.Y * MainForm.pic_main.Height)
+        Dim d_AB = Math.Sqrt(Math.Pow(B.X - A.X, 2.0R) + Math.Pow(B.Y - A.Y, 2.0R))
+        Dim d_BC = Math.Sqrt(Math.Pow(B.X - C.X, 2.0R) + Math.Pow(B.Y - C.Y, 2.0R))
+        Dim d_AC = Math.Sqrt(Math.Pow(C.X - A.X, 2.0R) + Math.Pow(C.Y - A.Y, 2.0R))
+
+        If d_AB + d_BC < d_AC + 0.2R And d_AB + d_BC > d_AC - 0.2R Or d_AB + d_AC < d_BC + 0.2R And d_AB + d_AC > d_BC - 0.2R Or d_BC + d_AC < d_AB + 0.2R And d_BC + d_AC > d_AB - 0.2R Then
+            Return False
+        Else
+            Dim t = New Triangle(New Point3d(A.X, A.Y, 0R), New Point3d(B.X, B.Y, 0R), New Point3d(C.X, C.Y, 0R))
+            Dim angle_a = t.Angle_A * 360.0R / Math.PI
+            Dim angle_b = t.Angle_B * 360.0R / Math.PI
+            Dim angle_c = t.Angle_C * 360.0R / Math.PI
+            Dim circumcenterpt = t.Circumcenter
+            Dim centerpt = New Point(Convert.ToInt32(circumcenterpt.X), Convert.ToInt32(circumcenterpt.Y))
+            Dim radius = Convert.ToInt32(t.Circumcircle.R)
+            curObj.centerPt.pt = New PointF(centerpt.X / CSng(MainForm.pic_main.Width), centerpt.Y / CSng(MainForm.pic_main.Height))
+            curObj.radius = radius / MainForm.zoomFactor
+
+        End If
+        Return True
+    End Function
+
+    Sub GetRadiusAndCenter(ByRef curObj As circleObj, mType As Integer)
+        If mType = MeasureType.circle_3 Or mType = MeasureType.arc_3 Then
+            Dim A = New Point(curObj.midPts(0).pt.X * MainForm.pic_main.Width, curObj.midPts(0).pt.Y * MainForm.pic_main.Height)
+            Dim B = New Point(curObj.midPts(1).pt.X * MainForm.pic_main.Width, curObj.midPts(1).pt.Y * MainForm.pic_main.Height)
+            Dim C = New Point(curObj.midPts(2).pt.X * MainForm.pic_main.Width, curObj.midPts(2).pt.Y * MainForm.pic_main.Height)
+            Dim d_AB = Math.Sqrt(Math.Pow(B.X - A.X, 2.0R) + Math.Pow(B.Y - A.Y, 2.0R))
+            Dim d_BC = Math.Sqrt(Math.Pow(B.X - C.X, 2.0R) + Math.Pow(B.Y - C.Y, 2.0R))
+            Dim d_AC = Math.Sqrt(Math.Pow(C.X - A.X, 2.0R) + Math.Pow(C.Y - A.Y, 2.0R))
+
+            If d_AB + d_BC < d_AC + 0.2R And d_AB + d_BC > d_AC - 0.2R Or d_AB + d_AC < d_BC + 0.2R And d_AB + d_AC > d_BC - 0.2R Or d_BC + d_AC < d_AB + 0.2R And d_BC + d_AC > d_AB - 0.2R Then
+                Return
+            Else
+                Dim t = New Triangle(New Point3d(A.X, A.Y, 0R), New Point3d(B.X, B.Y, 0R), New Point3d(C.X, C.Y, 0R))
+                Dim angle_a = t.Angle_A * 360.0R / Math.PI
+                Dim angle_b = t.Angle_B * 360.0R / Math.PI
+                Dim angle_c = t.Angle_C * 360.0R / Math.PI
+                Dim circumcenterpt = t.Circumcenter
+                Dim centerpt = New Point(Convert.ToInt32(circumcenterpt.X), Convert.ToInt32(circumcenterpt.Y))
+                Dim radius = Convert.ToInt32(t.Circumcircle.R)
+                curObj.centerPt.pt = New PointF(centerpt.X / CSng(MainForm.pic_main.Width), centerpt.Y / CSng(MainForm.pic_main.Height))
+                curObj.radius = radius / MainForm.zoomFactor
+
+            End If
+        Else
+            Dim X1 = curObj.centerPt.pt.X * MainForm.pic_main.Width : Dim Y1 = curObj.centerPt.pt.Y * MainForm.pic_main.Height
+            Dim X2, Y2 As Integer
+            If curObj.ptCnt = 1 Then
+                X2 = curObj.midPts(0).pt.X * MainForm.pic_main.Width : Y2 = curObj.midPts(0).pt.Y * MainForm.pic_main.Height
+                curObj.radius = CalcDistBetweenPoints(X1, Y1, X2, Y2) / MainForm.zoomFactor
+            End If
+        End If
+    End Sub
     Function ArrangePtsOfCircle(ByRef Obj As circleObj) As Boolean
         Dim angleList As New List(Of Double)
         If Obj.ptCnt < 2 Then Return False
@@ -379,4 +503,47 @@ Public Module Utils
         GetConstsOfLine(curObj.lineObj)
     End Sub
 
+    Public Function GetDecimalNumber(ByVal scr As Double, ByVal digit As Integer, ByVal CF As Double) As Double
+        Dim dst = scr * CF
+        Dim test = dst * Math.Pow(10, digit)
+        If test - CInt(test) < 0.1 And digit <> 0 Then
+            Dim eplison = 1.0 / Math.Pow(10, digit)
+            dst += eplison
+        End If
+        Return Math.Round(dst, digit)
+    End Function
+
+    Function GetEndPtsOfFitLine(ByRef obj As fitLineObj, X_L As Integer, Y_T As Integer, X_R As Integer, Y_B As Integer)
+        Dim width = MainForm.pic_main.Width : Dim height = MainForm.pic_main.Height
+        Dim m = obj.lineObj.m : Dim b = obj.lineObj.b
+        Dim ptList As New List(Of Point)
+        Dim X1, Y1, X2, Y2, XTemp, YTemp As Integer
+
+        YTemp = m * X_L + b
+        If YTemp > Y_T And YTemp < Y_B Then
+            ptList.Add(New Point(X_L, YTemp))
+        End If
+        YTemp = m * X_R + b
+        If YTemp > Y_T And YTemp < Y_B Then
+            ptList.Add(New Point(X_R, YTemp))
+        End If
+        If m <> 0 Then
+            XTemp = (Y_T - b) / m
+            If XTemp > X_L And XTemp < X_R Then
+                ptList.Add(New Point(XTemp, Y_T))
+            End If
+            XTemp = (Y_B - b) / m
+            If XTemp > X_L And XTemp < X_R Then
+                ptList.Add(New Point(XTemp, Y_B))
+            End If
+        End If
+
+
+        If ptList.Count <> 2 Then Return False
+        obj.lineObj.midPts(0).pt = New PointF(ptList(0).X / CSng(width), ptList(0).Y / CSng(height))
+        obj.lineObj.midPts(1).pt = New PointF(ptList(1).X / CSng(width), ptList(1).Y / CSng(height))
+        obj.lineObj.ptCnt = 2 : obj.lineObj.drawFlag(0) = True
+        ArrangePtsOfLine(obj.lineObj)
+        Return True
+    End Function
 End Module

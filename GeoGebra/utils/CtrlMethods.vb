@@ -1,10 +1,13 @@
-﻿Imports System.ComponentModel
+﻿Imports System.CodeDom
+Imports System.ComponentModel
 Imports System.Runtime.InteropServices
 Imports System.Security.Cryptography
 Imports DocumentFormat.OpenXml.Drawing.Wordprocessing
 Imports DocumentFormat.OpenXml.Office2019.Drawing.Animation
 Imports DocumentFormat.OpenXml.Spreadsheet
 Imports Emgu.CV
+Imports GeometRi
+
 
 Public Module CtrlMethods
     Public Function UpdateLineObj(ByRef curObj As measureObj, mPtF As PointF)
@@ -49,7 +52,7 @@ Public Module CtrlMethods
         curObj.fitLineObj.ptCnt = 0
         curObj.fitCirObj.ptCnt = 0
     End Sub
-    Public Sub CompleteFitLineObj(ByRef curObj As measureObj)
+    Public Sub CompleteFitLineObj(ByRef curObj As measureObj, X_L As Integer, Y_T As Integer, X_R As Integer, Y_B As Integer)
         Dim ptList As List(Of PointF) = New List(Of PointF)
         For i = 0 To curObj.ptCnt - 1
             Dim X = curObj.fitLineObj.refPts(i).pt.X * MainForm.pic_main.Width
@@ -58,6 +61,7 @@ Public Module CtrlMethods
         Next
 
         FindLinearLeastSquaresFit(ptList, curObj.fitLineObj.lineObj.m, curObj.fitLineObj.lineObj.b)
+        GetEndPtsOfFitLine(curObj.fitLineObj, X_L, Y_T, X_R, Y_B)
     End Sub
     Public Function UpdateCircleWithCenterObj(ByRef curObj As measureObj, mPtF As PointF)
         If curObj.ptCnt = 0 Then
@@ -198,6 +202,34 @@ Public Module CtrlMethods
             curObj.annoObj.EndPt.pt.X = mPtF.X : curObj.annoObj.EndPt.pt.Y = mPtF.Y : curObj.ptCnt += 1 : curObj.annoObj.ptCnt += 1 : Return True
         End If
     End Function
+
+    Public Function UpdateCircle_3Obj(ByRef curObj As measureObj, mPtF As PointF) As Boolean
+        If curObj.ptCnt < 2 Then
+            curObj.circleObj.midPts(curObj.ptCnt).pt.X = mPtF.X : curObj.circleObj.midPts(curObj.ptCnt).pt.Y = mPtF.Y
+            curObj.circleObj.drawFlag(0) = True
+            curObj.ptCnt += 1 : curObj.circleObj.ptCnt += 1
+            Return False
+        ElseIf curObj.ptCnt = 2 Then
+            curObj.ptCnt += 1
+            If GetRadiusAndCenter(curObj.circleObj, mPtF) Then
+                If ArrangePtsOfCircle(curObj.circleObj) Then curObj.circleObj.drawFlag(0) = False : curObj.circleObj.drawFlag(1) = True
+                ReSetCircle_3Obj(curObj.circleObj, mPtF, curObj.mType)
+                Return True
+            Else
+                curObj.Refresh()
+                Return False
+            End If
+
+        End If
+    End Function
+
+    Public Sub UpdateCircle_3ObjFromCurve(ByRef curObj As measureObj, curveObj As CurveObj)
+        curObj.circleObj.midPts(0).pt = curveObj.CurvePoint(0)
+        curObj.circleObj.midPts(1).pt = curveObj.CurvePoint(curveObj.CPointIndx / 2)
+        Dim tempPt = curveObj.CurvePoint(curveObj.CPointIndx)
+        curObj.ptCnt = 2 : curObj.circleObj.ptCnt = 2
+        UpdateCircle_3Obj(curObj, tempPt)
+    End Sub
     Public Function UpdateObj(ByRef curObj As measureObj, curMType As Integer, mPtF As PointF)
         Dim completed As Boolean
         Select Case curMType
@@ -219,6 +251,10 @@ Public Module CtrlMethods
             Case 62, 63
                 UpdateFitCircleObj(curObj, mPtF)
                 LoadPosDataToGridView(curObj)
+            Case 64, 65
+                completed = UpdateCircle_3Obj(curObj, mPtF)
+
+
             Case 106
                 completed = UpdateAnnoObj(curObj, mPtF)
         End Select
@@ -508,7 +544,7 @@ Public Module CtrlMethods
                     Select Case tarMtype
                         Case 3, 50 'line and line
                             CompareLineAndLineObj(curObj, Obj)
-                        Case 5, 61 'line and circle
+                        Case 5, 61, 64 'line and circle
                             CompareLineAndCircleObj(curObj, Obj)
                         Case 62, 63 ' line and fit circle
                             CompareLineAndFitCircleObj(curObj, Obj)
@@ -516,11 +552,11 @@ Public Module CtrlMethods
                             CompareLineAndAngleObj(curObj, Obj)
                     End Select
 
-                Case 5, 61
+                Case 5, 61, 64
                     Select Case tarMtype
                         Case 3, 50 'circle and line
                             CompareLineAndCircleObj(Obj, curObj)
-                        Case 5, 61 'circle and circle
+                        Case 5, 61, 64 'circle and circle
                             CompareCircleAndCircleObj(curObj, Obj)
                         Case 62, 63 ' circle and fit circle
                             CompareCircleAndFitCircleObj(curObj, Obj)
@@ -531,7 +567,7 @@ Public Module CtrlMethods
                     Select Case tarMtype
                         Case 3, 50 'fit circle and line
                             CompareLineAndFitCircleObj(Obj, curObj)
-                        Case 5, 61 'fit circle and circle
+                        Case 5, 61, 64 'fit circle and circle
                             CompareCircleAndFitCircleObj(Obj, curObj)
                         Case 62, 63 'fit circle and fit circle
                             CompareFitCircleAndFitCircleObj(Obj, curObj)
@@ -542,7 +578,7 @@ Public Module CtrlMethods
                     Select Case tarMtype
                         Case 3, 50 'angle and line
                             CompareLineAndAngleObj(Obj, curObj)
-                        Case 5, 61 'angle and circle
+                        Case 5, 61, 64 'angle and circle
                             CompareCircleAndAngleObj(Obj, curObj)
                         Case 62, 63 'angle and fit circle
                             CompareFitCircleAndAngleObj(Obj, curObj)
@@ -637,12 +673,14 @@ Public Module CtrlMethods
         g.DrawLine(MainForm.drawPen, X1, Y1, X2, Y2)
     End Sub
 
-    Public Sub DrawFitLineObj(g As Graphics, pic As PictureBox, curObj As fitLineObj)
+    Public Sub DrawFitLineObj(g As Graphics, pic As PictureBox, curObj As fitLineObj, objID As Integer)
         For i = 0 To curObj.ptCnt - 1
             DrawPoint(g, pic, curObj.refPts(i).pt)
         Next
         If curObj.completed Then
-            DrawLongLine(g, pic, curObj.lineObj.m, curObj.lineObj.b * MainForm.zoomFactor)
+            'DrawLongLine(g, pic, curObj.lineObj.m, curObj.lineObj.b * MainForm.zoomFactor)
+            Dim mPtF As New PointF(0, 0)
+            DrawLineObj(g, pic, curObj.lineObj, mPtF, objID)
         End If
     End Sub
 
@@ -703,11 +741,11 @@ Public Module CtrlMethods
                 theta = CalcAngleFromYaxis(X1, Y1, X2, Y2)
                 sweep = CalcAngleFromYaxis(X3, Y3, X2, Y2)
                 If curObj.drawFlag(i) = True Then
-                    g.DrawArc(MainForm.drawPen, New Rectangle(X2 - radius, Y2 - radius, radius * 2, radius * 2), CSng(theta), CSng((sweep - theta + 360) Mod 360))
+                    If radius <> 0 Then g.DrawArc(MainForm.drawPen, New Rectangle(X2 - radius, Y2 - radius, radius * 2, radius * 2), CSng(theta), CSng((sweep - theta + 360) Mod 360))
                 End If
                 If MainForm.eraseState Or MainForm.expandState Then
                     If objID = MainForm.selectedObj And i = MainForm.selectedSegment Then
-                        g.DrawArc(MainForm.redPen, New Rectangle(X2 - radius, Y2 - radius, radius * 2, radius * 2), CSng(theta), CSng((sweep - theta + 360) Mod 360))
+                        If radius <> 0 Then g.DrawArc(MainForm.redPen, New Rectangle(X2 - radius, Y2 - radius, radius * 2, radius * 2), CSng(theta), CSng((sweep - theta + 360) Mod 360))
                         Continue For
                     End If
                 End If
@@ -717,11 +755,11 @@ Public Module CtrlMethods
             theta = CalcAngleFromYaxis(X1, Y1, X2, Y2)
             sweep = CalcAngleFromYaxis(X3, Y3, X2, Y2)
             If curObj.drawFlag(ptCnt - 1) Then
-                g.DrawArc(MainForm.drawPen, New Rectangle(X2 - radius, Y2 - radius, radius * 2, radius * 2), CSng(theta), CSng((sweep - theta + 360) Mod 360))
+                If radius <> 0 Then g.DrawArc(MainForm.drawPen, New Rectangle(X2 - radius, Y2 - radius, radius * 2, radius * 2), CSng(theta), CSng((sweep - theta + 360) Mod 360))
             End If
             If MainForm.eraseState Or MainForm.expandState Then
                 If objID = MainForm.selectedObj And ptCnt - 1 = MainForm.selectedSegment Then
-                    g.DrawArc(MainForm.redPen, New Rectangle(X2 - radius, Y2 - radius, radius * 2, radius * 2), CSng(theta), CSng((sweep - theta + 360) Mod 360))
+                    If radius <> 0 Then g.DrawArc(MainForm.redPen, New Rectangle(X2 - radius, Y2 - radius, radius * 2, radius * 2), CSng(theta), CSng((sweep - theta + 360) Mod 360))
                     Return
                 End If
             End If
@@ -793,8 +831,8 @@ Public Module CtrlMethods
         If curObj.ptCnt = 2 Then
             Dim X1 As Integer = curObj.lineObj_1.midPts(1).pt.X * pic.Width : Dim Y1 As Integer = curObj.lineObj_1.midPts(1).pt.Y * pic.Height
             Dim X2 As Integer = curObj.midPt.pt.X * pic.Width : Dim Y2 As Integer = curObj.midPt.pt.Y * pic.Height
-            Dim X3 As Integer = curObj.lineObj_2.midPts(1).pt.X * pic.Width : Dim Y3 As Integer = curObj.lineObj_2.midPts(1).pt.Y * pic.Height
             curObj.lineObj_2.midPts(1).pt.X = mPtF.X : curObj.lineObj_2.midPts(1).pt.Y = mPtF.Y
+            Dim X3 As Integer = curObj.lineObj_2.midPts(1).pt.X * pic.Width : Dim Y3 As Integer = curObj.lineObj_2.midPts(1).pt.Y * pic.Height
             curObj.angle = CalcAngleBetweenTwoLines(X1, Y1, X2, Y2, X3, Y3)
             DrawLine(g, pic, X2, Y2, X1, Y1)
             DrawLine(g, pic, X2, Y2, X3, Y3)
@@ -861,6 +899,35 @@ Public Module CtrlMethods
         Dim StPt As New Point(curObj.Stpt.pt.X * MainForm.pic_main.Width, curObj.Stpt.pt.Y * MainForm.pic_main.Height)
         g.DrawLine(MainForm.drawPen, StPt, New Point(textsize.X, textsize.Y))
     End Sub
+
+    Public Sub DrawCircle_3Obj(g As Graphics, pic As PictureBox, ByRef curObj As circleObj, mPtF As PointF, id As Integer, type As Integer)
+        If curObj.ptCnt < 1 Then Return
+        For i = 0 To curObj.ptCnt - 1
+            DrawPoint(g, pic, curObj.midPts(i).pt)
+        Next
+        Dim tempObj As New circleObj
+        InitializeCircleObj(tempObj)
+        CloneCircleObj(curObj, tempObj)
+        If curObj.ptCnt = 2 Then
+            If GetRadiusAndCenter(tempObj, mPtF) Then
+                If ArrangePtsOfCircle(tempObj) Then
+                    tempObj.drawFlag(0) = False
+                    tempObj.drawFlag(1) = True
+                End If
+                ReSetCircle_3Obj(tempObj, mPtF, type)
+            Else
+                Dim A = New Point(tempObj.midPts(0).pt.X * MainForm.pic_main.Width, tempObj.midPts(0).pt.Y * MainForm.pic_main.Height)
+                Dim B = New Point(tempObj.midPts(1).pt.X * MainForm.pic_main.Width, tempObj.midPts(1).pt.Y * MainForm.pic_main.Height)
+                Dim C = New Point(mPtF.X * MainForm.pic_main.Width, mPtF.Y * MainForm.pic_main.Height)
+                DrawLine(g, pic, A.X, A.Y, B.X, B.Y)
+                DrawLine(g, pic, B.X, B.Y, C.X, C.Y)
+                Return
+            End If
+        End If
+        If tempObj.ptCnt >= 2 Then
+            DrawArc(g, pic, tempObj, id)
+        End If
+    End Sub
     Public Sub DrawObj(g As Graphics, pic As PictureBox, ByRef curObj As measureObj, curMType As Integer, mPtF As PointF)
         Select Case curMType
             Case 1
@@ -874,11 +941,13 @@ Public Module CtrlMethods
             Case 31
                 DrawAngleFixedObj(g, pic, curObj.angleObj, mPtF, curObj.objID)
             Case 50
-                DrawFitLineObj(g, pic, curObj.fitLineObj)
+                DrawFitLineObj(g, pic, curObj.fitLineObj, curObj.objID)
             Case 61
                 DrawCircleCenterRadius(g, pic, curObj.circleObj, mPtF, curObj.objID)
             Case 62, 63
                 DrawFitCircleObj(g, pic, curObj.fitCirObj, curObj.objID)
+            Case 64, 65
+                DrawCircle_3Obj(g, pic, curObj.circleObj, mPtF, curObj.objID, curMType)
             Case 106
                 DrawAnnoObj(g, pic, curObj.annoObj, mPtF)
         End Select
@@ -900,15 +969,15 @@ Public Module CtrlMethods
     Public Sub LoadPosDataToGridView(obj As measureObj)
         MainForm.dgv_pos.Rows.Clear()
         Dim str_item = New String(2) {}
-        Dim W = MainForm.realWidth : Dim H = MainForm.realHeight
+        Dim W = MainForm.pic_main.Width : Dim H = MainForm.pic_main.Height
         For i = 0 To obj.ptCnt - 1
             str_item(0) = (i + 1).ToString()
             If obj.mType = MeasureType.lineFit Then
-                str_item(1) = obj.fitLineObj.refPts(i).pt.X * W
-                str_item(2) = obj.fitLineObj.refPts(i).pt.Y * H
+                str_item(1) = CInt(obj.fitLineObj.refPts(i).pt.X * W)
+                str_item(2) = CInt(obj.fitLineObj.refPts(i).pt.Y * H)
             ElseIf obj.mType = MeasureType.circleFit Or obj.mType = MeasureType.arcFit Then
-                str_item(1) = obj.fitCirObj.refPts(i).pt.X * W
-                str_item(2) = obj.fitCirObj.refPts(i).pt.Y * H
+                str_item(1) = CInt(obj.fitCirObj.refPts(i).pt.X * W)
+                str_item(2) = CInt(obj.fitCirObj.refPts(i).pt.Y * H)
             End If
 
             MainForm.dgv_pos.Rows.Add(str_item)
@@ -954,8 +1023,8 @@ Public Module CtrlMethods
         For i = 0 To obj.ptCnt - 2
             If m_angle > angleList(i) And m_angle < angleList(i + 1) Then
                 dist1 = Find_TwoPointDistance(mPt.X, mPt.Y, centerPt.X, centerPt.Y)
-                dist2 = Find_TwoPointDistance(midPts(i).X, midPts(i).Y, centerPt.X, centerPt.Y)
-                dist3 = Find_TwoPointDistance(midPts(i).X, midPts(i).Y, centerPt.X, centerPt.Y)
+                dist2 = Find_TwoPointDistance(midPts(i).X, midPts(i).Y, mPt.X, mPt.Y)
+                dist3 = Find_TwoPointDistance(midPts(i + 1).X, midPts(i + 1).Y, mPt.X, mPt.Y)
                 If Math.Abs(dist1 - radius) < MainForm.threshold Then
                     MainForm.selectedSegment = i
                     If dist2 < MainForm.threshold Then MainForm.selectedPt = i
@@ -972,8 +1041,8 @@ Public Module CtrlMethods
             End If
             Return False
         Else
-            dist2 = Find_TwoPointDistance(midPts(0).X, midPts(0).Y, centerPt.X, centerPt.Y)
-            dist3 = Find_TwoPointDistance(midPts(obj.ptCnt - 1).X, midPts(obj.ptCnt - 1).Y, centerPt.X, centerPt.Y)
+            dist2 = Find_TwoPointDistance(midPts(0).X, midPts(0).Y, mPt.X, mPt.Y)
+            dist3 = Find_TwoPointDistance(midPts(obj.ptCnt - 1).X, midPts(obj.ptCnt - 1).Y, mPt.X, mPt.Y)
             If Math.Abs(dist1 - radius) < MainForm.threshold Then
                 MainForm.selectedSegment = obj.ptCnt - 1
                 If dist2 < MainForm.threshold Then MainForm.selectedPt = 0
@@ -1002,7 +1071,7 @@ Public Module CtrlMethods
 
     Public Function CheckIfAnnoInPos(obj As AnnoObject, mPt As Point) As Boolean
         Dim X1 = obj.EndPt.pt.X * MainForm.pic_main.Width : Dim Y1 = obj.EndPt.pt.Y * MainForm.pic_main.Height
-        Dim X2 = X1 + obj.size.Width : Dim Y2 = X2 + obj.size.Height
+        Dim X2 = X1 + obj.size.Width : Dim Y2 = Y1 + obj.size.Height
         If mPt.X > X1 And mPt.X < X2 And mPt.Y > Y1 And mPt.Y < Y2 Then
             Return True
         End If
@@ -1018,7 +1087,7 @@ Public Module CtrlMethods
                 Case 3, 50
                     found = CheckIfLineInPos(obj.lineObj, mPt)
                     If found Then MainForm.selectedObj = obj.objID
-                Case 5, 61
+                Case 5, 61, 64, 65
                     found = CheckIfCircleInPos(obj.circleObj, mPt)
                     If found Then MainForm.selectedObj = obj.objID
                 Case 62, 63
@@ -1280,5 +1349,250 @@ Public Module CtrlMethods
         obj.annoObj.annotation = txtBox.Text
         obj.annoObj.size = txtBox.Size
         objList(annoNum) = obj
+    End Sub
+
+    Public Sub MovePointObj(ByRef obj As pointObj, dx As Double, dy As Double)
+        obj.pt.X += dx : obj.pt.Y += dy
+    End Sub
+
+    Public Sub MoveLineObj(ByRef obj As lineObj, dx As Double, dy As Double)
+        For i = 0 To obj.ptCnt - 1
+            obj.midPts(i).pt.X += dx
+            obj.midPts(i).pt.Y += dy
+        Next
+    End Sub
+
+    Public Sub MovePtOfLineObj(ByRef obj As lineObj, dx As Double, dy As Double)
+        If MainForm.selectedPt < obj.ptCnt Then
+            obj.midPts(MainForm.selectedPt).pt.X += dx
+            obj.midPts(MainForm.selectedPt).pt.Y += dy
+        End If
+    End Sub
+
+    Public Sub MoveAngleObj(ByRef obj As angleObj, dx As Double, dy As Double)
+        MoveLineObj(obj.lineObj_1, dx, dy)
+        MoveLineObj(obj.lineObj_2, dx, dy)
+        obj.midPt.pt.X += dx : obj.midPt.pt.Y += dy
+    End Sub
+
+    Public Sub MovePtOfAngleObj(ByRef obj As angleObj, dx As Double, dy As Double)
+        If MainForm.selectedLineID = 1 Then
+            If obj.lineObj_1.midPts(MainForm.selectedPt).pt = obj.midPt.pt Then
+                For i = 0 To obj.lineObj_2.ptCnt - 1
+                    If obj.lineObj_2.midPts(i).pt = obj.lineObj_1.midPts(MainForm.selectedPt).pt Then
+                        obj.lineObj_2.midPts(i).pt.X += dx
+                        obj.lineObj_2.midPts(i).pt.Y += dy
+                    End If
+                Next
+                obj.midPt.pt.X += dx : obj.midPt.pt.Y += dy
+            End If
+            MovePtOfLineObj(obj.lineObj_1, dx, dy)
+        ElseIf MainForm.selectedLineID = 2 Then
+            If obj.lineObj_2.midPts(MainForm.selectedPt).pt = obj.midPt.pt Then
+                For i = 0 To obj.lineObj_1.ptCnt - 1
+                    If obj.lineObj_1.midPts(i).pt = obj.lineObj_2.midPts(MainForm.selectedPt).pt Then
+                        obj.lineObj_1.midPts(i).pt.X += dx
+                        obj.lineObj_1.midPts(i).pt.Y += dy
+                    End If
+                Next
+                obj.midPt.pt.X += dx : obj.midPt.pt.Y += dy
+            End If
+            MovePtOfLineObj(obj.lineObj_2, dx, dy)
+        End If
+        Dim X2 = obj.midPt.pt.X * MainForm.pic_main.Width : Dim Y2 = obj.midPt.pt.Y * MainForm.pic_main.Height
+        Dim X1, Y1, X3, Y3 As Integer
+        For i = 0 To obj.lineObj_1.ptCnt - 1
+            If obj.lineObj_1.midPts(i).pt <> obj.midPt.pt Then
+                X1 = obj.lineObj_1.midPts(i).pt.X * MainForm.pic_main.Width
+                Y1 = obj.lineObj_1.midPts(i).pt.Y * MainForm.pic_main.Height
+                Exit For
+            End If
+        Next
+        For i = 0 To obj.lineObj_2.ptCnt - 1
+            If obj.lineObj_2.midPts(i).pt <> obj.midPt.pt Then
+                X3 = obj.lineObj_2.midPts(i).pt.X * MainForm.pic_main.Width
+                Y3 = obj.lineObj_2.midPts(i).pt.Y * MainForm.pic_main.Height
+                Exit For
+            End If
+        Next
+        obj.angle = CalcAngleBetweenTwoLines(X1, Y1, X2, Y2, X3, Y3)
+    End Sub
+    Public Sub MoveCircleObj(ByRef obj As circleObj, dx As Double, dy As Double)
+        obj.centerPt.pt.X += dx : obj.centerPt.pt.Y += dy
+        For i = 0 To obj.ptCnt - 1
+            obj.midPts(i).pt.X += dx
+            obj.midPts(i).pt.Y += dy
+        Next
+    End Sub
+
+    Public Sub MovePtOfCircleObj(ByRef obj As circleObj, dx As Double, dy As Double, mType As Integer)
+        If MainForm.selectedPt < obj.ptCnt Then
+            obj.midPts(MainForm.selectedPt).pt.X += dx
+            obj.midPts(MainForm.selectedPt).pt.Y += dy
+        End If
+        GetRadiusAndCenter(obj, mType)
+    End Sub
+    Public Sub MoveFitCircleObj(ByRef obj As fitCircleObj, dx As Double, dy As Double)
+        For i = 0 To obj.ptCnt - 1
+            obj.refPts(i).pt.X += dx
+            obj.refPts(i).pt.Y += dy
+        Next
+        MoveCircleObj(obj.circleObj, dx, dy)
+    End Sub
+
+    Public Sub MoveAnnotation(ByRef obj As AnnoObject, dx As Double, dy As Double)
+        'obj.Stpt.pt.X += dx : obj.Stpt.pt.Y += dy
+        obj.EndPt.pt.X += dx : obj.EndPt.pt.Y += dy
+    End Sub
+    Public Sub MoveSelectedObj(objList As List(Of measureObj), dx As Integer, dy As Integer)
+        Dim flag = True
+        If MainForm.selectedObj = MainForm.Infinite Then Return
+        Dim fdx = dx / MainForm.pic_main.Width : Dim fdy = dy / MainForm.pic_main.Height
+        Dim obj = objList(MainForm.selectedObj)
+        If MainForm.selectedPt <> MainForm.Infinite Then
+            flag = False
+        End If
+        Select Case obj.mType
+            Case MeasureType.point
+                MovePointObj(obj.ptObj, fdx, fdy)
+            Case MeasureType.line
+                If flag Then
+                    MoveLineObj(obj.lineObj, fdx, fdy)
+                Else
+                    MovePtOfLineObj(obj.lineObj, fdx, fdy)
+                End If
+            Case MeasureType.angle ', MeasureType.angleFixed
+                If flag Then
+                    MoveAngleObj(obj.angleObj, fdx, fdy)
+                Else
+                    MovePtOfAngleObj(obj.angleObj, fdx, fdy)
+                End If
+            Case MeasureType.circleWithCenter, MeasureType.arc_3, MeasureType.circle_3 ', MeasureType.circleCenterRadius
+                If flag Then
+                    MoveCircleObj(obj.circleObj, fdx, fdy)
+                Else
+                    MovePtOfCircleObj(obj.circleObj, fdx, fdy, obj.mType)
+                End If
+            Case MeasureType.arcFit, MeasureType.circleFit
+                If flag Then
+                    MoveFitCircleObj(obj.fitCirObj, fdx, fdy)
+                Else
+                    MovePtOfCircleObj(obj.fitCirObj.circleObj, fdx, fdy, obj.mType)
+                End If
+            Case MeasureType.annotation
+                MoveAnnotation(obj.annoObj, fdx, fdy)
+        End Select
+        objList(MainForm.selectedObj) = obj
+    End Sub
+
+    Public Sub ReSetMovedObj(objList As List(Of measureObj))
+        If MainForm.selectedObj = MainForm.Infinite Then Return
+        Dim obj = objList(MainForm.selectedObj)
+        Select Case obj.mType
+            Case MeasureType.line
+                ArrangePtsOfLine(obj.lineObj)
+                GetConstsOfLine(obj.lineObj)
+            Case MeasureType.angle ', MeasureType.angleFixed
+                ArrangePtsOfLine(obj.angleObj.lineObj_1)
+                GetConstsOfLine(obj.angleObj.lineObj_1)
+                ArrangePtsOfLine(obj.angleObj.lineObj_2)
+                GetConstsOfLine(obj.angleObj.lineObj_2)
+            Case MeasureType.circleWithCenter, MeasureType.arc_3, MeasureType.circle_3 ', MeasureType.circleCenterRadius
+                ArrangePtsOfCircle(obj.circleObj)
+            Case MeasureType.arcFit, MeasureType.circleFit
+                ArrangePtsOfCircle(obj.fitCirObj.circleObj)
+        End Select
+        objList(MainForm.selectedObj) = obj
+    End Sub
+
+    Public Sub GetName(ByRef obj As measureObj)
+        Select Case obj.mType
+            Case MeasureType.point
+                obj.name = "Pt" & obj.objID
+            Case MeasureType.line
+                obj.name = "L" & obj.objID
+            Case MeasureType.lineFit
+                obj.name = "FL" & obj.objID
+            Case MeasureType.circleCenterRadius, MeasureType.circleWithCenter, MeasureType.circle_3
+                obj.name = "C" & obj.objID
+            Case MeasureType.arc_3
+                obj.name = "Ar" & obj.objID
+            Case MeasureType.circleFit
+                obj.name = "FC" & obj.objID
+            Case MeasureType.arcFit
+                obj.name = "FAr" & obj.objID
+            Case MeasureType.angle, MeasureType.angleFixed
+                obj.name = "AG" & obj.objID
+            Case MeasureType.annotation
+                obj.name = "A" & obj.objID
+        End Select
+    End Sub
+    Public Function SetComboItemContent(name As String, ByVal name_list As List(Of String)) As DataGridViewComboBoxCell
+        Dim cell As DataGridViewComboBoxCell = New DataGridViewComboBoxCell()
+        Dim str_array As String() = New String(name_list.Count - 1) {}
+        Dim cnt As Integer = 0
+        If name <> "" Then
+            str_array(cnt) = name
+            cnt += 1
+        End If
+
+        For i = 0 To str_array.Length() - 1
+            If name <> name_list(i) Then
+                str_array(cnt) = name_list(i)
+                cnt += 1
+            End If
+        Next
+        cell.Items.AddRange(str_array)
+        cell.Value = cell.Items(0)
+        cell.ReadOnly = False
+        Return cell
+    End Function
+    Public Sub LoadObjectList(ByVal listView As DataGridView, ByVal object_list As List(Of measureObj), ByVal CF As Double, ByVal digit As Integer, ByVal unit As String, ByVal name_list As List(Of String))
+        listView.Rows.Clear()
+        If object_list.Count > 0 Then
+            Dim i = 0
+            Dim length As Double
+
+            For Each item In object_list
+                Dim str_item = New String(6) {}
+                str_item(0) = (i + 1).ToString()
+                str_item(1) = item.name
+                str_item(2) = ""
+                str_item(3) = item.parameter
+                str_item(4) = item.spec
+                str_item(5) = ""
+                str_item(6) = item.judgement
+
+                Select Case item.mType
+                    Case MeasureType.point
+
+                    Case MeasureType.line
+                        Dim X1 = item.lineObj.midPts(0).pt.X * MainForm.pic_main.Width : Dim Y1 = item.lineObj.midPts(0).pt.Y * MainForm.pic_main.Height
+                        Dim X2 = item.lineObj.midPts(item.lineObj.ptCnt - 1).pt.X * MainForm.pic_main.Width : Dim Y2 = item.lineObj.midPts(item.lineObj.ptCnt - 1).pt.Y * MainForm.pic_main.Height
+                        length = CalcDistBetweenPoints(X1, Y1, X2, Y2)
+                        length = GetDecimalNumber(length, digit, CF)
+                        str_item(5) = length.ToString() & " " & unit
+
+                    Case MeasureType.circleCenterRadius, MeasureType.circleWithCenter, MeasureType.circle_3, MeasureType.arc_3
+                        length = item.circleObj.radius
+                        length = GetDecimalNumber(length, digit, CF)
+                        str_item(5) = length.ToString() & " " & unit
+
+                    Case MeasureType.arcFit, MeasureType.circleFit
+                        length = item.fitCirObj.circleObj.radius
+                        length = GetDecimalNumber(length, digit, CF)
+                        str_item(5) = length.ToString() & " " & unit
+
+                    Case MeasureType.angle, MeasureType.angleFixed
+                        str_item(5) = item.angleObj.angle.ToString() & " degree"
+
+                End Select
+
+                listView.Rows.Add(str_item)
+                listView.Rows(i).Cells(2) = SetComboItemContent(item.description, name_list)
+                i += 1
+            Next
+        End If
+
     End Sub
 End Module

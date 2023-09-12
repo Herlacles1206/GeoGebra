@@ -5,6 +5,7 @@ Imports DocumentFormat.OpenXml.Bibliography
 Imports Emgu.CV
 Imports Emgu.CV.Flann
 Imports Emgu.CV.[Structure]
+Imports System.IO
 
 Public Class MainForm
     Public oriImg As Mat = New Mat
@@ -15,6 +16,7 @@ Public Class MainForm
     Public distType As Integer
     Public mLBtnDown As Boolean
     Public mPtF As PointF = New PointF()
+    Public prevMPt As Point = New Point()
     Public mPt As Point = New Point()
     Public nullBrush As Brush = New SolidBrush(Color.White)
     Public Shared drawFont As Font = New Font("Arial", 10, FontStyle.Regular)
@@ -79,7 +81,12 @@ Public Class MainForm
     Public SecondPtOfEdge As Point
     Public C_CurveObj As CurveObj = New CurveObj()
 
+    Public CF As Integer = 1
+    Public digit As Integer = 1
+    Public unit As String = "um"
+    Public name_list As List(Of String) = New List(Of String)
 
+    Public moreFlag As Boolean = False
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         If curMeasureType <> MeasureType.eraseObj Then
@@ -88,7 +95,7 @@ Public Class MainForm
         If curMeasureType <> MeasureType.expandObj Then
             expandState = False
         End If
-        If curMeasureType <> MeasureType.selectObj Then
+        If curMeasureType <> MeasureType.selectObj And curMeasureType <> MeasureType.move Then
             selectState = False
         End If
     End Sub
@@ -99,6 +106,7 @@ Public Class MainForm
         objList.Clear()
         pic_main.Refresh()
         dgv_pos.Rows.Clear()
+        dgv_obj.Rows.Clear()
         txt_x.Text = ""
         txt_y.Text = ""
         txt_counter.Text = ""
@@ -111,6 +119,11 @@ Public Class MainForm
         ReSetSelectedObjSet()
         zoomFactor = 1.0
         annoNum = Infinite
+        oriImg?.Dispose() : curImg?.Dispose()
+        name_list.Clear()
+        name_list.Add("Line")
+        name_list.Add("Angle")
+        name_list.Add("Arc")
     End Sub
     Private Sub InitializeComponents()
         pic_main.Controls.Add(txtBox)
@@ -131,15 +144,15 @@ Public Class MainForm
     End Sub
 
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        InitializeComponents()
         InitializeVariables()
+        InitializeComponents()
     End Sub
 
     Private Sub InitializeCurObj(mType As Integer)
         curObj.Refresh()
         curObj.mType = mType
         If mType = MeasureType.detectLine Then curObj.mType = MeasureType.lineFit
-        If mType = MeasureType.detectCircle Then curObj.mType = MeasureType.circleFit
+        If mType = MeasureType.detectCircle Then curObj.mType = MeasureType.circle_3
     End Sub
 
     Private Sub btn_point_Click(sender As Object, e As EventArgs) Handles btn_point.Click
@@ -163,17 +176,17 @@ Public Class MainForm
         ReSetSelectedObjSet()
     End Sub
 
+    Private Sub btn_angle_fixed_Click(sender As Object, e As EventArgs) Handles btn_angle_fixed.Click
+        curMeasureType = MeasureType.angleFixed
+        InitializeCurObj(curMeasureType)
+        ReSetSelectedObjSet()
+    End Sub
     Private Sub btn_circle_center_Click(sender As Object, e As EventArgs) Handles btn_circle_center.Click
         curMeasureType = MeasureType.circleWithCenter
         InitializeCurObj(curMeasureType)
         ReSetSelectedObjSet()
     End Sub
 
-    Private Sub btn_angle_fixed_Click(sender As Object, e As EventArgs) Handles btn_angle_fixed.Click
-        curMeasureType = MeasureType.angleFixed
-        InitializeCurObj(curMeasureType)
-        ReSetSelectedObjSet()
-    End Sub
 
     Private Sub btn_circle_fixed_Click(sender As Object, e As EventArgs) Handles btn_circle_fixed.Click
         curMeasureType = MeasureType.circleCenterRadius
@@ -204,21 +217,35 @@ Public Class MainForm
         InitializeCurObj(curMeasureType)
         ReSetSelectedObjSet()
     End Sub
+
+    Private Sub btn_circle_3_Click(sender As Object, e As EventArgs) Handles btn_circle_3.Click
+        curMeasureType = MeasureType.circle_3
+        InitializeCurObj(curMeasureType)
+        ReSetSelectedObjSet()
+    End Sub
+
+    Private Sub btn_arc_3_Click(sender As Object, e As EventArgs) Handles btn_arc_3.Click
+        curMeasureType = MeasureType.arc_3
+        InitializeCurObj(curMeasureType)
+        ReSetSelectedObjSet()
+    End Sub
     Private Sub GetMousePositions(X As Integer, Y As Integer)
+        prevMPt = mPt
         mPt.X = X : mPt.Y = Y
         mPtF.X = CDbl(X) / pic_main.Width
         mPtF.Y = CDbl(Y) / pic_main.Height
     End Sub
 
     Private Sub DisplayMousePositions()
-        txt_x.Text = (mPtF.X * realWidth).ToString()
-        txt_y.Text = (mPtF.Y * realHeight).ToString()
+        txt_x.Text = mPt.X.ToString()
+        txt_y.Text = mPt.Y.ToString()
     End Sub
     Private Sub AppendObjToList()
         Dim curObjBackup As New measureObj
         InitializeMeasureObj(curObjBackup)
         CloneMeasureObj(curObj, curObjBackup)
         curObjBackup.objID = objList.Count
+        GetName(curObjBackup)
         objList.Add(curObjBackup)
         curObj.Refresh()
         curMeasureType = -1
@@ -249,6 +276,7 @@ Public Class MainForm
                 If completed Then
                     CompareWithExisingObjs(curObj, objList)
                     AppendObjToList()
+                    LoadObjectList(dgv_obj, objList, CF, digit, unit, name_list)
                 End If
 
                 If curMeasureType = MeasureType.eraseObj Then
@@ -280,16 +308,39 @@ Public Class MainForm
         g.Dispose()
     End Sub
 
+    Private Sub MoveWindows()
+
+        Dim thres = 40
+        If mPt.X + pic_main.Left < thres Then
+            If pic_main.Left < 0 Then pic_main.Left += 1
+        End If
+        If mPt.Y + pic_main.Top < thres Then
+            If pic_main.Top < 0 Then pic_main.Top += 1
+        End If
+        If pan_pic.ClientSize.Width - (mPt.X + pic_main.Left) < thres Then
+            If pic_main.Left + pic_main.Width > pan_pic.ClientSize.Width Then pic_main.Left -= 1
+        End If
+        If pan_pic.ClientSize.Height - (mPt.Y + pic_main.Top) < thres Then
+            If pic_main.Top + pic_main.Height > pan_pic.ClientSize.Height Then pic_main.Top -= 1
+        End If
+    End Sub
     Private Sub pic_main_MouseMove(sender As Object, e As MouseEventArgs) Handles pic_main.MouseMove
         GetMousePositions(e.X, e.Y)
         DisplayMousePositions()
-        ReSetSelectedIDs()
-        Dim found = GetSelectedIDs(objList, mPt)
-        If found Then
-            GetMousePositions(e.X, e.Y)
+        If Not mLBtnDown Then
+            ReSetSelectedIDs()
+            GetSelectedIDs(objList, mPt)
         End If
 
-        If curMeasureType >= 0 And (curObj.ptCnt > 0 Or curMeasureType = MeasureType.eraseObj Or curMeasureType = MeasureType.expandObj Or curMeasureType = MeasureType.selectObj Or EdgeRegionDrawReady) Then
+        If curMeasureType = MeasureType.viewMove Then
+            MoveWindows()
+        End If
+
+        If mLBtnDown And curMeasureType = MeasureType.move Then
+            MoveSelectedObj(objList, mPt.X - prevMPt.X, mPt.Y - prevMPt.Y)
+        End If
+
+        If curMeasureType >= 0 And (curObj.ptCnt > 0 Or curMeasureType = MeasureType.eraseObj Or curMeasureType = MeasureType.expandObj Or curMeasureType = MeasureType.selectObj Or EdgeRegionDrawReady Or curMeasureType = MeasureType.viewMove Or curMeasureType = MeasureType.move) Then
             DrawToPic()
         End If
 
@@ -310,6 +361,7 @@ Public Class MainForm
         mLBtnDown = False
         If EdgeRegionDrawReady And SecondPtOfEdge.X <> 0 And SecondPtOfEdge.Y <> 0 Then
             C_CurveObj = DetectCurve(curImg.ToBitmap(), FirstPtOfEdge, SecondPtOfEdge)
+            Dim X_L = FirstPtOfEdge.X : Dim Y_T = FirstPtOfEdge.Y : Dim X_R = SecondPtOfEdge.X : Dim Y_B = SecondPtOfEdge.Y
             ReSetEdgeDrawState()
             Dim form = New ConfirmDetection()
             Dim res = form.ShowDialog()
@@ -317,19 +369,22 @@ Public Class MainForm
                 If C_CurveObj.CPointIndx >= 2 Then
                     If curMeasureType = MeasureType.detectLine Then
                         UpdateFitLineObjFromCurve(curObj, C_CurveObj)
-                        CompleteFitLineObj(curObj)
+                        CompleteFitLineObj(curObj, X_L, Y_T, X_R, Y_B)
                     Else
-                        UpdateFitCircleObjFromCurve(curObj, C_CurveObj)
-                        CompleteFitCircleObj(curObj)
+                        UpdateCircle_3ObjFromCurve(curObj, C_CurveObj)
                     End If
                     CompareWithExisingObjs(curObj, objList)
                     AppendObjToList()
+                    LoadObjectList(dgv_obj, objList, CF, digit, unit, name_list)
                 End If
             ElseIf res = DialogResult.Retry Then
                 EdgeRegionDrawReady = True
             End If
             DrawToPic()
             C_CurveObj.Refresh()
+        End If
+        If curMeasureType = MeasureType.move Then
+            ReSetMovedObj(objList)
         End If
     End Sub
 
@@ -351,8 +406,17 @@ Public Class MainForm
                       newImage = DirectCast(eventArgs.Frame.Clone(), Bitmap)
 
                       If flag = False Then
+                          If pic_main.Image IsNot Nothing Then
+                              pic_main.Image.Dispose()
+                              pic_main.Image = Nothing
+                          End If
                           pic_main.Image = newImage.Clone()
                       End If
+                      If pic_cam.Image IsNot Nothing Then
+                          pic_cam.Image.Dispose()
+                          pic_cam.Image = Nothing
+                      End If
+                      pic_cam.Image = newImage.Clone()
                       newImage?.Dispose()
                   End Sub)
 
@@ -418,11 +482,231 @@ Public Class MainForm
             OpenCamera()
         End If
     End Sub
+
+    Private Sub btn_capture_Click(sender As Object, e As EventArgs) Handles btn_capture.Click
+        Try
+
+            If pic_cam.Image Is Nothing Then
+                Return
+            End If
+            Dim img1 As Image = pic_cam.Image.Clone()
+
+            Createdirectory(imagepath)
+            If photoList.Images.Count <= 0 Then
+                file_counter = photoList.Images.Count + 1
+            Else
+                file_counter = Convert.ToInt32(IO.Path.GetFileNameWithoutExtension(photoList.Images.Keys.Item(photoList.Images.Count - 1).ToString()).Split("_")(1)) + 1
+            End If
+
+            img1.Save(imagepath & "\\test_" & (file_counter) & ".jpeg", Imaging.ImageFormat.Jpeg)
+            photoList.ImageSize = New Size(160, 120)
+            photoList.Images.Add("\\test_" & (file_counter) & ".jpeg", img1)
+            list_cam.LargeImageList = photoList
+            'img1.Dispose()
+            list_cam.Items.Clear()
+            For index = 0 To photoList.Images.Count - 1
+                Dim item As New ListViewItem With {
+                    .ImageIndex = index,
+                        .Tag = imagepath & photoList.Images.Keys.Item(index).ToString(),
+                        .Text = IO.Path.GetFileNameWithoutExtension(photoList.Images.Keys.Item(index).ToString())
+                }
+                list_cam.Items.Add(item)
+            Next
+
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        End Try
+    End Sub
+
+    Private Sub btn_live_Click(sender As Object, e As EventArgs) Handles btn_live.Click
+        flag = False
+    End Sub
+
+    Private Sub btn_set_Click(sender As Object, e As EventArgs) Handles btn_set.Click
+        Dim dialog = New FolderBrowserDialog With {
+            .SelectedPath = Application.StartupPath
+        }
+        If DialogResult.OK = dialog.ShowDialog() Then
+            txtbx_imagepath.Text = dialog.SelectedPath & "\MyImages"
+            imagepath = txtbx_imagepath.Text
+            My.Settings.imagefilepath = imagepath
+            My.Settings.Save()
+            Createdirectory(imagepath)
+        End If
+    End Sub
+
+    Private Sub btn_captureProperties_Click(sender As Object, e As EventArgs) Handles btn_captureProperties.Click
+        If videoDevice Is Nothing Then
+            MsgBox("Please start Camera First")
+
+        ElseIf videoDevice.IsRunning Then
+            videoDevice.DisplayPropertyPage(Me.Handle)
+        End If
+    End Sub
+
+    Private Sub btn_browse_Click(sender As Object, e As EventArgs) Handles btn_browse.Click
+        Dim ofd As New OpenFileDialog With {
+            .Filter = "Image File (*.ico;*.jpg;*.jpeg;*.bmp;*.gif;*.png)|*.jpg;*.jpeg;*.bmp;*.gif;*.png;*.ico",
+            .Multiselect = True,
+            .FilterIndex = 1
+        }
+
+        If ofd.ShowDialog() = DialogResult.OK Then
+            Try
+                Dim files As String() = ofd.FileNames
+                For Each file In files
+                    Dim img1 As New Bitmap(file)
+                    Createdirectory(imagepath)
+                    If photoList.Images.Count <= 0 Then
+                        file_counter = photoList.Images.Count + 1
+                    Else
+                        file_counter = Convert.ToInt32(IO.Path.GetFileNameWithoutExtension(photoList.Images.Keys.Item(photoList.Images.Count - 1).ToString()).Split("_")(1)) + 1
+                    End If
+
+                    img1.Save(imagepath & "\\test_" & (file_counter) & ".jpeg", Imaging.ImageFormat.Jpeg)
+                    photoList.ImageSize = New Size(200, 150)
+                    photoList.Images.Add("\\test_" & (file_counter) & ".jpeg", img1)
+                    list_cam.LargeImageList = photoList
+                    img1.Dispose()
+                    list_cam.Items.Clear()
+                    For index = 0 To photoList.Images.Count - 1
+                        Dim item As New ListViewItem With {
+                        .ImageIndex = index,
+                            .Tag = imagepath & photoList.Images.Keys.Item(index).ToString(),
+                            .Text = IO.Path.GetFileNameWithoutExtension(photoList.Images.Keys.Item(index).ToString())
+                    }
+                        list_cam.Items.Add(item)
+                    Next
+
+                Next
+
+            Catch ex As Exception
+                MessageBox.Show(ex.Message)
+            End Try
+        End If
+    End Sub
+
+    Private Sub btn_clearAll_Click(sender As Object, e As EventArgs) Handles btn_clearAll.Click
+        file_counter = 0
+        list_cam.Clear()
+        list_cam.Items.Clear()
+        photoList.Images.Clear()
+        pic_cam.Image = Nothing
+        pic_main.Image = Nothing
+        DeleteImages(imagepath)
+    End Sub
+
+    Private Sub btn_delete_Click(sender As Object, e As EventArgs) Handles btn_delete.Click
+        For Each v As ListViewItem In list_cam.SelectedItems
+            photoList.Images.RemoveAt(v.ImageIndex)
+            list_cam.Items.Remove(v)
+            Dim FileDelete As String = v.Tag
+            If File.Exists(FileDelete) = True Then
+                File.Delete(FileDelete)
+            End If
+            'Remove_Tab()
+        Next
+    End Sub
+
+    Private Sub list_cam_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles list_cam.MouseDoubleClick
+        Try
+            InitializeVariables()
+            flag = True
+
+            Dim itemSelected As Integer = GetListViewSelectedItemIndex(list_cam)
+            SetListViewSelectedItem(list_cam, itemSelected)
+            Dim Image As Image
+            Using str As Stream = File.OpenRead(list_cam.SelectedItems(0).Tag)
+                Image = Image.FromStream(str)
+            End Using
+            pic_cam.Image = Image
+            pic_main.Image = Image.Clone()
+
+            oriImg = GetMatFromSDImage(Image)
+            curImg = oriImg.Clone()
+
+        Catch ex As Exception
+            MessageBox.Show(ex.ToString())
+        End Try
+    End Sub
 #End Region
+
+#Region "DataGridView"
+
+
+    'update first and fifth item of datagridview and update the object 
+    Private Sub dgv_obj_CellValidating(sender As Object, e As DataGridViewCellValidatingEventArgs) Handles dgv_obj.CellValidating
+        If e.ColumnIndex = 2 Or e.ColumnIndex = 6 Then
+
+            Dim cell = TryCast(dgv_obj.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewComboBoxCell)
+
+            If cell IsNot Nothing AndAlso Not Equals(e.FormattedValue.ToString(), String.Empty) Then
+                cell.Items(0) = e.FormattedValue
+
+                If dgv_obj.IsCurrentCellDirty Then
+                    dgv_obj.CommitEdit(DataGridViewDataErrorContexts.Commit)
+                End If
+
+                cell.Value = e.FormattedValue
+                Dim obj = objList.ElementAt(e.RowIndex)
+                If e.ColumnIndex = 2 Then
+                    obj.description = cell.Value
+                Else
+                    obj.judgement = cell.Value
+                End If
+
+                objList(e.RowIndex) = obj
+
+            End If
+        ElseIf e.ColumnIndex = 3 Or e.ColumnIndex = 4 Then
+            Dim cell = TryCast(dgv_obj.Rows(e.RowIndex).Cells(e.ColumnIndex), DataGridViewTextBoxCell)
+
+            If cell IsNot Nothing AndAlso Not Equals(e.FormattedValue.ToString(), String.Empty) Then
+
+                If dgv_obj.IsCurrentCellDirty Then
+                    dgv_obj.CommitEdit(DataGridViewDataErrorContexts.Commit)
+                End If
+
+                cell.Value = e.FormattedValue
+                Dim obj = objList.ElementAt(e.RowIndex)
+                If e.ColumnIndex = 3 Then
+                    obj.parameter = cell.Value
+                Else
+                    obj.spec = cell.Value
+                End If
+
+                objList(e.RowIndex) = obj
+
+            End If
+        End If
+    End Sub
+
+    'handles exception for datagridview
+    Private Sub dgv_obj_DataError(sender As Object, e As DataGridViewDataErrorEventArgs) Handles dgv_obj.DataError
+        If e.ColumnIndex = 0 AndAlso e.RowIndex = 0 Then
+            e.Cancel = True
+        End If
+    End Sub
+
+
+#End Region
+
+    Private Sub ImportImage()
+        Dim filter = "All Files|*.*|JPEG Files|*.jpg|PNG Files|*.png|BMP Files|*.bmp"
+        Dim title = "Open"
+
+        InitializeVariables()
+        oriImg = LoadImageFromFile(pic_main, filter, title)
+        curImg = oriImg.Clone()
+        pic_main.Invoke(New Action(Sub() pic_main.Image = oriImg.ToBitmap()))
+    End Sub
+    Private Sub IMPORTIMAGEToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles IMPORTIMAGEToolStripMenuItem.Click
+        ImportImage()
+    End Sub
     Private Sub EXPORTREPORTToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles EXPORTREPORTToolStripMenuItem.Click
         Dim filter = "Excel files (*.xlsx)|*.xlsx|All files (*.*)|*.*"
         Dim title = "Save"
-        SaveReportToExcel(pic_main, filter, title, objList)
+        SaveReportToExcel(pic_main, dgv_obj, filter, title, objList)
     End Sub
 
     Private Sub btn_cancel_last_Click(sender As Object, e As EventArgs) Handles btn_cancel_last.Click
@@ -450,12 +734,13 @@ Public Class MainForm
         End If
         If curMeasureType = MeasureType.lineFit Then
             curObj.fitLineObj.completed = True
-            CompleteFitLineObj(curObj)
+            CompleteFitLineObj(curObj, 0, 0, pic_main.Width, pic_main.Height)
         ElseIf curMeasureType = MeasureType.circleFit Or curMeasureType = MeasureType.arcFit Then
             curObj.fitCirObj.completed = True
             CompleteFitCircleObj(curObj)
         End If
         AppendObjToList()
+        LoadObjectList(dgv_obj, objList, CF, digit, unit, name_list)
         DrawObjList(pic_main, objList)
     End Sub
 
@@ -464,12 +749,7 @@ Public Class MainForm
     End Sub
 
     Private Sub btn_tool_open_Click(sender As Object, e As EventArgs) Handles btn_tool_open.Click
-        Dim filter = "All Files|*.*|JPEG Files|*.jpg|PNG Files|*.png|BMP Files|*.bmp"
-        Dim title = "Open"
-
-        oriImg = LoadImageFromFile(pic_main, filter, title)
-        curImg = oriImg.Clone()
-        pic_main.Invoke(New Action(Sub() pic_main.Image = oriImg.ToBitmap()))
+        ImportImage()
     End Sub
 
     Private Sub ReSetSelectedIDs()
@@ -528,6 +808,7 @@ Public Class MainForm
         zoom_Image()
     End Sub
 
+
     Private Sub btn_zoom_out_Click(sender As Object, e As EventArgs) Handles btn_zoom_out.Click
         If zoomFactor < 0.1 Then Return
         zoomFactor /= 1.1
@@ -545,6 +826,20 @@ Public Class MainForm
         ReSetSelectedIDs()
     End Sub
 
+    Private Sub btn_more_Click(sender As Object, e As EventArgs) Handles btn_more.Click
+        If moreFlag Then
+            moreFlag = False
+            pan_webcam.Visible = False
+            pan_measure.Visible = False
+            btn_more.Text = "More"
+        Else
+            moreFlag = True
+            pan_webcam.Visible = True
+            pan_measure.Visible = True
+            btn_more.Text = "Less"
+        End If
+    End Sub
+
     Private Sub btn_select_Click(sender As Object, e As EventArgs) Handles btn_select.Click
         curMeasureType = MeasureType.selectObj
         selectState = True
@@ -553,6 +848,17 @@ Public Class MainForm
         ReSetSelectedObjSet()
     End Sub
 
+    Private Sub btn_move_Click(sender As Object, e As EventArgs) Handles btn_move.Click
+        curMeasureType = MeasureType.move
+        selectState = True
+        curObj.Refresh()
+        ReSetSelectedIDs()
+        ReSetSelectedObjSet()
+    End Sub
+
+    Private Sub btn_view_move_Click(sender As Object, e As EventArgs) Handles btn_view_move.Click
+        curMeasureType = MeasureType.viewMove
+    End Sub
     Private Sub btn_detect_line_Click(sender As Object, e As EventArgs) Handles btn_detect_line.Click
         ReSetEdgeDrawState()
         EdgeRegionDrawReady = True

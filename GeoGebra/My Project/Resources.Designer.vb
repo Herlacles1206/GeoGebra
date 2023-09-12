@@ -153,6 +153,16 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property mode_circle3() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("mode_circle3", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property mode_circlepointradius() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("mode_circlepointradius", resourceCulture)
@@ -286,6 +296,16 @@ Namespace My.Resources
         Friend ReadOnly Property mode_zoomout() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("mode_zoomout", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property view_move() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("view_move", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

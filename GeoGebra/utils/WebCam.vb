@@ -23,7 +23,7 @@ Public Module WebCam
     Public Sub DeleteImages(ByVal imagepath As String)
         Dim FileDelete As String = imagepath
         If System.IO.Directory.Exists(FileDelete) = True Then
-            'System.IO.Directory.Delete(FileDelete, True)
+            System.IO.Directory.Delete(FileDelete, True)
         End If
     End Sub
 

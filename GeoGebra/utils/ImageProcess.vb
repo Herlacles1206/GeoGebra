@@ -3,6 +3,29 @@ Imports Emgu.CV.Structure
 
 Public Module ImageProcess
 
+    Public Function GetMatFromSDImage(ByVal image As Image) As Mat
+        If image Is Nothing Then
+            Return Nothing
+        End If
+        Dim stride = 0
+        Dim bmp As Bitmap = New Bitmap(image)
+
+        Dim rect As Rectangle = New Rectangle(0, 0, bmp.Width, bmp.Height)
+        Dim bmpData = bmp.LockBits(rect, Imaging.ImageLockMode.ReadWrite, bmp.PixelFormat)
+
+        Dim pf = bmp.PixelFormat
+        If pf = Imaging.PixelFormat.Format32bppArgb Then
+            stride = bmp.Width * 4
+        Else
+            stride = bmp.Width * 3
+        End If
+
+        Dim cvImage As Emgu.CV.Image(Of Bgra, Byte) = New Emgu.CV.Image(Of Bgra, Byte)(bmp.Width, bmp.Height, stride, bmpData.Scan0)
+
+        bmp.UnlockBits(bmpData)
+
+        Return cvImage.Mat
+    End Function
 
     Public Function DetectCurve(ByVal scr As Image, ByVal FirstPtOfEdge As Point, ByVal SecondPtOfEdge As Point) As CurveObj
         Dim bmpImage As Bitmap = New Bitmap(scr)
@@ -19,6 +42,7 @@ Public Module ImageProcess
         Dim CropWidth = SecondPtOfEdge.X - FirstPtOfEdge.X
         Dim CropHeight = SecondPtOfEdge.Y - FirstPtOfEdge.Y
         Dim Region As Rectangle = New Rectangle(FirstPtOfEdge.X, FirstPtOfEdge.Y, CropWidth, CropHeight)
+        If Region.Width <= 0 Or Region.Height <= 0 Then Return C_Curve(0)
         grayImage.ROI = Region
 
         Dim cropped = grayImage.Copy()
