@@ -1,0 +1,84 @@
+{
+  "format": 1,
+  "restore": {
+    "E:\\project\\VB\\geogebra\\geogebra\\GeoGebra\\GeoGebra\\MT_VISION_PRO.vbproj": {}
+  },
+  "projects": {
+    "E:\\project\\VB\\geogebra\\geogebra\\GeoGebra\\GeoGebra\\MT_VISION_PRO.vbproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "E:\\project\\VB\\geogebra\\geogebra\\GeoGebra\\GeoGebra\\MT_VISION_PRO.vbproj",
+        "projectName": "GeoGebra",
+        "projectPath": "E:\\project\\VB\\geogebra\\geogebra\\GeoGebra\\GeoGebra\\MT_VISION_PRO.vbproj",
+        "packagesPath": "C:\\Users\\KIC\\.nuget\\packages\\",
+        "outputPath": "E:\\project\\VB\\geogebra\\geogebra\\GeoGebra\\GeoGebra\\obj\\",
+        "projectStyle": "PackageReference",
+        "skipContentFileWrite": true,
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\KIC\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net472"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net472": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net472": {
+          "dependencies": {
+            "AForge.Video.DirectShow": {
+              "target": "Package",
+              "version": "[2.2.5, )"
+            },
+            "ClosedXML": {
+              "target": "Package",
+              "version": "[0.102.1, )"
+            },
+            "Emgu.CV": {
+              "target": "Package",
+              "version": "[4.7.0.5276, )"
+            },
+            "Emgu.CV.Bitmap": {
+              "target": "Package",
+              "version": "[4.7.0.5276, )"
+            },
+            "Emgu.CV.runtime.windows": {
+              "target": "Package",
+              "version": "[4.7.0.5276, )"
+            },
+            "GeometRi": {
+              "target": "Package",
+              "version": "[1.4.0.5, )"
+            }
+          }
+        }
+      },
+      "runtimes": {
+        "win": {
+          "#import": []
+        },
+        "win-arm64": {
+          "#import": []
+        },
+        "win-x64": {
+          "#import": []
+        },
+        "win-x86": {
+          "#import": []
+        }
+      }
+    }
+  }
+}

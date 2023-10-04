@@ -3,7 +3,6 @@ Imports AForge.Video
 Imports AForge.Video.DirectShow
 Imports DocumentFormat.OpenXml.Bibliography
 Imports Emgu.CV
-Imports Emgu.CV.Flann
 Imports Emgu.CV.[Structure]
 Imports System.IO
 
@@ -98,6 +97,7 @@ Public Class MainForm
         If curMeasureType <> MeasureType.selectObj And curMeasureType <> MeasureType.move Then
             selectState = False
         End If
+        DrawCrossHair(pic_cam)
     End Sub
 
     Private Sub RefreshVariables()
@@ -317,11 +317,11 @@ Public Class MainForm
         If mPt.Y + pic_main.Top < thres Then
             If pic_main.Top < 0 Then pic_main.Top += 1
         End If
-        If pan_pic.ClientSize.Width - (mPt.X + pic_main.Left) < thres Then
-            If pic_main.Left + pic_main.Width > pan_pic.ClientSize.Width Then pic_main.Left -= 1
+        If pan_main.ClientSize.Width - (mPt.X + pic_main.Left) < thres Then
+            If pic_main.Left + pic_main.Width > pan_main.ClientSize.Width Then pic_main.Left -= 1
         End If
-        If pan_pic.ClientSize.Height - (mPt.Y + pic_main.Top) < thres Then
-            If pic_main.Top + pic_main.Height > pan_pic.ClientSize.Height Then pic_main.Top -= 1
+        If pan_main.ClientSize.Height - (mPt.Y + pic_main.Top) < thres Then
+            If pic_main.Top + pic_main.Height > pan_main.ClientSize.Height Then pic_main.Top -= 1
         End If
     End Sub
     Private Sub pic_main_MouseMove(sender As Object, e As MouseEventArgs) Handles pic_main.MouseMove
@@ -405,13 +405,6 @@ Public Class MainForm
         Me.Invoke(Sub()
                       newImage = DirectCast(eventArgs.Frame.Clone(), Bitmap)
 
-                      If flag = False Then
-                          If pic_main.Image IsNot Nothing Then
-                              pic_main.Image.Dispose()
-                              pic_main.Image = Nothing
-                          End If
-                          pic_main.Image = newImage.Clone()
-                      End If
                       If pic_cam.Image IsNot Nothing Then
                           pic_cam.Image.Dispose()
                           pic_cam.Image = Nothing
@@ -466,11 +459,34 @@ Public Class MainForm
     Private Sub CLOSECAMERAToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CLOSECAMERAToolStripMenuItem.Click
         Try
             CloseCamera()
-            pic_main.Image = Nothing
+            pic_cam.Image = Nothing
 
         Catch excpt As Exception
             MessageBox.Show(excpt.Message)
         End Try
+    End Sub
+
+    Private Sub btn_camera_Click(sender As Object, e As EventArgs) Handles btn_camera.Click
+        If btn_camera.Text = "Digital Projection ON" Then
+            Try
+                OpenCamera()
+                SelectResolution(videoDevice, CameraResolutionsCB)
+                If Not My.Settings.camresindex.Equals("") Then
+                    CameraResolutionsCB.SelectedIndex = My.Settings.camresindex + 1
+                End If
+                btn_camera.Text = "Digital Projection OFF"
+            Catch excpt As Exception
+                MessageBox.Show(excpt.Message)
+            End Try
+        Else
+            Try
+                CloseCamera()
+                pic_cam.Image = Nothing
+                btn_camera.Text = "Digital Projection ON"
+            Catch excpt As Exception
+                MessageBox.Show(excpt.Message)
+            End Try
+        End If
     End Sub
 
     Private Sub CameraResolutionsCB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CameraResolutionsCB.SelectedIndexChanged
@@ -592,7 +608,6 @@ Public Class MainForm
         list_cam.Items.Clear()
         photoList.Images.Clear()
         pic_cam.Image = Nothing
-        pic_main.Image = Nothing
         DeleteImages(imagepath)
     End Sub
 
@@ -837,6 +852,20 @@ Public Class MainForm
             pan_webcam.Visible = True
             pan_measure.Visible = True
             btn_more.Text = "Less"
+        End If
+    End Sub
+
+    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+        If pan_tool.Visible Then
+            pan_tool.Visible = False
+            pan_tool.Width = 0
+            pan_main.Left -= 283
+            pan_main.Width += 283
+        Else
+            pan_tool.Visible = True
+            pan_tool.Width = 283
+            pan_main.Left += 283
+            pan_main.Width -= 283
         End If
     End Sub
 

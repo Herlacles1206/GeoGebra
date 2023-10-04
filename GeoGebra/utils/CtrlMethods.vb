@@ -1505,6 +1505,15 @@ Public Module CtrlMethods
         objList(MainForm.selectedObj) = obj
     End Sub
 
+    Public Sub DrawCrossHair(pic As PictureBox)
+        Dim g As Graphics = pic.CreateGraphics()
+        Dim W = pic.Width : Dim H = pic.Height
+        Dim X1 As Integer = W / 2 : Dim X2 = X1
+        g.DrawLine(MainForm.drawPen, X1, 0, X2, H)
+        Dim Y1 As Integer = H / 2 : Dim Y2 = Y1
+        g.DrawLine(MainForm.drawPen, 0, Y1, W, Y2)
+        g.Dispose()
+    End Sub
     Public Sub GetName(ByRef obj As measureObj)
         Select Case obj.mType
             Case MeasureType.point

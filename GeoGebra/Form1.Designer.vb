@@ -51,7 +51,8 @@ Partial Class MainForm
         Me.OPENCAMERAToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.CLOSECAMERAToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.EXPORTREPORTToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.pan_tool = New System.Windows.Forms.Panel()
+        Me.btn_more = New System.Windows.Forms.Button()
         Me.Label31 = New System.Windows.Forms.Label()
         Me.btn_view_move = New System.Windows.Forms.Button()
         Me.pan_measure = New System.Windows.Forms.Panel()
@@ -90,7 +91,6 @@ Partial Class MainForm
         Me.btn_clearAll = New System.Windows.Forms.Button()
         Me.list_cam = New System.Windows.Forms.ListView()
         Me.CameraResolutionsCB = New System.Windows.Forms.ComboBox()
-        Me.pic_cam = New System.Windows.Forms.PictureBox()
         Me.btn_capture = New System.Windows.Forms.Button()
         Me.btn_browse = New System.Windows.Forms.Button()
         Me.btn_live = New System.Windows.Forms.Button()
@@ -112,7 +112,11 @@ Partial Class MainForm
         Me.btn_zoom_in = New System.Windows.Forms.Button()
         Me.btn_zoom_out = New System.Windows.Forms.Button()
         Me.btn_extand = New System.Windows.Forms.Button()
-        Me.pan_pic = New System.Windows.Forms.Panel()
+        Me.pic_cam = New System.Windows.Forms.PictureBox()
+        Me.pan_main = New System.Windows.Forms.Panel()
+        Me.pan_pic_cam = New System.Windows.Forms.Panel()
+        Me.btn_camera = New System.Windows.Forms.Button()
+        Me.pan_pic_main = New System.Windows.Forms.Panel()
         Me.pic_main = New System.Windows.Forms.PictureBox()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.Panel4 = New System.Windows.Forms.Panel()
@@ -135,16 +139,17 @@ Partial Class MainForm
         Me.X = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Y = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        Me.btn_more = New System.Windows.Forms.Button()
         Me.Panel1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
-        Me.Panel2.SuspendLayout()
+        Me.pan_tool.SuspendLayout()
         Me.pan_measure.SuspendLayout()
         Me.pan_webcam.SuspendLayout()
         CType(Me.pic_cam, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.pan_pic.SuspendLayout()
+        Me.pan_main.SuspendLayout()
+        Me.pan_pic_cam.SuspendLayout()
+        Me.pan_pic_main.SuspendLayout()
         CType(Me.pic_main, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Panel4.SuspendLayout()
         CType(Me.dgv_obj, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -172,7 +177,7 @@ Partial Class MainForm
         Me.Panel1.Dock = System.Windows.Forms.DockStyle.Top
         Me.Panel1.Location = New System.Drawing.Point(0, 0)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(1462, 83)
+        Me.Panel1.Size = New System.Drawing.Size(1484, 83)
         Me.Panel1.TabIndex = 0
         '
         'GroupBox2
@@ -248,9 +253,9 @@ Partial Class MainForm
         Me.Label8.ForeColor = System.Drawing.Color.DimGray
         Me.Label8.Location = New System.Drawing.Point(476, 33)
         Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(43, 16)
+        Me.Label8.Size = New System.Drawing.Size(51, 16)
         Me.Label8.TabIndex = 7
-        Me.Label8.Text = "Share"
+        Me.Label8.Text = "Toggle"
         '
         'Label7
         '
@@ -394,7 +399,7 @@ Partial Class MainForm
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FILEToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(1462, 24)
+        Me.MenuStrip1.Size = New System.Drawing.Size(1484, 24)
         Me.MenuStrip1.TabIndex = 10
         Me.MenuStrip1.Text = "MenuStrip1"
         '
@@ -429,37 +434,46 @@ Partial Class MainForm
         Me.EXPORTREPORTToolStripMenuItem.Size = New System.Drawing.Size(160, 22)
         Me.EXPORTREPORTToolStripMenuItem.Text = "EXPORT REPORT"
         '
-        'Panel2
+        'pan_tool
         '
-        Me.Panel2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+        Me.pan_tool.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.Panel2.AutoScroll = True
-        Me.Panel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.Panel2.BackColor = System.Drawing.Color.White
-        Me.Panel2.Controls.Add(Me.btn_more)
-        Me.Panel2.Controls.Add(Me.Label31)
-        Me.Panel2.Controls.Add(Me.btn_view_move)
-        Me.Panel2.Controls.Add(Me.pan_measure)
-        Me.Panel2.Controls.Add(Me.pan_webcam)
-        Me.Panel2.Controls.Add(Me.Label1)
-        Me.Panel2.Controls.Add(Me.Label24)
-        Me.Panel2.Controls.Add(Me.Label23)
-        Me.Panel2.Controls.Add(Me.btn_select)
-        Me.Panel2.Controls.Add(Me.btn_calc_dist)
-        Me.Panel2.Controls.Add(Me.lab_move)
-        Me.Panel2.Controls.Add(Me.Label22)
-        Me.Panel2.Controls.Add(Me.btn_move)
-        Me.Panel2.Controls.Add(Me.Label21)
-        Me.Panel2.Controls.Add(Me.Label20)
-        Me.Panel2.Controls.Add(Me.Label19)
-        Me.Panel2.Controls.Add(Me.btn_erase)
-        Me.Panel2.Controls.Add(Me.btn_zoom_in)
-        Me.Panel2.Controls.Add(Me.btn_zoom_out)
-        Me.Panel2.Controls.Add(Me.btn_extand)
-        Me.Panel2.Location = New System.Drawing.Point(1, 86)
-        Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(283, 790)
-        Me.Panel2.TabIndex = 1
+        Me.pan_tool.AutoScroll = True
+        Me.pan_tool.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.pan_tool.BackColor = System.Drawing.Color.White
+        Me.pan_tool.Controls.Add(Me.btn_more)
+        Me.pan_tool.Controls.Add(Me.Label31)
+        Me.pan_tool.Controls.Add(Me.btn_view_move)
+        Me.pan_tool.Controls.Add(Me.pan_measure)
+        Me.pan_tool.Controls.Add(Me.pan_webcam)
+        Me.pan_tool.Controls.Add(Me.Label1)
+        Me.pan_tool.Controls.Add(Me.Label24)
+        Me.pan_tool.Controls.Add(Me.Label23)
+        Me.pan_tool.Controls.Add(Me.btn_select)
+        Me.pan_tool.Controls.Add(Me.btn_calc_dist)
+        Me.pan_tool.Controls.Add(Me.lab_move)
+        Me.pan_tool.Controls.Add(Me.Label22)
+        Me.pan_tool.Controls.Add(Me.btn_move)
+        Me.pan_tool.Controls.Add(Me.Label21)
+        Me.pan_tool.Controls.Add(Me.Label20)
+        Me.pan_tool.Controls.Add(Me.Label19)
+        Me.pan_tool.Controls.Add(Me.btn_erase)
+        Me.pan_tool.Controls.Add(Me.btn_zoom_in)
+        Me.pan_tool.Controls.Add(Me.btn_zoom_out)
+        Me.pan_tool.Controls.Add(Me.btn_extand)
+        Me.pan_tool.Location = New System.Drawing.Point(1, 86)
+        Me.pan_tool.Name = "pan_tool"
+        Me.pan_tool.Size = New System.Drawing.Size(283, 835)
+        Me.pan_tool.TabIndex = 1
+        '
+        'btn_more
+        '
+        Me.btn_more.Location = New System.Drawing.Point(23, 247)
+        Me.btn_more.Name = "btn_more"
+        Me.btn_more.Size = New System.Drawing.Size(75, 23)
+        Me.btn_more.TabIndex = 61
+        Me.btn_more.Text = "More"
+        Me.btn_more.UseVisualStyleBackColor = True
         '
         'Label31
         '
@@ -513,7 +527,7 @@ Partial Class MainForm
         Me.pan_measure.Controls.Add(Me.btn_circle_fixed)
         Me.pan_measure.Controls.Add(Me.Label12)
         Me.pan_measure.Controls.Add(Me.btn_fit_line)
-        Me.pan_measure.Location = New System.Drawing.Point(11, 962)
+        Me.pan_measure.Location = New System.Drawing.Point(11, 814)
         Me.pan_measure.Name = "pan_measure"
         Me.pan_measure.Size = New System.Drawing.Size(252, 448)
         Me.pan_measure.TabIndex = 58
@@ -825,7 +839,6 @@ Partial Class MainForm
         Me.pan_webcam.Controls.Add(Me.btn_clearAll)
         Me.pan_webcam.Controls.Add(Me.list_cam)
         Me.pan_webcam.Controls.Add(Me.CameraResolutionsCB)
-        Me.pan_webcam.Controls.Add(Me.pic_cam)
         Me.pan_webcam.Controls.Add(Me.btn_capture)
         Me.pan_webcam.Controls.Add(Me.btn_browse)
         Me.pan_webcam.Controls.Add(Me.btn_live)
@@ -834,7 +847,7 @@ Partial Class MainForm
         Me.pan_webcam.Controls.Add(Me.Label2)
         Me.pan_webcam.Location = New System.Drawing.Point(11, 286)
         Me.pan_webcam.Name = "pan_webcam"
-        Me.pan_webcam.Size = New System.Drawing.Size(252, 660)
+        Me.pan_webcam.Size = New System.Drawing.Size(252, 522)
         Me.pan_webcam.TabIndex = 55
         Me.pan_webcam.Visible = False
         '
@@ -848,7 +861,7 @@ Partial Class MainForm
         '
         'btn_delete
         '
-        Me.btn_delete.Location = New System.Drawing.Point(154, 628)
+        Me.btn_delete.Location = New System.Drawing.Point(154, 489)
         Me.btn_delete.Name = "btn_delete"
         Me.btn_delete.Size = New System.Drawing.Size(75, 23)
         Me.btn_delete.TabIndex = 57
@@ -857,7 +870,7 @@ Partial Class MainForm
         '
         'btn_clearAll
         '
-        Me.btn_clearAll.Location = New System.Drawing.Point(18, 628)
+        Me.btn_clearAll.Location = New System.Drawing.Point(18, 489)
         Me.btn_clearAll.Name = "btn_clearAll"
         Me.btn_clearAll.Size = New System.Drawing.Size(75, 23)
         Me.btn_clearAll.TabIndex = 56
@@ -867,7 +880,7 @@ Partial Class MainForm
         'list_cam
         '
         Me.list_cam.HideSelection = False
-        Me.list_cam.Location = New System.Drawing.Point(18, 352)
+        Me.list_cam.Location = New System.Drawing.Point(18, 213)
         Me.list_cam.Name = "list_cam"
         Me.list_cam.Size = New System.Drawing.Size(211, 261)
         Me.list_cam.TabIndex = 55
@@ -881,15 +894,6 @@ Partial Class MainForm
         Me.CameraResolutionsCB.Name = "CameraResolutionsCB"
         Me.CameraResolutionsCB.Size = New System.Drawing.Size(213, 21)
         Me.CameraResolutionsCB.TabIndex = 24
-        '
-        'pic_cam
-        '
-        Me.pic_cam.BackColor = System.Drawing.Color.DarkGray
-        Me.pic_cam.Location = New System.Drawing.Point(18, 207)
-        Me.pic_cam.Name = "pic_cam"
-        Me.pic_cam.Size = New System.Drawing.Size(211, 139)
-        Me.pic_cam.TabIndex = 54
-        Me.pic_cam.TabStop = False
         '
         'btn_capture
         '
@@ -1101,26 +1105,65 @@ Partial Class MainForm
         Me.btn_extand.TabIndex = 30
         Me.btn_extand.UseVisualStyleBackColor = True
         '
-        'pan_pic
+        'pic_cam
         '
-        Me.pan_pic.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+        Me.pic_cam.BackColor = System.Drawing.Color.DarkGray
+        Me.pic_cam.Location = New System.Drawing.Point(0, 66)
+        Me.pic_cam.Name = "pic_cam"
+        Me.pic_cam.Size = New System.Drawing.Size(640, 480)
+        Me.pic_cam.TabIndex = 54
+        Me.pic_cam.TabStop = False
+        '
+        'pan_main
+        '
+        Me.pan_main.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.pan_pic.AutoScroll = True
-        Me.pan_pic.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
-        Me.pan_pic.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.pan_pic.Controls.Add(Me.pic_main)
-        Me.pan_pic.Location = New System.Drawing.Point(290, 83)
-        Me.pan_pic.Name = "pan_pic"
-        Me.pan_pic.Size = New System.Drawing.Size(906, 790)
-        Me.pan_pic.TabIndex = 2
+        Me.pan_main.AutoScroll = True
+        Me.pan_main.BackColor = System.Drawing.Color.WhiteSmoke
+        Me.pan_main.Controls.Add(Me.pan_pic_cam)
+        Me.pan_main.Controls.Add(Me.pan_pic_main)
+        Me.pan_main.Location = New System.Drawing.Point(290, 83)
+        Me.pan_main.Name = "pan_main"
+        Me.pan_main.Size = New System.Drawing.Size(928, 835)
+        Me.pan_main.TabIndex = 2
+        '
+        'pan_pic_cam
+        '
+        Me.pan_pic_cam.BackColor = System.Drawing.SystemColors.Control
+        Me.pan_pic_cam.Controls.Add(Me.btn_camera)
+        Me.pan_pic_cam.Controls.Add(Me.pic_cam)
+        Me.pan_pic_cam.Location = New System.Drawing.Point(3, 5)
+        Me.pan_pic_cam.Name = "pan_pic_cam"
+        Me.pan_pic_cam.Size = New System.Drawing.Size(640, 547)
+        Me.pan_pic_cam.TabIndex = 2
+        '
+        'btn_camera
+        '
+        Me.btn_camera.Location = New System.Drawing.Point(254, 9)
+        Me.btn_camera.Name = "btn_camera"
+        Me.btn_camera.Size = New System.Drawing.Size(112, 48)
+        Me.btn_camera.TabIndex = 55
+        Me.btn_camera.Text = "Digital Projection ON"
+        Me.btn_camera.UseVisualStyleBackColor = True
+        '
+        'pan_pic_main
+        '
+        Me.pan_pic_main.AutoScroll = True
+        Me.pan_pic_main.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink
+        Me.pan_pic_main.BackColor = System.Drawing.Color.DarkGray
+        Me.pan_pic_main.Controls.Add(Me.pic_main)
+        Me.pan_pic_main.Location = New System.Drawing.Point(649, 5)
+        Me.pan_pic_main.Name = "pan_pic_main"
+        Me.pan_pic_main.Size = New System.Drawing.Size(750, 500)
+        Me.pan_pic_main.TabIndex = 1
         '
         'pic_main
         '
         Me.pic_main.BackColor = System.Drawing.Color.White
-        Me.pic_main.Location = New System.Drawing.Point(0, 6)
+        Me.pic_main.Location = New System.Drawing.Point(0, 0)
         Me.pic_main.Name = "pic_main"
-        Me.pic_main.Size = New System.Drawing.Size(1024, 768)
+        Me.pic_main.Size = New System.Drawing.Size(750, 500)
         Me.pic_main.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
         Me.pic_main.TabIndex = 0
         Me.pic_main.TabStop = False
@@ -1138,9 +1181,9 @@ Partial Class MainForm
         Me.Panel4.Controls.Add(Me.txt_y)
         Me.Panel4.Controls.Add(Me.txt_x)
         Me.Panel4.Controls.Add(Me.dgv_pos)
-        Me.Panel4.Location = New System.Drawing.Point(1202, 89)
+        Me.Panel4.Location = New System.Drawing.Point(1224, 89)
         Me.Panel4.Name = "Panel4"
-        Me.Panel4.Size = New System.Drawing.Size(260, 784)
+        Me.Panel4.Size = New System.Drawing.Size(260, 829)
         Me.Panel4.TabIndex = 3
         '
         'dgv_obj
@@ -1279,24 +1322,15 @@ Partial Class MainForm
         'Timer1
         '
         '
-        'btn_more
-        '
-        Me.btn_more.Location = New System.Drawing.Point(23, 247)
-        Me.btn_more.Name = "btn_more"
-        Me.btn_more.Size = New System.Drawing.Size(75, 23)
-        Me.btn_more.TabIndex = 61
-        Me.btn_more.Text = "More"
-        Me.btn_more.UseVisualStyleBackColor = True
-        '
         'MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.WhiteSmoke
-        Me.ClientSize = New System.Drawing.Size(1462, 876)
+        Me.ClientSize = New System.Drawing.Size(1484, 921)
         Me.Controls.Add(Me.Panel4)
-        Me.Controls.Add(Me.pan_pic)
-        Me.Controls.Add(Me.Panel2)
+        Me.Controls.Add(Me.pan_main)
+        Me.Controls.Add(Me.pan_tool)
         Me.Controls.Add(Me.Panel1)
         Me.MainMenuStrip = Me.MenuStrip1
         Me.Name = "MainForm"
@@ -1308,15 +1342,17 @@ Partial Class MainForm
         Me.GroupBox1.ResumeLayout(False)
         Me.MenuStrip1.ResumeLayout(False)
         Me.MenuStrip1.PerformLayout()
-        Me.Panel2.ResumeLayout(False)
-        Me.Panel2.PerformLayout()
+        Me.pan_tool.ResumeLayout(False)
+        Me.pan_tool.PerformLayout()
         Me.pan_measure.ResumeLayout(False)
         Me.pan_measure.PerformLayout()
         Me.pan_webcam.ResumeLayout(False)
         Me.pan_webcam.PerformLayout()
         CType(Me.pic_cam, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.pan_pic.ResumeLayout(False)
-        Me.pan_pic.PerformLayout()
+        Me.pan_main.ResumeLayout(False)
+        Me.pan_pic_cam.ResumeLayout(False)
+        Me.pan_pic_main.ResumeLayout(False)
+        Me.pan_pic_main.PerformLayout()
         CType(Me.pic_main, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Panel4.ResumeLayout(False)
         Me.Panel4.PerformLayout()
@@ -1327,8 +1363,8 @@ Partial Class MainForm
     End Sub
 
     Friend WithEvents Panel1 As Panel
-    Friend WithEvents Panel2 As Panel
-    Friend WithEvents pan_pic As Panel
+    Friend WithEvents pan_tool As Panel
+    Friend WithEvents pan_main As Panel
     Friend WithEvents pic_main As PictureBox
     Friend WithEvents Label4 As Label
     Friend WithEvents Label2 As Label
@@ -1438,4 +1474,7 @@ Partial Class MainForm
     Friend WithEvents obj_observation As DataGridViewTextBoxColumn
     Friend WithEvents obj_judgement As DataGridViewComboBoxColumn
     Friend WithEvents btn_more As Button
+    Friend WithEvents pan_pic_main As Panel
+    Friend WithEvents pan_pic_cam As Panel
+    Friend WithEvents btn_camera As Button
 End Class
