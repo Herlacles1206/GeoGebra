@@ -47,6 +47,7 @@ Partial Class Frm_Machine_Comm
         Me.Btn_Refresh_MainMachineCOMS = New System.Windows.Forms.Button()
         Me.WsmbsControl1 = New WSMBS.WSMBSControl(Me.components)
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+<<<<<<< HEAD
         Me.TB_PosYInc = New System.Windows.Forms.TextBox()
         Me.TB_PosXInc = New System.Windows.Forms.TextBox()
         Me.Btn_CurXInc = New System.Windows.Forms.Button()
@@ -63,6 +64,15 @@ Partial Class Frm_Machine_Comm
         Me.GB_MachineConnect.SuspendLayout()
         Me.GB_INC.SuspendLayout()
         Me.GB_ABS.SuspendLayout()
+=======
+        Me.TB_PosY = New System.Windows.Forms.TextBox()
+        Me.TB_PosX = New System.Windows.Forms.TextBox()
+        Me.Btn_CurX = New System.Windows.Forms.Button()
+        Me.Btn_CurY = New System.Windows.Forms.Button()
+        Me.GB_ZAxis.SuspendLayout()
+        Me.Pnl_MotorisedStage.SuspendLayout()
+        Me.GB_MachineConnect.SuspendLayout()
+>>>>>>> f6d78bb321f8c4ecda94376d6249262d0340ce93
         Me.SuspendLayout()
         '
         'GB_ZAxis
@@ -74,7 +84,11 @@ Partial Class Frm_Machine_Comm
         Me.GB_ZAxis.Controls.Add(Me.Btn_FocusUpFast)
         Me.GB_ZAxis.Controls.Add(Me.Btn_FocusUPSlow)
         Me.GB_ZAxis.ForeColor = System.Drawing.SystemColors.ControlLightLight
+<<<<<<< HEAD
         Me.GB_ZAxis.Location = New System.Drawing.Point(48, 271)
+=======
+        Me.GB_ZAxis.Location = New System.Drawing.Point(12, 12)
+>>>>>>> f6d78bb321f8c4ecda94376d6249262d0340ce93
         Me.GB_ZAxis.Name = "GB_ZAxis"
         Me.GB_ZAxis.Size = New System.Drawing.Size(100, 292)
         Me.GB_ZAxis.TabIndex = 554
@@ -138,9 +152,15 @@ Partial Class Frm_Machine_Comm
         Me.Pnl_MotorisedStage.Controls.Add(Me.Btn_YSlowBack)
         Me.Pnl_MotorisedStage.Controls.Add(Me.Btn_YSlowFront)
         Me.Pnl_MotorisedStage.Controls.Add(Me.Btn_XSlowLeft)
+<<<<<<< HEAD
         Me.Pnl_MotorisedStage.Location = New System.Drawing.Point(2, 6)
         Me.Pnl_MotorisedStage.Name = "Pnl_MotorisedStage"
         Me.Pnl_MotorisedStage.Size = New System.Drawing.Size(234, 259)
+=======
+        Me.Pnl_MotorisedStage.Location = New System.Drawing.Point(118, 12)
+        Me.Pnl_MotorisedStage.Name = "Pnl_MotorisedStage"
+        Me.Pnl_MotorisedStage.Size = New System.Drawing.Size(237, 259)
+>>>>>>> f6d78bb321f8c4ecda94376d6249262d0340ce93
         Me.Pnl_MotorisedStage.TabIndex = 555
         '
         'Btn_GoTo_Incremental
@@ -205,7 +225,11 @@ Partial Class Frm_Machine_Comm
         '
         'Btn_XFastRight
         '
+<<<<<<< HEAD
         Me.Btn_XFastRight.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+=======
+        Me.Btn_XFastRight.Font = New System.Drawing.Font("Arial Narrow", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+>>>>>>> f6d78bb321f8c4ecda94376d6249262d0340ce93
         Me.Btn_XFastRight.Location = New System.Drawing.Point(181, 93)
         Me.Btn_XFastRight.Name = "Btn_XFastRight"
         Me.Btn_XFastRight.Size = New System.Drawing.Size(49, 34)
@@ -217,7 +241,11 @@ Partial Class Frm_Machine_Comm
         '
         'Btn_XSlowRight
         '
+<<<<<<< HEAD
         Me.Btn_XSlowRight.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+=======
+        Me.Btn_XSlowRight.Font = New System.Drawing.Font("Arial Narrow", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+>>>>>>> f6d78bb321f8c4ecda94376d6249262d0340ce93
         Me.Btn_XSlowRight.Location = New System.Drawing.Point(135, 93)
         Me.Btn_XSlowRight.Name = "Btn_XSlowRight"
         Me.Btn_XSlowRight.Size = New System.Drawing.Size(42, 34)
@@ -260,7 +288,11 @@ Partial Class Frm_Machine_Comm
         'Btn_EStop
         '
         Me.Btn_EStop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch
+<<<<<<< HEAD
         Me.Btn_EStop.Location = New System.Drawing.Point(83, 898)
+=======
+        Me.Btn_EStop.Location = New System.Drawing.Point(12, 431)
+>>>>>>> f6d78bb321f8c4ecda94376d6249262d0340ce93
         Me.Btn_EStop.Name = "Btn_EStop"
         Me.Btn_EStop.Size = New System.Drawing.Size(75, 52)
         Me.Btn_EStop.TabIndex = 570
@@ -270,9 +302,15 @@ Partial Class Frm_Machine_Comm
         'Btn_ComConnect
         '
         Me.Btn_ComConnect.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+<<<<<<< HEAD
         Me.Btn_ComConnect.Location = New System.Drawing.Point(9, 94)
         Me.Btn_ComConnect.Name = "Btn_ComConnect"
         Me.Btn_ComConnect.Size = New System.Drawing.Size(122, 44)
+=======
+        Me.Btn_ComConnect.Location = New System.Drawing.Point(64, 648)
+        Me.Btn_ComConnect.Name = "Btn_ComConnect"
+        Me.Btn_ComConnect.Size = New System.Drawing.Size(132, 52)
+>>>>>>> f6d78bb321f8c4ecda94376d6249262d0340ce93
         Me.Btn_ComConnect.TabIndex = 569
         Me.Btn_ComConnect.Text = "Connect Tester"
         Me.Btn_ComConnect.UseVisualStyleBackColor = True
@@ -281,10 +319,16 @@ Partial Class Frm_Machine_Comm
         '
         Me.GB_MachineConnect.Controls.Add(Me.cbPortName)
         Me.GB_MachineConnect.Controls.Add(Me.Btn_Refresh_MainMachineCOMS)
+<<<<<<< HEAD
         Me.GB_MachineConnect.Controls.Add(Me.Btn_ComConnect)
         Me.GB_MachineConnect.Location = New System.Drawing.Point(57, 731)
         Me.GB_MachineConnect.Name = "GB_MachineConnect"
         Me.GB_MachineConnect.Size = New System.Drawing.Size(139, 161)
+=======
+        Me.GB_MachineConnect.Location = New System.Drawing.Point(64, 509)
+        Me.GB_MachineConnect.Name = "GB_MachineConnect"
+        Me.GB_MachineConnect.Size = New System.Drawing.Size(139, 123)
+>>>>>>> f6d78bb321f8c4ecda94376d6249262d0340ce93
         Me.GB_MachineConnect.TabIndex = 572
         Me.GB_MachineConnect.TabStop = False
         Me.GB_MachineConnect.Text = "Multitek MLT - 2"
@@ -324,6 +368,7 @@ Partial Class Frm_Machine_Comm
         '
         Me.Timer1.Interval = 400
         '
+<<<<<<< HEAD
         'TB_PosYInc
         '
         Me.TB_PosYInc.Location = New System.Drawing.Point(167, 22)
@@ -423,11 +468,45 @@ Partial Class Frm_Machine_Comm
         Me.btn_enterPt.TabIndex = 600
         Me.btn_enterPt.Text = "Enter Point"
         Me.btn_enterPt.UseVisualStyleBackColor = True
+=======
+        'TB_PosY
+        '
+        Me.TB_PosY.Location = New System.Drawing.Point(315, 377)
+        Me.TB_PosY.Name = "TB_PosY"
+        Me.TB_PosY.Size = New System.Drawing.Size(58, 20)
+        Me.TB_PosY.TabIndex = 597
+        '
+        'TB_PosX
+        '
+        Me.TB_PosX.Location = New System.Drawing.Point(152, 377)
+        Me.TB_PosX.Name = "TB_PosX"
+        Me.TB_PosX.Size = New System.Drawing.Size(58, 20)
+        Me.TB_PosX.TabIndex = 596
+        '
+        'Btn_CurX
+        '
+        Me.Btn_CurX.Location = New System.Drawing.Point(110, 375)
+        Me.Btn_CurX.Name = "Btn_CurX"
+        Me.Btn_CurX.Size = New System.Drawing.Size(36, 23)
+        Me.Btn_CurX.TabIndex = 598
+        Me.Btn_CurX.Text = "X"
+        Me.Btn_CurX.UseVisualStyleBackColor = True
+        '
+        'Btn_CurY
+        '
+        Me.Btn_CurY.Location = New System.Drawing.Point(259, 377)
+        Me.Btn_CurY.Name = "Btn_CurY"
+        Me.Btn_CurY.Size = New System.Drawing.Size(36, 23)
+        Me.Btn_CurY.TabIndex = 599
+        Me.Btn_CurY.Text = "Y"
+        Me.Btn_CurY.UseVisualStyleBackColor = True
+>>>>>>> f6d78bb321f8c4ecda94376d6249262d0340ce93
         '
         'Frm_Machine_Comm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+<<<<<<< HEAD
         Me.BackColor = System.Drawing.SystemColors.ActiveCaption
         Me.ClientSize = New System.Drawing.Size(240, 960)
         Me.Controls.Add(Me.GB_ABS)
@@ -438,6 +517,19 @@ Partial Class Frm_Machine_Comm
         Me.Controls.Add(Me.GB_ZAxis)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Location = New System.Drawing.Point(1673, 2)
+=======
+        Me.ClientSize = New System.Drawing.Size(394, 921)
+        Me.Controls.Add(Me.Btn_CurY)
+        Me.Controls.Add(Me.Btn_CurX)
+        Me.Controls.Add(Me.TB_PosY)
+        Me.Controls.Add(Me.TB_PosX)
+        Me.Controls.Add(Me.GB_MachineConnect)
+        Me.Controls.Add(Me.Btn_EStop)
+        Me.Controls.Add(Me.Btn_ComConnect)
+        Me.Controls.Add(Me.Pnl_MotorisedStage)
+        Me.Controls.Add(Me.GB_ZAxis)
+        Me.Location = New System.Drawing.Point(1500, 0)
+>>>>>>> f6d78bb321f8c4ecda94376d6249262d0340ce93
         Me.Name = "Frm_Machine_Comm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
         Me.Text = "Multitek PT 300 E Control Panel"
@@ -446,10 +538,13 @@ Partial Class Frm_Machine_Comm
         Me.Pnl_MotorisedStage.ResumeLayout(False)
         Me.Pnl_MotorisedStage.PerformLayout()
         Me.GB_MachineConnect.ResumeLayout(False)
+<<<<<<< HEAD
         Me.GB_INC.ResumeLayout(False)
         Me.GB_INC.PerformLayout()
         Me.GB_ABS.ResumeLayout(False)
         Me.GB_ABS.PerformLayout()
+=======
+>>>>>>> f6d78bb321f8c4ecda94376d6249262d0340ce93
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -479,6 +574,7 @@ Partial Class Frm_Machine_Comm
     Friend WithEvents Btn_Refresh_MainMachineCOMS As Button
     Friend WithEvents WsmbsControl1 As WSMBS.WSMBSControl
     Friend WithEvents Timer1 As Timer
+<<<<<<< HEAD
     Friend WithEvents TB_PosYInc As TextBox
     Friend WithEvents TB_PosXInc As TextBox
     Friend WithEvents Btn_CurXInc As Button
@@ -490,4 +586,10 @@ Partial Class Frm_Machine_Comm
     Friend WithEvents GB_INC As GroupBox
     Friend WithEvents GB_ABS As GroupBox
     Friend WithEvents btn_enterPt As Button
+=======
+    Friend WithEvents TB_PosY As TextBox
+    Friend WithEvents TB_PosX As TextBox
+    Friend WithEvents Btn_CurX As Button
+    Friend WithEvents Btn_CurY As Button
+>>>>>>> f6d78bb321f8c4ecda94376d6249262d0340ce93
 End Class

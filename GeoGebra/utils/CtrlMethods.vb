@@ -1523,12 +1523,15 @@ Public Module CtrlMethods
         g.DrawLine(MainForm.drawPen, 0, Y1, W, Y2)
         g.Dispose()
     End Sub
+<<<<<<< HEAD
 
     Public Sub DrawIncPos(pic As PictureBox)
         Dim g As Graphics = pic.CreateGraphics()
         g.DrawEllipse(MainForm.redPen, New Rectangle(MainForm.PosIncX - 2, MainForm.PosIncY - 2, 4, 4))
         g.Dispose()
     End Sub
+=======
+>>>>>>> f6d78bb321f8c4ecda94376d6249262d0340ce93
     Public Sub GetName(ByRef obj As measureObj)
         Select Case obj.mType
             Case MeasureType.point

@@ -139,6 +139,7 @@ Public Class MainForm
         If curMeasureType <> MeasureType.selectObj And curMeasureType <> MeasureType.move Then
             selectState = False
         End If
+<<<<<<< HEAD
 
         If curMeasureType = MeasureType.viewMove Then
             MoveWindows()
@@ -161,6 +162,8 @@ Public Class MainForm
             DrawIncPos(pic_main)
         End If
 
+=======
+>>>>>>> f6d78bb321f8c4ecda94376d6249262d0340ce93
         DrawCrossHair(pic_cam)
     End Sub
 
@@ -379,6 +382,23 @@ Public Class MainForm
     End Sub
 
 
+<<<<<<< HEAD
+=======
+        Dim thres = 40
+        If mPt.X + pic_main.Left < thres Then
+            If pic_main.Left < 0 Then pic_main.Left += 1
+        End If
+        If mPt.Y + pic_main.Top < thres Then
+            If pic_main.Top < 0 Then pic_main.Top += 1
+        End If
+        If pan_main.ClientSize.Width - (mPt.X + pic_main.Left) < thres Then
+            If pic_main.Left + pic_main.Width > pan_main.ClientSize.Width Then pic_main.Left -= 1
+        End If
+        If pan_main.ClientSize.Height - (mPt.Y + pic_main.Top) < thres Then
+            If pic_main.Top + pic_main.Height > pan_main.ClientSize.Height Then pic_main.Top -= 1
+        End If
+    End Sub
+>>>>>>> f6d78bb321f8c4ecda94376d6249262d0340ce93
     Private Sub pic_main_MouseMove(sender As Object, e As MouseEventArgs) Handles pic_main.MouseMove
         GetMousePositions(e.X, e.Y)
         DisplayMousePositions()
@@ -925,6 +945,20 @@ Public Class MainForm
     '        pan_main.Width -= 283
     '    End If
     'End Sub
+
+    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+        If pan_tool.Visible Then
+            pan_tool.Visible = False
+            pan_tool.Width = 0
+            pan_main.Left -= 283
+            pan_main.Width += 283
+        Else
+            pan_tool.Visible = True
+            pan_tool.Width = 283
+            pan_main.Left += 283
+            pan_main.Width -= 283
+        End If
+    End Sub
 
     Private Sub btn_select_Click(sender As Object, e As EventArgs) Handles btn_select.Click
         curMeasureType = MeasureType.selectObj

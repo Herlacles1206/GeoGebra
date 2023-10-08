@@ -48,6 +48,7 @@ E:\project\geogebra\geogebra\GeoGebra\GeoGebra\obj\Debug\MT_VISION_PRO.vbproj.Co
 E:\project\geogebra\geogebra\GeoGebra\GeoGebra\obj\Debug\GeoGebra.exe
 E:\project\geogebra\geogebra\GeoGebra\GeoGebra\obj\Debug\GeoGebra.xml
 E:\project\geogebra\geogebra\GeoGebra\GeoGebra\obj\Debug\GeoGebra.pdb
+<<<<<<< HEAD
 E:\Multitek CNC Vision PRO\Multitek CNC Vision V5\GeoGebra\GeoGebra\GeoGebra\bin\Debug\GeoGebra.exe.config
 E:\Multitek CNC Vision PRO\Multitek CNC Vision V5\GeoGebra\GeoGebra\GeoGebra\bin\Debug\GeoGebra.exe
 E:\Multitek CNC Vision PRO\Multitek CNC Vision V5\GeoGebra\GeoGebra\GeoGebra\bin\Debug\GeoGebra.pdb
@@ -156,3 +157,5 @@ E:\project\VB\geogebra\GeoGebra_kunal\GeoGebra\GeoGebra\obj\Debug\MT_VISION_PRO.
 E:\project\VB\geogebra\GeoGebra_kunal\GeoGebra\GeoGebra\obj\Debug\GeoGebra.exe
 E:\project\VB\geogebra\GeoGebra_kunal\GeoGebra\GeoGebra\obj\Debug\GeoGebra.xml
 E:\project\VB\geogebra\GeoGebra_kunal\GeoGebra\GeoGebra\obj\Debug\GeoGebra.pdb
+=======
+>>>>>>> f6d78bb321f8c4ecda94376d6249262d0340ce93

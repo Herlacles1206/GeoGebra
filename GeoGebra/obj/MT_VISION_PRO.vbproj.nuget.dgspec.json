@@ -1,6 +1,7 @@
 {
   "format": 1,
   "restore": {
+<<<<<<< HEAD
     "E:\\project\\VB\\geogebra\\GeoGebra_kunal\\GeoGebra\\GeoGebra\\MT_VISION_PRO.vbproj": {}
   },
   "projects": {
@@ -12,6 +13,19 @@
         "projectPath": "E:\\project\\VB\\geogebra\\GeoGebra_kunal\\GeoGebra\\GeoGebra\\MT_VISION_PRO.vbproj",
         "packagesPath": "C:\\Users\\KIC\\.nuget\\packages\\",
         "outputPath": "E:\\project\\VB\\geogebra\\GeoGebra_kunal\\GeoGebra\\GeoGebra\\obj\\",
+=======
+    "E:\\project\\VB\\geogebra\\geogebra\\GeoGebra\\GeoGebra\\MT_VISION_PRO.vbproj": {}
+  },
+  "projects": {
+    "E:\\project\\VB\\geogebra\\geogebra\\GeoGebra\\GeoGebra\\MT_VISION_PRO.vbproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "E:\\project\\VB\\geogebra\\geogebra\\GeoGebra\\GeoGebra\\MT_VISION_PRO.vbproj",
+        "projectName": "GeoGebra",
+        "projectPath": "E:\\project\\VB\\geogebra\\geogebra\\GeoGebra\\GeoGebra\\MT_VISION_PRO.vbproj",
+        "packagesPath": "C:\\Users\\KIC\\.nuget\\packages\\",
+        "outputPath": "E:\\project\\VB\\geogebra\\geogebra\\GeoGebra\\GeoGebra\\obj\\",
+>>>>>>> f6d78bb321f8c4ecda94376d6249262d0340ce93
         "projectStyle": "PackageReference",
         "skipContentFileWrite": true,
         "fallbackFolders": [

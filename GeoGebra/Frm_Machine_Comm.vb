@@ -4,8 +4,11 @@ Public Class Frm_Machine_Comm
 
     Dim ComPortMainMachine As String
 
+<<<<<<< HEAD
     Public enterKeyPressed As Boolean
 
+=======
+>>>>>>> f6d78bb321f8c4ecda94376d6249262d0340ce93
     Private Sub Btn_EStop_Click(sender As Object, e As EventArgs) Handles Btn_EStop.Click
         WsmbsControl1.WriteSingleCoil(1, 2096, 1) ' Set M48 ON
         Pause(100)
@@ -16,6 +19,7 @@ Public Class Frm_Machine_Comm
         WsmbsControl1.LicenseKey("22B8-91B6-7383-20CB-2422-8E7B")
         ComPortMainMachine = My.Settings.Mem_MachineComPort
         Btn_Refresh_MainMachineCOMS.Text = "Refresh / " & ComPortMainMachine
+<<<<<<< HEAD
 
         'test
         TB_PosXAbs.Text = "10"
@@ -23,6 +27,8 @@ Public Class Frm_Machine_Comm
 
         TB_PosXInc.Text = "10"
         TB_PosYInc.Text = "10"
+=======
+>>>>>>> f6d78bb321f8c4ecda94376d6249262d0340ce93
     End Sub
 
     Private Sub Btn_ComConnect_Click(sender As Object, e As EventArgs) Handles Btn_ComConnect.Click
@@ -89,8 +95,13 @@ Public Class Frm_Machine_Comm
 
         If Result = WSMBS.Result.SUCCESS Then
 
+<<<<<<< HEAD
             TB_PosXInc.Text = Math.Round(((WsmbsControl1.RegistersToInt32(Registers(1), Registers(0))) / 1000), 3) ' D190 is Current X
             TB_PosYInc.Text = Math.Round((WsmbsControl1.RegistersToInt32(Registers(3), Registers(2)) / 1000), 3) 'D192 is Current Y
+=======
+            TB_PosX.Text = Math.Round(((WsmbsControl1.RegistersToInt32(Registers(1), Registers(0))) / 1000), 3) ' D190 is Current X
+            TB_PosY.Text = Math.Round((WsmbsControl1.RegistersToInt32(Registers(3), Registers(2)) / 1000), 3) 'D192 is Current Y
+>>>>>>> f6d78bb321f8c4ecda94376d6249262d0340ce93
 
         End If
 
@@ -345,19 +356,30 @@ Public Class Frm_Machine_Comm
         WsmbsControl1.WriteSingleCoil(1, 2307, 0) 'Set M259 OFF
     End Sub
 #End Region
+<<<<<<< HEAD
     Private Sub Btn_CurX_Click(sender As Object, e As EventArgs) Handles Btn_CurXInc.Click
+=======
+    Private Sub Btn_CurX_Click(sender As Object, e As EventArgs) Handles Btn_CurX.Click
+>>>>>>> f6d78bb321f8c4ecda94376d6249262d0340ce93
         WsmbsControl1.WriteSingleCoil(1, 2048, 1) 'Set M0 On
         Pause(300)
         WsmbsControl1.WriteSingleCoil(1, 2048, 0) 'Set M0 Off
     End Sub
 
+<<<<<<< HEAD
     Private Sub Btn_CurY_Click(sender As Object, e As EventArgs) Handles Btn_CurYInc.Click
+=======
+    Private Sub Btn_CurY_Click(sender As Object, e As EventArgs) Handles Btn_CurY.Click
+>>>>>>> f6d78bb321f8c4ecda94376d6249262d0340ce93
         WsmbsControl1.WriteSingleCoil(1, 2049, 1) 'Set M0 On
         Pause(300)
         WsmbsControl1.WriteSingleCoil(1, 2049, 0) 'Set M0 Off
     End Sub
+<<<<<<< HEAD
 
     Private Sub btn_enterPt_Click(sender As Object, e As EventArgs) Handles btn_enterPt.Click
         enterKeyPressed = True
     End Sub
+=======
+>>>>>>> f6d78bb321f8c4ecda94376d6249262d0340ce93
 End Class

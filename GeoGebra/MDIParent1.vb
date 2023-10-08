@@ -87,6 +87,7 @@ Public Class MDIParent1
     Private m_ChildFormNumber As Integer
 
     Private Sub MDIParent1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+<<<<<<< HEAD
 
         Frm_Machine_Comm.MdiParent = Me
         Frm_Machine_Comm.Show()
@@ -105,4 +106,14 @@ Public Class MDIParent1
     End Function
 
 
+=======
+        MainForm.MdiParent = Me
+        MainForm.Show()
+
+
+
+        Frm_Machine_Comm.MdiParent = Me
+        Frm_Machine_Comm.Show()
+    End Sub
+>>>>>>> f6d78bb321f8c4ecda94376d6249262d0340ce93
 End Class

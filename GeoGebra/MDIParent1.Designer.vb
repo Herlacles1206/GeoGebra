@@ -133,7 +133,10 @@ Partial Class MDIParent1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+<<<<<<< HEAD
         Me.BackColor = System.Drawing.SystemColors.WindowFrame
+=======
+>>>>>>> f6d78bb321f8c4ecda94376d6249262d0340ce93
         Me.ClientSize = New System.Drawing.Size(1904, 1011)
         Me.Controls.Add(Me.ToolStrip)
         Me.Controls.Add(Me.StatusStrip)
