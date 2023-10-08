@@ -89,6 +89,18 @@ Namespace My
                 Me("imagefilepath") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("COM5")>  _
+        Public Property Mem_MachineComPort() As String
+            Get
+                Return CType(Me("Mem_MachineComPort"),String)
+            End Get
+            Set
+                Me("Mem_MachineComPort") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

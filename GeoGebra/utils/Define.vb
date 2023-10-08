@@ -111,7 +111,7 @@ Public Structure angleObj
     Public lineObj_1 As lineObj
     Public lineObj_2 As lineObj
     Public midPt As pointObj
-    Public angle As Integer
+    Public angle As Double
     Public clockwise As Boolean
     Public fixed As Boolean
     Public startAngle As Double

@@ -22,6 +22,8 @@ Public Module MathCalc
         End If
         Dim theta = Math.Acos(val)
         theta = theta * 360 / Math.PI / 2
+
+        theta = Math.Round(theta, 2)
         Return theta
     End Function
 

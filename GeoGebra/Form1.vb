@@ -3,7 +3,6 @@ Imports AForge.Video
 Imports AForge.Video.DirectShow
 Imports DocumentFormat.OpenXml.Bibliography
 Imports Emgu.CV
-Imports Emgu.CV.Flann
 Imports Emgu.CV.[Structure]
 Imports System.IO
 
@@ -40,7 +39,7 @@ Public Class MainForm
     Public ReadOnly listCamera As ArrayList = New ArrayList()
     Public Shared needSnapshot As Boolean = False
     Public newImage As Bitmap = Nothing                                'used for capturing frame of webcam
-    Public ReadOnly _devicename As String = "MultitekHDCam"            'device name
+    Public ReadOnly _devicename As String = "HD camera"            'device name
     Public ReadOnly photoList As New System.Windows.Forms.ImageList    'list of captured images
     Public file_counter As Integer = 0                                 'the count of captured images
     Public camera_state As Boolean = False                             'the state of camera is opened or not
@@ -88,7 +87,49 @@ Public Class MainForm
 
     Public moreFlag As Boolean = False
 
+    Public useMouse As Boolean = False
+    Public mdi_Parent As MDIParent1
+    Public machine_Form As Frm_Machine_Comm
+
+    Public PosIncX As Integer
+    Public PosIncY As Integer
+    Public PosAbsX As Integer
+    Public PosAbsY As Integer
+
+    Private Sub GetMachinePos()
+        PosIncX = CInt(machine_Form.TB_PosXInc.Text)
+        PosIncY = CInt(machine_Form.TB_PosYInc.Text)
+        PosAbsX = CInt(machine_Form.TB_PosXAbs.Text)
+        PosAbsY = CInt(machine_Form.TB_PosYAbs.Text)
+    End Sub
+
+    Private Sub MoveWindows()
+
+        Dim thres = 40
+        Dim posX, posY As Integer
+        If useMouse Then
+            posX = mPt.X : posY = mPt.Y
+        Else
+            posX = PosAbsX : posY = PosAbsY
+        End If
+
+        If posX + pic_main.Left < thres Then
+            If pic_main.Left < 0 Then pic_main.Left += 1
+        End If
+        If posY + pic_main.Top < thres Then
+            If pic_main.Top < 0 Then pic_main.Top += 1
+        End If
+        If pan_pic_main.ClientSize.Width - (posX + pic_main.Left) < thres Then
+            If pic_main.Left + pic_main.Width > pan_pic_main.ClientSize.Width Then pic_main.Left -= 1
+        End If
+        If pan_pic_main.ClientSize.Height - (posY + pic_main.Top) < thres Then
+            If pic_main.Top + pic_main.Height > pan_pic_main.ClientSize.Height Then pic_main.Top -= 1
+        End If
+    End Sub
+
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
+        GetMachinePos()
+
         If curMeasureType <> MeasureType.eraseObj Then
             eraseState = False
         End If
@@ -98,6 +139,29 @@ Public Class MainForm
         If curMeasureType <> MeasureType.selectObj And curMeasureType <> MeasureType.move Then
             selectState = False
         End If
+
+        If curMeasureType = MeasureType.viewMove Then
+            MoveWindows()
+        End If
+
+        If Not useMouse Then
+            If machine_Form.enterKeyPressed Then
+                machine_Form.enterKeyPressed = False
+                If curMeasureType >= 0 Then
+                    Dim completed = UpdateObj(curObj, curMeasureType, New PointF(PosIncX / pic_main.Width, PosIncY / pic_main.Height))
+                    LoadPosDataToGridView(New Point(PosIncX, PosIncY))
+                    If completed Then
+                        CompareWithExisingObjs(curObj, objList)
+                        AppendObjToList()
+                        LoadObjectList(dgv_obj, objList, CF, digit, unit, name_list)
+                    End If
+                End If
+            End If
+            DrawObjList(pic_main, objList)
+            DrawIncPos(pic_main)
+        End If
+
+        DrawCrossHair(pic_cam)
     End Sub
 
     Private Sub RefreshVariables()
@@ -124,6 +188,9 @@ Public Class MainForm
         name_list.Add("Line")
         name_list.Add("Angle")
         name_list.Add("Arc")
+
+        mdi_Parent = CType(Me.MdiParent, MDIParent1)
+        machine_Form = CType(mdi_Parent.GetChildForm("Frm_Machine_Comm"), Frm_Machine_Comm)
     End Sub
     Private Sub InitializeComponents()
         pic_main.Controls.Add(txtBox)
@@ -153,6 +220,8 @@ Public Class MainForm
         curObj.mType = mType
         If mType = MeasureType.detectLine Then curObj.mType = MeasureType.lineFit
         If mType = MeasureType.detectCircle Then curObj.mType = MeasureType.circle_3
+
+        dgv_pos.Rows.Clear()
     End Sub
 
     Private Sub btn_point_Click(sender As Object, e As EventArgs) Handles btn_point.Click
@@ -265,13 +334,14 @@ Public Class MainForm
         If selectedObjSet(1) = Infinite And selectedObj <> Infinite Then selectedObjSet(1) = selectedObj : curMeasureType = MeasureType.initState
     End Sub
     Private Sub pic_main_MouseDown(sender As Object, e As MouseEventArgs) Handles pic_main.MouseDown
+        If Not useMouse Then Return
         If e.Button = MouseButtons.Left Then
             mLBtnDown = True
             GetMousePositions(e.X, e.Y)
 
             If curMeasureType >= 0 Then
                 Dim completed = UpdateObj(curObj, curMeasureType, mPtF)
-
+                LoadPosDataToGridView(mPt)
                 txt_counter.Text = curObj.ptCnt.ToString()
                 If completed Then
                     CompareWithExisingObjs(curObj, objList)
@@ -308,22 +378,7 @@ Public Class MainForm
         g.Dispose()
     End Sub
 
-    Private Sub MoveWindows()
 
-        Dim thres = 40
-        If mPt.X + pic_main.Left < thres Then
-            If pic_main.Left < 0 Then pic_main.Left += 1
-        End If
-        If mPt.Y + pic_main.Top < thres Then
-            If pic_main.Top < 0 Then pic_main.Top += 1
-        End If
-        If pan_pic.ClientSize.Width - (mPt.X + pic_main.Left) < thres Then
-            If pic_main.Left + pic_main.Width > pan_pic.ClientSize.Width Then pic_main.Left -= 1
-        End If
-        If pan_pic.ClientSize.Height - (mPt.Y + pic_main.Top) < thres Then
-            If pic_main.Top + pic_main.Height > pan_pic.ClientSize.Height Then pic_main.Top -= 1
-        End If
-    End Sub
     Private Sub pic_main_MouseMove(sender As Object, e As MouseEventArgs) Handles pic_main.MouseMove
         GetMousePositions(e.X, e.Y)
         DisplayMousePositions()
@@ -332,9 +387,7 @@ Public Class MainForm
             GetSelectedIDs(objList, mPt)
         End If
 
-        If curMeasureType = MeasureType.viewMove Then
-            MoveWindows()
-        End If
+
 
         If mLBtnDown And curMeasureType = MeasureType.move Then
             MoveSelectedObj(objList, mPt.X - prevMPt.X, mPt.Y - prevMPt.Y)
@@ -405,13 +458,6 @@ Public Class MainForm
         Me.Invoke(Sub()
                       newImage = DirectCast(eventArgs.Frame.Clone(), Bitmap)
 
-                      If flag = False Then
-                          If pic_main.Image IsNot Nothing Then
-                              pic_main.Image.Dispose()
-                              pic_main.Image = Nothing
-                          End If
-                          pic_main.Image = newImage.Clone()
-                      End If
                       If pic_cam.Image IsNot Nothing Then
                           pic_cam.Image.Dispose()
                           pic_cam.Image = Nothing
@@ -466,11 +512,34 @@ Public Class MainForm
     Private Sub CLOSECAMERAToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CLOSECAMERAToolStripMenuItem.Click
         Try
             CloseCamera()
-            pic_main.Image = Nothing
+            pic_cam.Image = Nothing
 
         Catch excpt As Exception
             MessageBox.Show(excpt.Message)
         End Try
+    End Sub
+
+    Private Sub btn_camera_Click(sender As Object, e As EventArgs) Handles btn_camera.Click
+        If btn_camera.Text = "Digital Projection ON" Then
+            Try
+                OpenCamera()
+                SelectResolution(videoDevice, CameraResolutionsCB)
+                If Not My.Settings.camresindex.Equals("") Then
+                    CameraResolutionsCB.SelectedIndex = My.Settings.camresindex + 1
+                End If
+                btn_camera.Text = "Digital Projection OFF"
+            Catch excpt As Exception
+                MessageBox.Show(excpt.Message)
+            End Try
+        Else
+            Try
+                CloseCamera()
+                pic_cam.Image = Nothing
+                btn_camera.Text = "Digital Projection ON"
+            Catch excpt As Exception
+                MessageBox.Show(excpt.Message)
+            End Try
+        End If
     End Sub
 
     Private Sub CameraResolutionsCB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CameraResolutionsCB.SelectedIndexChanged
@@ -592,7 +661,6 @@ Public Class MainForm
         list_cam.Items.Clear()
         photoList.Images.Clear()
         pic_cam.Image = Nothing
-        pic_main.Image = Nothing
         DeleteImages(imagepath)
     End Sub
 
@@ -714,7 +782,9 @@ Public Class MainForm
             RemoveOnePtFromFitObj(curObj)
             DrawToPic()
             txt_counter.Text = curObj.ptCnt.ToString()
-            LoadPosDataToGridView(curObj)
+            If curObj.mType = MeasureType.lineFit Or curObj.mType = MeasureType.arcFit Or curObj.mType = MeasureType.circleFit Then
+                dgv_pos.Rows.RemoveAt(dgv_pos.RowCount - 2)
+            End If
         End If
     End Sub
 
@@ -722,7 +792,7 @@ Public Class MainForm
         RemoveAllPtFromFitObj(curObj)
         DrawToPic()
         txt_counter.Text = curObj.ptCnt.ToString()
-        LoadPosDataToGridView(curObj)
+        dgv_pos.Rows.Clear()
     End Sub
 
 
@@ -826,19 +896,35 @@ Public Class MainForm
         ReSetSelectedIDs()
     End Sub
 
-    Private Sub btn_more_Click(sender As Object, e As EventArgs) Handles btn_more.Click
-        If moreFlag Then
-            moreFlag = False
-            pan_webcam.Visible = False
-            pan_measure.Visible = False
-            btn_more.Text = "More"
-        Else
-            moreFlag = True
-            pan_webcam.Visible = True
-            pan_measure.Visible = True
-            btn_more.Text = "Less"
-        End If
-    End Sub
+
+
+    'Private Sub btn_more_Click(sender As Object, e As EventArgs) Handles btn_more.Click
+    '    If moreFlag Then
+    '        moreFlag = False
+    '        pan_webcam.Visible = False
+    '        pan_measure.Visible = False
+    '        btn_more.Text = "More"
+    '    Else
+    '        moreFlag = True
+    '        pan_webcam.Visible = True
+    '        pan_measure.Visible = True
+    '        btn_more.Text = "Less"
+    '    End If
+    'End Sub
+
+    'Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+    '    If pan_tool.Visible Then
+    '        pan_tool.Visible = False
+    '        pan_tool.Width = 0
+    '        pan_main.Left -= 283
+    '        pan_main.Width += 283
+    '    Else
+    '        pan_tool.Visible = True
+    '        pan_tool.Width = 283
+    '        pan_main.Left += 283
+    '        pan_main.Width -= 283
+    '    End If
+    'End Sub
 
     Private Sub btn_select_Click(sender As Object, e As EventArgs) Handles btn_select.Click
         curMeasureType = MeasureType.selectObj
@@ -872,5 +958,13 @@ Public Class MainForm
         curMeasureType = MeasureType.detectCircle
         InitializeCurObj(curMeasureType)
         ReSetSelectedObjSet()
+    End Sub
+
+    Private Sub check_use_mouse_CheckedChanged(sender As Object, e As EventArgs) Handles check_use_mouse.CheckedChanged
+        If check_use_mouse.Checked Then
+            useMouse = True
+        Else
+            useMouse = False
+        End If
     End Sub
 End Class

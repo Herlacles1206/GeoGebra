@@ -11,5 +11,8 @@
     <Setting Name="imagefilepath" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="Mem_MachineComPort" Type="System.String" Scope="User">
+      <Value Profile="(Default)">COM5</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -5,6 +5,7 @@ Imports System.Security.Cryptography
 Imports DocumentFormat.OpenXml.Drawing.Wordprocessing
 Imports DocumentFormat.OpenXml.Office2019.Drawing.Animation
 Imports DocumentFormat.OpenXml.Spreadsheet
+Imports DocumentFormat.OpenXml.Vml.Office
 Imports Emgu.CV
 Imports GeometRi
 
@@ -247,14 +248,12 @@ Public Module CtrlMethods
                 completed = UpdateCircleCenterRadius(curObj, mPtF)
             Case 50
                 UpdateFitLineObj(curObj, mPtF)
-                LoadPosDataToGridView(curObj)
+
             Case 62, 63
                 UpdateFitCircleObj(curObj, mPtF)
-                LoadPosDataToGridView(curObj)
+
             Case 64, 65
                 completed = UpdateCircle_3Obj(curObj, mPtF)
-
-
             Case 106
                 completed = UpdateAnnoObj(curObj, mPtF)
         End Select
@@ -984,6 +983,16 @@ Public Module CtrlMethods
         Next
     End Sub
 
+    Public Sub LoadPosDataToGridView(mPt As Point)
+        Dim str_item = New String(2) {}
+        Dim cnt = MainForm.dgv_pos.RowCount
+        str_item(0) = cnt.ToString()
+        str_item(1) = mPt.X.ToString()
+        str_item(2) = mPt.Y.ToString()
+
+        MainForm.dgv_pos.Rows.Add(str_item)
+    End Sub
+
     Public Sub DrawRectangle(graph As Graphics, ByVal pictureBox As PictureBox, ByVal FirstPtOfEdge As Point, ByVal SecondPtOfEdge As Point)
         graph.DrawRectangle(MainForm.drawPen, New Rectangle(FirstPtOfEdge.X, FirstPtOfEdge.Y, SecondPtOfEdge.X - FirstPtOfEdge.X, SecondPtOfEdge.Y - FirstPtOfEdge.Y))
     End Sub
@@ -1505,6 +1514,21 @@ Public Module CtrlMethods
         objList(MainForm.selectedObj) = obj
     End Sub
 
+    Public Sub DrawCrossHair(pic As PictureBox)
+        Dim g As Graphics = pic.CreateGraphics()
+        Dim W = pic.Width : Dim H = pic.Height
+        Dim X1 As Integer = W / 2 : Dim X2 = X1
+        g.DrawLine(MainForm.drawPen, X1, 0, X2, H)
+        Dim Y1 As Integer = H / 2 : Dim Y2 = Y1
+        g.DrawLine(MainForm.drawPen, 0, Y1, W, Y2)
+        g.Dispose()
+    End Sub
+
+    Public Sub DrawIncPos(pic As PictureBox)
+        Dim g As Graphics = pic.CreateGraphics()
+        g.DrawEllipse(MainForm.redPen, New Rectangle(MainForm.PosIncX - 2, MainForm.PosIncY - 2, 4, 4))
+        g.Dispose()
+    End Sub
     Public Sub GetName(ByRef obj As measureObj)
         Select Case obj.mType
             Case MeasureType.point
